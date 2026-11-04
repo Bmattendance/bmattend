@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>বাচ্চু মটরস - ডিজিটাল হাজিরা ও ওভারটাইম পোর্টাল</title>
+    <title>বাচ্চু মটরস - ক্লাউড হাজিরা পোর্টাল</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -11,13 +11,17 @@
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800">
 
+   <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw6_sJAFL6FEbNBQATiySEgxE7i6dF-0whIpRnLtF42uyZwKoCy850oecnFagRP7zflGw/exec";
+</script>
+
     <nav class="bg-red-700 text-white shadow-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3 space-x-reverse">
                 <i class="fa-solid font-bold text-2xl fa-motorcycle"></i>
                 <div>
-                    <h1 class="text-xl font-bold tracking-wide">বাচ্চু মটরস</h1>
-                    <p class="text-xs text-red-100">হাজিরা ও স্টাফ ব্যবস্থাপনা সিস্টেম</p>
+                    <h1 class="text-xl font-bold tracking-wide">বাচ্চু মটরস (Cloud)</h1>
+                    <p class="text-xs text-red-100">লাইভ হাজিরা ও স্টাফ সিস্টেম</p>
                 </div>
             </div>
             <div id="userBadge" class="hidden flex items-center space-x-3 space-x-reverse">
@@ -32,406 +36,201 @@
     <div class="max-w-7xl mx-auto p-4 md:p-6">
         
         <!-- LOGIN SECTION -->
-        <div id="loginSection" class="max-w-md mx-auto my-12 bg-white rounded-xl shadow-lg border border-slate-200 p-6 md:p-8">
+        <div id="loginSection" class="max-w-md mx-auto my-12 bg-white rounded-xl shadow-lg border p-6 md:p-8">
             <div class="text-center mb-6">
                 <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto text-2xl mb-3">
-                    <i class="fa-solid fa-user-lock"></i>
+                    <i class="fa-solid fa-cloud"></i>
                 </div>
-                <h2 class="text-2xl font-bold text-slate-800">সিস্টেম লগইন</h2>
-                <p class="text-sm text-slate-500">আপনার ইউজার আইডি ও পাসওয়ার্ড দিন</p>
+                <h2 class="text-2xl font-bold text-slate-800">ক্লাউড লগইন</h2>
+                <p class="text-sm text-slate-500">ইউজার আইডি ও পাসওয়ার্ড দিন</p>
             </div>
 
             <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">ইউজার আইডি</label>
-                    <input type="text" id="username" required placeholder="যেমন: BM-101 / admin / owner" class="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none">
+                    <label class="block text-sm font-medium mb-1">ইউজার আইডি</label>
+                    <input type="text" id="username" required placeholder="BM-101 / admin / owner" class="w-full px-4 py-2.5 border rounded-lg">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">পাসওয়ার্ড</label>
-                    <input type="password" id="password" required placeholder="••••••••" class="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none">
+                    <label class="block text-sm font-medium mb-1">পাসওয়ার্ড</label>
+                    <input type="password" id="password" required placeholder="••••••••" class="w-full px-4 py-2.5 border rounded-lg">
                 </div>
-                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 rounded-lg transition duration-200">
+                <button type="submit" id="loginBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 rounded-lg">
                     লগইন করুন
                 </button>
             </form>
-
-            <div class="mt-6 pt-4 border-t text-xs text-slate-500 space-y-1">
-                <p class="font-semibold text-slate-700">ডেমো অ্যাকাউন্ট:</p>
-                <p>• <span class="font-medium">স্টাফ:</span> BM-101 (পাসওয়ার্ড: 1234)</p>
-                <p>• <span class="font-medium">অ্যাডমিন (ভিউ অনলি):</span> admin (পাসওয়ার্ড: 1234)</p>
-                <p>• <span class="font-medium">সুপার অ্যাডমিন (মালিক):</span> owner (পাসওয়ার্ড: 1234)</p>
-            </div>
         </div>
 
         <!-- STAFF PANEL -->
         <div id="staffPanel" class="hidden space-y-6">
-            <div class="bg-white rounded-xl shadow-sm border p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="bg-white rounded-xl shadow-sm border p-6 flex justify-between items-center">
                 <div>
-                    <h2 class="text-2xl font-bold text-slate-800">স্বাগতম, <span id="staffNameDisplay" class="text-red-600"></span></h2>
-                    <p class="text-sm text-slate-500">আইডি: <span id="staffIdDisplay" class="font-semibold"></span> | পদবী: <span id="staffRoleDisplay" class="font-semibold"></span></p>
+                    <h2 class="text-2xl font-bold">স্বাগতম, <span id="staffNameDisplay" class="text-red-600"></span></h2>
+                    <p class="text-sm text-slate-500">আইডি: <span id="staffIdDisplay" class="font-semibold"></span></p>
                 </div>
-                <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-2 rounded-lg text-sm">
+                <div class="bg-red-50 text-red-800 px-4 py-2 rounded-lg text-sm">
                     তারিখ: <span id="currentDateDisplay" class="font-bold"></span>
                 </div>
             </div>
 
             <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-white rounded-xl shadow-sm border p-6">
-                    <h3 class="text-lg font-bold border-b pb-3 mb-4 text-slate-800"><i class="fa-solid fa-camera text-red-600 mr-2"></i>ডিজিটাল হাজিরা সাবমিট</h3>
-                    <div class="mb-4 text-center">
-                        <div class="bg-slate-900 rounded-lg overflow-hidden h-48 flex items-center justify-center relative">
-                            <video id="webcam" autoplay playsinline class="w-full h-full object-cover hidden"></video>
-                            <img id="photoPreview" class="w-full h-full object-cover hidden">
-                            <span id="cameraPlaceholder" class="text-slate-400 text-sm">ক্যামেরা চালু করুন</span>
-                        </div>
-                        <div class="mt-2 flex justify-center gap-2">
-                            <button type="button" onclick="startCamera()" class="text-xs bg-slate-700 text-white px-3 py-1.5 rounded">ক্যামেরা স্টার্ট</button>
-                            <button type="button" onclick="capturePhoto()" class="text-xs bg-red-600 text-white px-3 py-1.5 rounded">ছবি তুলুন</button>
-                        </div>
+                <div class="bg-white rounded-xl border p-6 space-y-4">
+                    <h3 class="text-lg font-bold border-b pb-2">হাজিরা জমা দিন</h3>
+                    <div>
+                        <label class="block text-sm mb-1">আজকের ওভারটাইম (ঘণ্টা)</label>
+                        <input type="number" step="0.5" id="overtimeHours" value="0" class="w-full border px-3 py-2 rounded-lg">
                     </div>
-                    <div class="mb-4">
-                        <button type="button" onclick="getLocation()" class="w-full bg-slate-100 border text-slate-700 py-2 rounded-lg text-sm font-semibold flex justify-center items-center gap-2">
-                            <i class="fa-solid fa-location-dot text-red-600"></i> জিপিএস লোকেশন ক্যাপচার করুন
-                        </button>
-                        <p id="locationStatus" class="text-xs text-center mt-1 text-slate-500">লোকেশন সংযুক্ত হয়নি</p>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium mb-1">আজকের ওভারটাইম (ঘণ্টা)</label>
-                        <input type="number" step="0.5" id="overtimeHours" min="0" value="0" class="w-full border px-3 py-2 rounded-lg text-sm">
-                    </div>
-                    <button onclick="submitAttendance()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg">
-                        হাজিরা নিশ্চিত করুন
+                    <button onclick="submitAttendance()" id="subBtn" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-lg">
+                        অনলাইন হাজিরা কনফার্ম করুন
                     </button>
                 </div>
-                <div class="bg-white rounded-xl shadow-sm border p-6">
-                    <h3 class="text-lg font-bold border-b pb-3 mb-4 text-slate-800">আমার হাজিরা রেকর্ড</h3>
-                    <div class="overflow-y-auto max-h-80">
-                        <table class="w-full text-sm text-left">
-                            <thead class="bg-slate-50 text-slate-500">
-                                <tr>
-                                    <th class="p-2">তারিখ</th>
-                                    <th class="p-2">সময়</th>
-                                    <th class="p-2">ওভারটাইম</th>
-                                    <th class="p-2">লোকেশন</th>
-                                </tr>
-                            </thead>
-                            <tbody id="staffHistoryTable">
-                                <tr><td colspan="4" class="p-4 text-center text-slate-400">কোনো হিস্ট্রি নেই</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="bg-white rounded-xl border p-6">
+                    <h3 class="text-lg font-bold border-b pb-2 mb-3">হাজিরা রেকর্ড</h3>
+                    <div class="overflow-y-auto max-h-60" id="staffHistory">ডাটা লোড হচ্ছে...</div>
                 </div>
             </div>
         </div>
 
-        <!-- ADMIN PANEL (VIEW ONLY) -->
+        <!-- ADMIN & SUPER ADMIN PANELS -->
         <div id="adminPanel" class="hidden space-y-6">
-            <div class="bg-white rounded-xl shadow-sm border p-6 flex justify-between items-center">
-                <div>
-                    <h2 class="text-2xl font-bold text-slate-800">অ্যাডমিন ড্যাশবোর্ড <span class="text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded ml-2">View-Only</span></h2>
-                    <p class="text-sm text-slate-500">সকল স্টাফের হাজিরার রেকর্ড ও তথ্য দেখুন</p>
-                </div>
-                <button onclick="exportToCSV()" class="bg-emerald-600 text-white text-sm px-4 py-2 rounded-lg">এক্সেল রিপোর্ট এক্সপোর্ট</button>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-white p-5 rounded-xl border shadow-sm">
-                    <p class="text-slate-500 text-xs font-semibold uppercase">মোট স্টাফ</p>
-                    <p id="adminTotalStaff" class="text-2xl font-bold text-slate-800 mt-1">0</p>
-                </div>
-                <div class="bg-white p-5 rounded-xl border shadow-sm">
-                    <p class="text-slate-500 text-xs font-semibold uppercase">আজকের হাজিরা</p>
-                    <p id="adminTodayAttendance" class="text-2xl font-bold text-emerald-600 mt-1">0</p>
-                </div>
-                <div class="bg-white p-5 rounded-xl border shadow-sm">
-                    <p class="text-slate-500 text-xs font-semibold uppercase">আজকের ওভারটাইম</p>
-                    <p id="adminTodayOvertime" class="text-2xl font-bold text-blue-600 mt-1">0</p>
-                </div>
-            </div>
-            <div class="bg-white rounded-xl shadow-sm border p-6">
-                <h3 class="text-lg font-bold mb-4 text-slate-800">হাজিরা লগ</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left">
-                        <thead>
-                            <tr class="bg-slate-100 text-slate-600 border-b">
-                                <th class="p-3">স্টাফ নাম/আইডি</th>
-                                <th class="p-3">তারিখ ও সময়</th>
-                                <th class="p-3">ছবি</th>
-                                <th class="p-3">ওভারটাইম</th>
-                                <th class="p-3">লোকেশন</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminAttendanceTable" class="divide-y"></tbody>
-                    </table>
-                </div>
+            <div class="bg-white rounded-xl border p-6">
+                <h2 class="text-2xl font-bold">অ্যাডমিন ড্যাশবোর্ড (লাইভ ক্লাউড ডাটা)</h2>
+                <div id="adminAttendanceTable" class="mt-4 overflow-x-auto">ডাটা লোড হচ্ছে...</div>
             </div>
         </div>
 
-        <!-- SUPER ADMIN PANEL (MASTER CONTROL) -->
         <div id="superAdminPanel" class="hidden space-y-6">
-            <div class="bg-slate-900 text-white rounded-xl shadow-lg p-6 flex justify-between items-center">
-                <div>
-                    <h2 class="text-2xl font-bold">সুপার অ্যাডমিন ড্যাশবোর্ড (মালিক)</h2>
-                    <p class="text-xs text-slate-400">স্টাফ অ্যাকাউন্ট তৈরি ও ম্যানেজমেন্ট</p>
-                </div>
-                <span class="bg-red-600 text-white text-xs px-3 py-1 rounded-full uppercase font-bold">Master</span>
+            <div class="bg-slate-900 text-white rounded-xl p-6">
+                <h2 class="text-2xl font-bold">সুপার অ্যাডমিন (মালিক)</h2>
+                <p class="text-xs text-slate-400">নতুন আইডি খুললে সরাসরি গুগল শিটে সেভ হবে</p>
             </div>
-
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="bg-white rounded-xl shadow-sm border p-6">
-                    <h3 class="text-lg font-bold border-b pb-3 mb-4 text-slate-800">নতুন স্টাফ অ্যাকাউন্ট খুলুন</h3>
-                    <form onsubmit="createNewStaff(event)" class="space-y-3">
-                        <div>
-                            <label class="text-xs font-semibold">স্টাফ আইডি</label>
-                            <input type="text" id="newStaffId" required placeholder="BM-103" class="w-full border px-3 py-1.5 rounded text-sm">
-                        </div>
-                        <div>
-                            <label class="text-xs font-semibold">স্টাফের নাম</label>
-                            <input type="text" id="newStaffName" required placeholder="রহিম মিয়া" class="w-full border px-3 py-1.5 rounded text-sm">
-                        </div>
-                        <div>
-                            <label class="text-xs font-semibold">পদবী</label>
-                            <input type="text" id="newStaffRole" required placeholder="মেকানিক" class="w-full border px-3 py-1.5 rounded text-sm">
-                        </div>
-                        <div>
-                            <label class="text-xs font-semibold">পাসওয়ার্ড</label>
-                            <input type="password" id="newStaffPass" required placeholder="••••••" class="w-full border px-3 py-1.5 rounded text-sm">
-                        </div>
-                        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded text-sm">
-                            অ্যাকাউন্ট তৈরি করুন
-                        </button>
-                    </form>
-                </div>
-
-                <div class="md:col-span-2 bg-white rounded-xl shadow-sm border p-6">
-                    <h3 class="text-lg font-bold border-b pb-3 mb-4 text-slate-800">স্টাফ তালিকা</h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left">
-                            <thead class="bg-slate-50 text-slate-600">
-                                <tr>
-                                    <th class="p-2">আইডি</th>
-                                    <th class="p-2">নাম</th>
-                                    <th class="p-2">পদবী</th>
-                                    <th class="p-2 text-right">অ্যাকশন</th>
-                                </tr>
-                            </thead>
-                            <tbody id="superAdminStaffList" class="divide-y"></tbody>
-                        </table>
-                    </div>
-                </div>
+            <div class="bg-white border rounded-xl p-6 max-w-md">
+                <h3 class="font-bold mb-3">নতুন স্টাফ যোগ করুন</h3>
+                <form onsubmit="createNewStaff(event)" class="space-y-3">
+                    <input type="text" id="newStaffId" placeholder="আইডি (যেমন: BM-103)" required class="w-full border p-2 rounded">
+                    <input type="text" id="newStaffName" placeholder="নাম" required class="w-full border p-2 rounded">
+                    <input type="text" id="newStaffRole" placeholder="পদবী" required class="w-full border p-2 rounded">
+                    <input type="password" id="newStaffPass" placeholder="পাসওয়ার্ড" required class="w-full border p-2 rounded">
+                    <button type="submit" id="addStaffBtn" class="w-full bg-red-600 text-white py-2 rounded">ডাটাবেসে সেভ করুন</button>
+                </form>
             </div>
         </div>
 
     </div>
 
     <script>
-        let defaultUsers = [
-            { id: "BM-101", name: "করিম আহমেদ", role: "সেলস ম্যানেজার", pass: "1234", type: "staff" },
-            { id: "BM-102", name: "শফিক ইসলাম", role: "মেকানিক", pass: "1234", type: "staff" },
-            { id: "admin", name: "শোরুম ম্যানেজার", role: "অ্যাডমিন", pass: "1234", type: "admin" },
-            { id: "owner", name: "মালিক", role: "সুপার অ্যাডমিন", pass: "1234", type: "superadmin" }
-        ];
-
-        if (!localStorage.getItem("bm_users")) {
-            localStorage.setItem("bm_users", JSON.stringify(defaultUsers));
-        }
-        if (!localStorage.getItem("bm_attendance")) {
-            localStorage.setItem("bm_attendance", JSON.stringify([]));
-        }
-
         let currentUser = null;
-        let capturedLocation = null;
-        let capturedPhotoData = null;
+        document.getElementById("currentDateDisplay").innerText = new Date().toLocaleDateString('bn-BD');
 
-        document.getElementById("currentDateDisplay").innerText = new Date().toLocaleDateString('bn-BD', {
-            year: 'numeric', month: 'long', day: 'numeric'
-        });
-
-        function handleLogin(e) {
+        async function handleLogin(e) {
             e.preventDefault();
+            const btn = document.getElementById("loginBtn");
+            btn.innerText = "যাচাই করা হচ্ছে...";
+            btn.disabled = true;
+
             const uInput = document.getElementById("username").value.trim();
             const pInput = document.getElementById("password").value.trim();
-            
-            const users = JSON.parse(localStorage.getItem("bm_users"));
-            const user = users.find(u => u.id.toLowerCase() === uInput.toLowerCase() && u.pass === pInput);
 
-            if (user) {
-                currentUser = user;
-                showPanel(user);
-            } else {
-                alert("ইউজার আইডি বা পাসওয়ার্ড ভুল হয়েছে!");
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getUsers`);
+                const users = await res.json();
+                const user = users.find(u => String(u.id).toLowerCase() === uInput.toLowerCase() && String(u.pass) === pInput);
+
+                if (user) {
+                    currentUser = user;
+                    document.getElementById("loginSection").classList.add("hidden");
+                    document.getElementById("userBadge").classList.remove("hidden");
+                    document.getElementById("roleTag").innerText = user.role;
+
+                    if (user.type === "staff") {
+                        document.getElementById("staffPanel").classList.remove("hidden");
+                        document.getElementById("staffNameDisplay").innerText = user.name;
+                        document.getElementById("staffIdDisplay").innerText = user.id;
+                        loadStaffHistory();
+                    } else if (user.type === "admin") {
+                        document.getElementById("adminPanel").classList.remove("hidden");
+                        loadAdminView();
+                    } else if (user.type === "superadmin") {
+                        document.getElementById("superAdminPanel").classList.remove("hidden");
+                    }
+                } else {
+                    alert("ইউজার আইডি বা পাসওয়ার্ড ভুল হয়েছে!");
+                }
+            } catch (err) {
+                alert("ডাটাবেসের সাথে কানেক্ট করা যাচ্ছে না। API লিঙ্ক চেক করুন।");
             }
+            btn.innerText = "লগইন করুন";
+            btn.disabled = false;
         }
 
-        function showPanel(user) {
-            document.getElementById("loginSection").classList.add("hidden");
-            document.getElementById("userBadge").classList.remove("hidden");
-            document.getElementById("roleTag").innerText = user.role;
+        async function submitAttendance() {
+            const btn = document.getElementById("subBtn");
+            btn.innerText = "জমা হচ্ছে...";
+            btn.disabled = true;
 
-            if (user.type === "staff") {
-                document.getElementById("staffPanel").classList.remove("hidden");
-                document.getElementById("staffNameDisplay").innerText = user.name;
-                document.getElementById("staffIdDisplay").innerText = user.id;
-                document.getElementById("staffRoleDisplay").innerText = user.role;
-                loadStaffHistory();
-            } else if (user.type === "admin") {
-                document.getElementById("adminPanel").classList.remove("hidden");
-                loadAdminView();
-            } else if (user.type === "superadmin") {
-                document.getElementById("superAdminPanel").classList.remove("hidden");
-                loadSuperAdminView();
-            }
-        }
-
-        function logout() { location.reload(); }
-
-        function startCamera() {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(stream => {
-                    const video = document.getElementById("webcam");
-                    video.srcObject = stream;
-                    video.classList.remove("hidden");
-                    document.getElementById("cameraPlaceholder").classList.add("hidden");
-                })
-                .catch(() => alert("ক্যামেরা অন করা যাচ্ছে না।"));
-        }
-
-        function capturePhoto() {
-            const video = document.getElementById("webcam");
-            const preview = document.getElementById("photoPreview");
-            if (!video.srcObject) return alert("প্রথমে ক্যামেরা অন করুন!");
-
-            const canvas = document.createElement("canvas");
-            canvas.width = 300;
-            canvas.height = 200;
-            canvas.getContext("2d").drawImage(video, 0, 0, 300, 200);
-
-            capturedPhotoData = canvas.toDataURL("image/jpeg");
-            preview.src = capturedPhotoData;
-            preview.classList.remove("hidden");
-            video.classList.add("hidden");
-        }
-
-        function getLocation() {
-            const status = document.getElementById("locationStatus");
-            if (navigator.geolocation) {
-                status.innerText = "লোকেশন খোঁজা হচ্ছে...";
-                navigator.geolocation.getCurrentPosition(
-                    pos => {
-                        capturedLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-                        status.innerText = `লোকেশন পাওয়া গেছে`;
-                        status.classList.add("text-emerald-600");
-                    },
-                    () => status.innerText = "লোকেশন পারমিশন পাওয়া যায়নি!"
-                );
-            }
-        }
-
-        function submitAttendance() {
-            if (!capturedPhotoData) return alert("ছবি তুলুন!");
-            const overtime = parseFloat(document.getElementById("overtimeHours").value) || 0;
-            const records = JSON.parse(localStorage.getItem("bm_attendance"));
-
-            records.push({
+            const overtime = document.getElementById("overtimeHours").value;
+            const payload = {
+                action: "addAttendance",
                 staffId: currentUser.id,
                 staffName: currentUser.name,
-                timestamp: new Date().toLocaleString("bn-BD"),
+                timestamp: new Date().toLocaleString(),
                 dateStr: new Date().toLocaleDateString(),
-                photo: capturedPhotoData,
-                location: capturedLocation,
-                overtime: overtime
-            });
+                overtime: overtime,
+                location: "অনলাইন"
+            };
 
-            localStorage.setItem("bm_attendance", JSON.stringify(records));
-            alert("হাজিরা সফলভাবে জমা হয়েছে!");
+            await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+            alert("আপনার হাজিরা ক্লাউড ডাটাবেসে সেভ হয়েছে!");
+            btn.innerText = "অনলাইন হাজিরা কনফার্ম করুন";
+            btn.disabled = false;
             loadStaffHistory();
         }
 
-        function loadStaffHistory() {
-            const records = JSON.parse(localStorage.getItem("bm_attendance"));
-            const myRecords = records.filter(r => r.staffId === currentUser.id);
-            const table = document.getElementById("staffHistoryTable");
-            if (myRecords.length === 0) return;
-            table.innerHTML = myRecords.map(r => `
-                <tr class="border-b">
-                    <td class="p-2">${r.dateStr}</td>
-                    <td class="p-2">${r.timestamp}</td>
-                    <td class="p-2">${r.overtime} ঘণ্টা</td>
-                    <td class="p-2">${r.location ? `<a href="https://maps.google.com/?q=${r.location.lat},${r.location.lng}" target="_blank" class="text-blue-600 underline text-xs">ম্যাপ</a>` : 'N/A'}</td>
-                </tr>
+        async function loadStaffHistory() {
+            const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
+            const records = await res.json();
+            const myRecords = records.filter(r => String(r.staffId) === String(currentUser.id));
+            document.getElementById("staffHistory").innerHTML = myRecords.map(r => `
+                <div class="border-b py-2 text-xs">
+                    <p><b>তারিখ:</b> ${r.dateStr} | <b>সময়:</b> ${r.timestamp}</p>
+                    <p><b>ওভারটাইম:</b> ${r.overtime} ঘণ্টা</p>
+                </div>
             `).join('');
         }
 
-        function loadAdminView() {
-            const users = JSON.parse(localStorage.getItem("bm_users"));
-            const records = JSON.parse(localStorage.getItem("bm_attendance"));
-            const todayStr = new Date().toLocaleDateString();
-            const todayRecords = records.filter(r => r.dateStr === todayStr);
-
-            document.getElementById("adminTotalStaff").innerText = users.filter(u => u.type === 'staff').length;
-            document.getElementById("adminTodayAttendance").innerText = todayRecords.length;
-            document.getElementById("adminTodayOvertime").innerText = todayRecords.reduce((sum, r) => sum + r.overtime, 0);
-
-            const table = document.getElementById("adminAttendanceTable");
-            table.innerHTML = records.map(r => `
-                <tr class="hover:bg-slate-50">
-                    <td class="p-3 font-semibold">${r.staffName} (${r.staffId})</td>
-                    <td class="p-3">${r.timestamp}</td>
-                    <td class="p-3"><img src="${r.photo}" class="w-10 h-10 object-cover rounded border"></td>
-                    <td class="p-3 text-blue-600">${r.overtime} ঘণ্টা</td>
-                    <td class="p-3">${r.location ? `<a href="https://maps.google.com/?q=${r.location.lat},${r.location.lng}" target="_blank" class="text-red-600 text-xs">ম্যাপ</a>` : 'N/A'}</td>
-                </tr>
-            `).join('');
+        async function loadAdminView() {
+            const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
+            const records = await res.json();
+            document.getElementById("adminAttendanceTable").innerHTML = `
+                <table class="w-full text-xs text-left border">
+                    <tr class="bg-slate-100"><th class="p-2">আইডি</th><th class="p-2">নাম</th><th class="p-2">সময়</th><th class="p-2">ওভারটাইম</th></tr>
+                    ${records.map(r => `<tr><td class="p-2">${r.staffId}</td><td class="p-2">${r.staffName}</td><td class="p-2">${r.timestamp}</td><td class="p-2">${r.overtime} ঘঃ</td></tr>`).join('')}
+                </table>
+            `;
         }
 
-        function loadSuperAdminView() {
-            const users = JSON.parse(localStorage.getItem("bm_users")).filter(u => u.type === 'staff');
-            document.getElementById("superAdminStaffList").innerHTML = users.map(u => `
-                <tr class="hover:bg-slate-50">
-                    <td class="p-2 font-bold">${u.id}</td>
-                    <td class="p-2">${u.name}</td>
-                    <td class="p-2">${u.role}</td>
-                    <td class="p-2 text-right">
-                        <button onclick="deleteStaff('${u.id}')" class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded">ডিলিট</button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function createNewStaff(e) {
+        async function createNewStaff(e) {
             e.preventDefault();
-            const id = document.getElementById("newStaffId").value.trim();
-            const name = document.getElementById("newStaffName").value.trim();
-            const role = document.getElementById("newStaffRole").value.trim();
-            const pass = document.getElementById("newStaffPass").value.trim();
+            const btn = document.getElementById("addStaffBtn");
+            btn.innerText = "সেভ হচ্ছে...";
+            btn.disabled = true;
 
-            let users = JSON.parse(localStorage.getItem("bm_users"));
-            if (users.some(u => u.id === id)) return alert("আইডিটি আগেই ব্যবহৃত হয়েছে!");
+            const payload = {
+                action: "addUser",
+                id: document.getElementById("newStaffId").value.trim(),
+                name: document.getElementById("newStaffName").value.trim(),
+                role: document.getElementById("newStaffRole").value.trim(),
+                pass: document.getElementById("newStaffPass").value.trim(),
+                type: "staff"
+            };
 
-            users.push({ id, name, role, pass, type: "staff" });
-            localStorage.setItem("bm_users", JSON.stringify(users));
-            alert("সফলভাবে নতুন স্টাফ অ্যাকাউন্ট তৈরি হয়েছে!");
+            await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+            alert("সফলভাবে ক্লাউড ডাটাবেসে নতুন স্টাফ আইডি খোলা হয়েছে!");
             e.target.reset();
-            loadSuperAdminView();
+            btn.innerText = "ডাটাবেসে সেভ করুন";
+            btn.disabled = false;
         }
 
-        function deleteStaff(id) {
-            if (confirm("আপনি কি নিশ্চিত?")) {
-                let users = JSON.parse(localStorage.getItem("bm_users")).filter(u => u.id !== id);
-                localStorage.setItem("bm_users", JSON.stringify(users));
-                loadSuperAdminView();
-            }
-        }
-
-        function exportToCSV() {
-            const records = JSON.parse(localStorage.getItem("bm_attendance"));
-            if (records.length === 0) return alert("ডাটা নেই!");
-            let csv = "আইডি,নাম,তারিখ ও সময়,ওভারটাইম\n";
-            records.forEach(r => csv += `${r.staffId},${r.staffName},${r.timestamp},${r.overtime}\n`);
-            const link = document.createElement("a");
-            link.href = encodeURI("data:text/csv;charset=utf-8," + csv);
-            link.download = "Attendance_Report.csv";
-            link.click();
-        }
+        function logout() { location.reload(); }
     </script>
 </body>
 </html>
