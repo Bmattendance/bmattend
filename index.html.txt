@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বাচ্চু মটরস - ডিজিটাল হাজিরা ও ওভারটাইম পোর্টাল</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800">
+
+    <!-- Top Navigation Bar -->
+    <nav class="bg-red-700 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <i class="fa-solid font-bold text-2xl fa-motorcycle"></i>
+                <div>
+                    <h1 class="text-xl font-bold tracking-wide">বাচ্চু মটরস</h1>
+                    <p class="text-xs text-red-100">হাজিরা ও স্টাফ ব্যবস্থাপনা সিস্টেম</p>
+                </div>
+            </div>
+            <div id="userBadge" class="hidden flex items-center space-x-3 space-x-reverse">
+                <span id="roleTag" class="px-3 py-1 rounded-full text-xs font-semibold bg-white text-red-700 shadow"></span>
+                <button onclick="logout()" class="bg-red-800 hover:bg-red-900 text-xs px-3 py-1.5 rounded transition flex items-center">
+                    <i class="fa-solid fa-right-from-bracket mr-1"></i> লগআউট
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto p-4 md:p-6">
+        
+        <!-- SECTION 1: LOGIN CARD -->
+        <div id="loginSection" class="max-w-md mx-auto my-12 bg-white rounded-xl shadow-lg border border-slate-200 p-6 md:p-8">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto text-2xl mb-3">
+                    <i class="fa-solid fa-user-lock"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800">সিস্টেম লগইন</h2>
+                <p class="text-sm text-slate-500">আপনার ইউজার আইডি ও পাসওয়ার্ড দিন</p>
+            </div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)" class="space-x-y space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">ইউজার আইডি</label>
+                    <input type="text" id="username" required placeholder="যেমন: BM-101 / admin / owner" class="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">পাসওয়ার্ড</label>
+                    <input type="password" id="password" required placeholder="••••••••" class="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none">
+                </div>
+                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 rounded-lg transition duration-200">
+                    লগইন করুন
+                </button>
+            </form>
+
+            <div class="mt-6 pt-4 border-t text-xs text-slate-500 space-y-1">
+                <p class="font-semibold text-slate-700">ডেমো অ্যাকাউন্ট টেস্ট ডামি ডেমো:</p>
+                <p>• <span class="font-medium">স্টাফ:</span> BM-101 (পাসওয়ার্ড: 1234)</p>
+                <p>• <span class="font-medium">অ্যাডমিন (ভিউ অনলি):</span> admin (পাসওয়ার্ড: 1234)</p>
+                <p>• <span class="font-medium">সুপার অ্যাডমিন (মালিক):</span> owner (পাসওয়ার্ড: 1234)</p>
+            </div>
+        </div>
+
+        <!-- SECTION 2: STAFF PANEL -->
+        <div id="staffPanel" class="hidden space-y-6">
+            <div class="bg-white rounded-xl shadow-sm border p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800">স্বাগতম, <span id="staffNameDisplay" class="text-red-600"></span></h2>
+                    <p class="text-sm text-slate-500">আইডি: <span id="staffIdDisplay" class="font-semibold"></span> | পদবী: <span id="staffRoleDisplay" class="font-semibold"></span></p>
+                </div>
+                <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-2 rounded-lg text-sm">
+                    আজকের তারিখ: <span id="currentDateDisplay" class="font-bold"></span>
+                </div>
+            </div>
+
+            <!-- Attendance Form Card -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-xl shadow-sm border p-6">
+                    <h3 class="text-lg font-bold border-b pb-3 mb-4 text-slate-800"><i class="fa-solid fa-camera text-red-600 mr-2"></i>ডিজিটাল হাজিরা সাবমিট</h3>
+                    
+                    <!-- WebCam Feed -->
+                    <div class="mb-4 text-center">
+                        <div class="bg-slate-900 rounded-lg overflow-hidden h-48 flex items-center justify-center relative">
+                            <video id="webcam" autoplay playsinline class="w-full h-full object-cover hidden"></video>
+                            <img id="photoPreview" class="w-full h-full object-cover hidden">
+                            <span id="cameraPlaceholder" class="text-slate-400 text-sm">ক্যামেরা চালু করুন</span>
+                        </div>
+                        <div class="mt-2 flex justify-center gap-2">
+                            <button type="button" onclick="startCamera()" class="text-xs bg-slate-700 text-white px-3 py-1.5 rounded hover:bg-slate-800">ক্যামেরা স্টার্ট</button>
+                            <button type="button" onclick="capturePhoto()" class="text-xs bg-red-600 text-white px-3 py-1.5 rounded hover:bg-red-700">ছবি তুলুন</button>
+                        </div>
+                    </div>
+
+                    <!-- GPS Location -->
+                    <div class="mb-4">
+                        <button type="button" onclick="getLocation()" class="w-full bg-slate-100 border text-slate-700 py-2 rounded-lg text-sm font-semibold hover:bg-slate-200 transition flex justify-center items-center gap-2">
+                            <i class="fa-solid fa-location-dot text-red-600"></i> জিপিএস লোকেশন ক্যাপচার করুন
+                        </button>
+                        <p id="locationStatus" class="text-xs text-center mt-1 text-slate-500">লোকেশন এখনো সংযুক্ত হয়নি</p>
+                    </div>
+
+                    <!-- Overtime Field -->
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-1">আজকের ওভারটাইম (ঘণ্টা)</label>
+                        <input type="number" step="0.5" id="overtimeHours" min="0" value="0" class="w-full border px-3 py-2 rounded-lg text-sm">
+                    </div>
+
+                    <button onclick="submitAttendance()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg transition">
+                        হাজিরা নিশ্চিত করুন
+                    </button>
+                </div>
+
+                <!-- Personal History -->
+                <div class="bg-white rounded-xl shadow-sm border p-6">
+                    <h3 class="text-lg font-bold border-b pb-3 mb-4 text-slate-800"><i class="fa-solid fa-clock-rotate-left text-slate-600 mr-2"></i>আমার সাম্প্রতিক হাজিরা রেকার্ড</h3>
+                    <div class="overflow-y-auto max-h-80">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-50 text-slate-500">
+                                <tr>
+                                    <th class="p-2">তারিখ</th>
+                                    <th class="p-2">সময়</th>
+                                    <th class="p-2">ওভারটাইম</th>
+                                    <th class="p-2">লোকেশন</th>
+                                </tr>
+                            </thead>
+                            <tbody id="staffHistoryTable">
+                                <tr><td colspan="4" class="p-4 text-center text-slate-400">কোনো হিস্ট্রি পাওয়া যায়নি</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: ADMIN PANEL (READ ONLY FOR ATTENDANCE & STAFF) -->
+        <div id="adminPanel" class="hidden space-y-6">
+            <div class="bg-white rounded-xl shadow-sm border p-6 flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800">অ্যাডমিন ড্যাশবোর্ড <span class="text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded ml-2">View-Only</span></h2>
+                    <p class="text-sm text-slate-500">আপনি স্টাফদের সকল হাজিরার রেকর্ড ও তথ্য দেখতে পারবেন।</p>
+                </div>
+                <button onclick="exportToCSV()" class="bg-emerald-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-emerald-700">
+                    <i class="fa-solid fa-file-excel mr-1"></i> এক্সেল রিপোর্ট এক্সপোর্ট
+                </button>
+            </div>
+
+            <!-- Summary Counter Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-5 rounded-xl border shadow-sm">
+                    <p class="text-slate-500 text-xs font-semibold uppercase">মোট রেজিষ্টার্ড স্টাফ</p>
+                    <p id="adminTotalStaff" class="text-2xl font-bold text-slate-800 mt-1">0</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border shadow-sm">
+                    <p class="text-slate-500 text-xs font-semibold uppercase">আজকের মোট হাজিরা</p>
+                    <p id="adminTodayAttendance" class="text-2xl font-bold text-emerald-600 mt-1">0</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border shadow-sm">
+                    <p class="text-slate-500 text-xs font-semibold uppercase">আজকের মোট ওভারটাইম (ঘণ্টা)</p>
+                    <p id="adminTodayOvertime" class="text-2xl font-bold text-blue-600 mt-1">0</p>
+                </div>
+            </div>
+
+            <!-- Attendance Records Table -->
+            <div class="bg-white rounded-xl shadow-sm border p-6">
+                <h3 class="text-lg font-bold mb-4 text-slate-800">সকল স্টাফ হাজিরার লগ (Attendance Log)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-600 border-b">
+                                <th class="p-3">স্টাফ নাম/আইডি</th>
+                                <th class="p-3">তারিখ ও সময়</th>
+                                <th class="p-3">ছবি</th>
+                                <th class="p-3">ওভারটাইম</th>
+                                <th class="p-3">লোকেশন</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminAttendanceTable" class="divide-y">
+                            <!-- JS Populated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: SUPER ADMIN PANEL (FULL MASTER CONTROL) -->
+        <div id="superAdminPanel" class="hidden space-y-6">
+            <div class="bg-slate-900 text-white rounded-xl shadow-lg p-6 flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-bold">সুপার অ্যাডমিন ড্যাশবোর্ড (মালিক)</h2>
+                    <p class="text-xs text-slate-400">সকল ডাটা এডিট, স্টাফ অ্যাকাউন্ট তৈরি ও সিস্টেম নিয়ন্ত্রণ প্যানেল</p>
+                </div>
+                <span class="bg-red-600 text-white text-xs px-3 py-1 rounded-full uppercase font-bold tracking-wider">Master Access</span>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Add Staff Form -->
+                <div class="bg-white rounded-xl shadow-sm border p-6">
+                    <h3 class="text-lg font-bold border-b pb-3 mb-4 text-slate-800"><i class="fa-solid fa-user-plus text-red-600 mr-2"></i>নতুন স্টাফ অ্যাকাউন্ট খুলুন</h3>
+                    <form onsubmit="createNewStaff(event)" class="space-y-3">
+                        <div>
+                            <label class="text-xs font-semibold">স্টাফ আইডি</label>
+                            <input type="text" id="newStaffId" required placeholder="BM-103" class="w-full border px-3 py-1.5 rounded text-sm">
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold">স্টাফের নাম</label>
+                            <input type="text" id="newStaffName" required placeholder="আব্দুর রহিম" class="w-full border px-3 py-1.5 rounded text-sm">
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold">পদবী</label>
+                            <input type="text" id="newStaffRole" required placeholder="সেলস এক্সিকিউটিভ" class="w-full border px-3 py-1.5 rounded text-sm">
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold">পাসওয়ার্ড সেট করুন</label>
+                            <input type="password" id="newStaffPass" required placeholder="••••••" class="w-full border px-3 py-1.5 rounded text-sm">
+                        </div>
+                        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded text-sm transition">
+                            অ্যাকাউন্ট তৈরি করুন
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Staff List & Management -->
+                <div class="md:col-span-2 bg-white rounded-xl shadow-sm border p-6">
+                    <h3 class="text-lg font-bold border-b pb-3 mb-4 text-slate-800"><i class="fa-solid fa-users-gear text-slate-600 mr-2"></i>স্টাফ তালিকা ও পাসওয়ার্ড রিসেট</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-50 text-slate-600">
+                                <tr>
+                                    <th class="p-2">আইডি</th>
+                                    <th class="p-2">নাম</th>
+                                    <th class="p-2">পদবী</th>
+                                    <th class="p-2 text-right">অ্যাকশন</th>
+                                </tr>
+                            </thead>
+                            <tbody id="superAdminStaffList" class="divide-y">
+                                <!-- JS Populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- System JavaScript -->
+    <script>
+        // Default Storage Initialization
+        let defaultUsers = [
+            { id: "BM-101", name: "করিম আহমেদ", role: "সেলস ম্যানিয়াগার", pass: "1234", type: "staff" },
+            { id: "BM-102", name: "শফিক ইসলাম", role: "মেকানিক", pass: "1234", type: "staff" },
+            { id: "admin", name: "শোরুম ম্যানেজার", role: "অ্যাডমিন", pass: "1234", type: "admin" },
+            { id: "owner", name: "মালিক (বাচ্চু মটরস)", role: "সুপার অ্যাডমিন", pass: "1234", type: "superadmin" }
+        ];
+
+        if (!localStorage.getItem("bm_users")) {
+            localStorage.setItem("bm_users", JSON.stringify(defaultUsers));
+        }
+
+        if (!localStorage.getItem("bm_attendance")) {
+            localStorage.setItem("bm_attendance", JSON.stringify([]));
+        }
+
+        let currentUser = null;
+        let capturedLocation = null;
+        let capturedPhotoData = null;
+
+        // Current Date Display
+        document.getElementById("currentDateDisplay").innerText = new Date().toLocaleDateString('bn-BD', {
+            year: 'numeric', month: 'long', day: 'numeric'
+        });
+
+        // Authentication Handler
+        function handleLogin(e) {
+            e.preventDefault();
+            const uInput = document.getElementById("username").value.trim();
+            const pInput = document.getElementById("password").value.trim();
+            
+            const users = JSON.parse(localStorage.getItem("bm_users"));
+            const user = users.find(u => u.id.toLowerCase() === uInput.toLowerCase() && u.pass === pInput);
+
+            if (user) {
+                currentUser = user;
+                showPanel(user);
+            } else {
+                alert("ইউজার আইডি বা পাসওয়ার্ড ভুল হয়েছে!");
+            }
+        }
+
+        function showPanel(user) {
+            document.getElementById("loginSection").classList.add("hidden");
+            document.getElementById("userBadge").classList.remove("hidden");
+            document.getElementById("roleTag").innerText = user.role;
+
+            if (user.type === "staff") {
+                document.getElementById("staffPanel").classList.remove("hidden");
+                document.getElementById("staffNameDisplay").innerText = user.name;
+                document.getElementById("staffIdDisplay").innerText = user.id;
+                document.getElementById("staffRoleDisplay").innerText = user.role;
+                loadStaffHistory();
+            } else if (user.type === "admin") {
+                document.getElementById("adminPanel").classList.remove("hidden");
+                loadAdminView();
+            } else if (user.type === "superadmin") {
+                document.getElementById("superAdminPanel").classList.remove("hidden");
+                loadSuperAdminView();
+            }
+        }
+
+        function logout() {
+            location.reload();
+        }
+
+        // Camera & GPS Functions
+        function startCamera() {
+            const video = document.getElementById("webcam");
+            const placeholder = document.getElementById("cameraPlaceholder");
+            
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    video.srcObject = stream;
+                    video.classList.remove("hidden");
+                    placeholder.classList.add("hidden");
+                })
+                .catch(err => {
+                    alert("ক্যামেরা অন করা যাচ্ছে না। পারমিশন চেক করুন।");
+                });
+        }
+
+        function capturePhoto() {
+            const video = document.getElementById("webcam");
+            const preview = document.getElementById("photoPreview");
+            if (!video.srcObject) return alert("প্রথমে ক্যামেরা অন করুন!");
+
+            const canvas = document.createElement("canvas");
+            canvas.width = 300;
+            canvas.height = 200;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(video, 0, 0, 300, 200);
+
+            capturedPhotoData = canvas.toDataURL("image/jpeg");
+            preview.src = capturedPhotoData;
+            preview.classList.remove("hidden");
+            video.classList.add("hidden");
+        }
+
+        function getLocation() {
+            const status = document.getElementById("locationStatus");
+            if (navigator.geolocation) {
+                status.innerText = "লোকেশন খোঁজা হচ্ছে...";
+                navigator.geolocation.getCurrentPosition(
+                    pos => {
+                        capturedLocation = {
+                            lat: pos.coords.latitude,
+                            lng: pos.coords.longitude
+                        };
+                        status.innerText = `লোকেশন পাওয়া গেছে (Lat: ${pos.coords.latitude.toFixed(4)})`;
+                        status.classList.add("text-emerald-600");
+                    },
+                    err => {
+                        status.innerText = "লোকেশন পারমিশন পাওয়া যায়নি!";
+                        status.classList.add("text-red-600");
+                    }
+                );
+            }
+        }
+
+        // Submit Attendance
+        function submitAttendance() {
+            if (!capturedPhotoData) {
+                alert("অনুগ্রহ করে ক্যামেরা দিয়ে ছবি তুলুন!");
+                return;
+            }
+
+            const overtime = parseFloat(document.getElementById("overtimeHours").value) || 0;
+            const records = JSON.parse(localStorage.getItem("bm_attendance"));
+
+            const newRecord = {
+                staffId: currentUser.id,
+                staffName: currentUser.name,
+                timestamp: new Date().toLocaleString("bn-BD"),
+                dateStr: new Date().toLocaleDateString(),
+                photo: capturedPhotoData,
+                location: capturedLocation,
+                overtime: overtime
+            };
+
+            records.push(newRecord);
+            localStorage.setItem("bm_attendance", JSON.stringify(records));
+            alert("আপনার হাজিরা সফলভাবে জমা হয়েছে!");
+            loadStaffHistory();
+        }
+
+        // Data Population Functions
+        function loadStaffHistory() {
+            const records = JSON.parse(localStorage.getItem("bm_attendance"));
+            const myRecords = records.filter(r => r.staffId === currentUser.id);
+            const table = document.getElementById("staffHistoryTable");
+
+            if (myRecords.length === 0) {
+                table.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">কোনো হিস্ট্রি পাওয়া যায়নি</td></tr>`;
+                return;
+            }
+
+            table.innerHTML = myRecords.map(r => `
+                <tr class="border-b">
+                    <td class="p-2">${r.dateStr}</td>
+                    <td class="p-2">${r.timestamp.split(',')[1] || r.timestamp}</td>
+                    <td class="p-2">${r.overtime} ঘণ্টা</td>
+                    <td class="p-2">${r.location ? `<a href="https://maps.google.com/?q=${r.location.lat},${r.location.lng}" target="_blank" class="text-blue-600 underline text-xs">ম্যাপ দেখুন</a>` : 'N/A'}</td>
+                </tr>
+            `).join('');
+        }
+
+        function loadAdminView() {
+            const users = JSON.parse(localStorage.getItem("bm_users"));
+            const records = JSON.parse(localStorage.getItem("bm_attendance"));
+            const todayStr = new Date().toLocaleDateString();
+
+            const staffOnly = users.filter(u => u.type === 'staff');
+            const todayRecords = records.filter(r => r.dateStr === todayStr);
+            const totalOT = todayRecords.reduce((sum, r) => sum + r.overtime, 0);
+
+            document.getElementById("adminTotalStaff").innerText = staffOnly.length;
+            document.getElementById("adminTodayAttendance").innerText = todayRecords.length;
+            document.getElementById("adminTodayOvertime").innerText = totalOT;
+
+            const table = document.getElementById("adminAttendanceTable");
+            if (records.length === 0) {
+                table.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">কোনো হাজিরা ডাটা নেই</td></tr>`;
+                return;
+            }
+
+            table.innerHTML = records.map(r => `
+                <tr class="hover:bg-slate-50">
+                    <td class="p-3 font-semibold">${r.staffName} <span class="text-xs text-slate-400">(${r.staffId})</span></td>
+                    <td class="p-3">${r.timestamp}</td>
+                    <td class="p-3"><img src="${r.photo}" class="w-10 h-10 object-cover rounded border"></td>
+                    <td class="p-3 font-medium text-blue-600">${r.overtime} ঘণ্টা</td>
+                    <td class="p-3">${r.location ? `<a href="
