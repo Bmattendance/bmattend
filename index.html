@@ -12,14 +12,14 @@
 <body class="bg-slate-100 min-h-screen text-slate-800">
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby7Gq71R0xc2NnlisID6VNAM2FoCa8BRqBrkpnzcaW4WsBMO8rDM61jGATilwsS15cDGg/exec";
+        // আপনার নতুন Google Apps Script Web App URL
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyAs9zrzE8BvwbRNowUU741GBegCY9bK8mZNE_gSypKpErW58D3eOrT7YZ3htpY5T5zgQ/exec";
     </script>
 
     <!-- Navigation -->
     <nav class="bg-red-700 text-white shadow-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3 space-x-reverse">
-                <!-- User Provided Logo -->
                 <img src="bg_logo-removebg-preview (1).png" alt="Bachchu Motors Logo" class="w-10 h-10 rounded-full bg-white object-cover border-2 border-white shadow">
                 <div>
                     <h1 class="text-xl font-bold tracking-wide">বাচ্চু মটরস</h1>
@@ -264,7 +264,6 @@
 
         function logout() { location.reload(); }
 
-        // Camera functions
         function startCamera() {
             navigator.mediaDevices.getUserMedia({ video: true })
                 .then(stream => {
@@ -289,7 +288,6 @@
             video.classList.add("hidden");
         }
 
-        // Staff Tabs
         function switchStaffTab(tab) {
             if (tab === 'attendanceTab') {
                 document.getElementById("staffAttendanceSection").classList.remove("hidden");
@@ -337,7 +335,6 @@
             btn.disabled = false;
         }
 
-        // Attendance Action (In, Out, Lunch)
         async function recordAttendanceAction(type) {
             const todayStr = new Date().toLocaleDateString();
             const nowTime = new Date().toLocaleTimeString();
@@ -350,7 +347,6 @@
                 if (todayRecord) return alert("আজকের ইন-টাইম আগেই দেওয়া হয়েছে!");
                 if (!capturedPhotoData) return alert("ইন-টাইমের জন্য ছবি তুলুন!");
 
-                // Check Late (Regular 9:30 AM)
                 let now = new Date();
                 let isLate = (now.getHours() > 9 || (now.getHours() === 9 && now.getMinutes() > 30));
                 let status = isLate ? "Late" : "Present";
@@ -376,13 +372,11 @@
                     if (todayRecord.outTime) return alert("আউট-টাইম আগেই দেওয়া হয়েছে!");
                     if (!capturedPhotoData) return alert("আউট-টাইমের জন্য ছবি তুলুন!");
 
-                    // Calculate Duty Hours
                     let inT = new Date(todayStr + " " + todayRecord.inTime);
                     let outT = new Date();
                     let diffMs = outT - inT;
                     let totalHours = (diffMs / (1000 * 60 * 60)).toFixed(2);
                     
-                    // Regular Duty: 9:30 AM to 9:30 PM = 12 Hours (Fri: 9:30 to 12:30 = 3 Hours)
                     let isFriday = new Date().getDay() === 5;
                     let regHours = isFriday ? 3 : 12;
                     let diffHours = (totalHours - regHours).toFixed(2);
