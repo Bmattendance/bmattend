@@ -7,12 +7,30 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Hind Siliguri', sans-serif; }</style>
+    <style>
+        body { 
+            font-family: 'Hind Siliguri', sans-serif; 
+            background-color: #f8fafc;
+            position: relative;
+        }
+        /* পেজের ব্যাকগ্রাউন্ড জলছাপ (Watermark) */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('bacchu motors logo.jpeg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 450px;
+            opacity: 0.04; /* হালকা জলছাপের জন্য অপাসিটি কম রাখা হয়েছে */
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
 </head>
-<body class="bg-slate-100 min-h-screen text-slate-800">
+<body class="min-h-screen text-slate-800">
 
     <script>
-        // আপনার নতুন Google Apps Script Web App URL
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyAs9zrzE8BvwbRNowUU741GBegCY9bK8mZNE_gSypKpErW58D3eOrT7YZ3htpY5T5zgQ/exec";
     </script>
 
@@ -20,7 +38,7 @@
     <nav class="bg-red-700 text-white shadow-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3 space-x-reverse">
-                <img src="bg_logo-removebg-preview (1).png" alt="Bachchu Motors Logo" class="w-10 h-10 rounded-full bg-white object-cover border-2 border-white shadow">
+                <img src="bacchu motors logo.jpeg" alt="Bachchu Motors Logo" class="w-10 h-10 rounded-full bg-white object-cover border-2 border-white shadow">
                 <div>
                     <h1 class="text-xl font-bold tracking-wide">বাচ্চু মটরস</h1>
                     <p class="text-xs text-red-100">ডিজিটাল হাজিরা ও স্টাফ ম্যানেজমেন্ট</p>
@@ -35,10 +53,10 @@
         </div>
     </nav>
 
-    <div class="max-w-7xl mx-auto p-4 md:p-6">
+    <div class="max-w-7xl mx-auto p-4 md:p-6 relative z-10">
         
         <!-- LOGIN SECTION -->
-        <div id="loginSection" class="max-w-md mx-auto my-12 bg-white rounded-xl shadow-lg border p-6 md:p-8">
+        <div id="loginSection" class="max-w-md mx-auto my-12 bg-white rounded-xl shadow-lg border p-6 md:p-8 backdrop-blur bg-opacity-95">
             <div class="text-center mb-6">
                 <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto text-2xl mb-3 shadow">
                     <i class="fa-solid fa-user-lock"></i>
@@ -61,16 +79,19 @@
             </form>
         </div>
 
+        <!-- TOP CENTER PROFILE CARD -->
+        <div id="topProfileCard" class="hidden max-w-xl mx-auto mb-6 bg-white rounded-xl shadow-sm border p-4 text-center backdrop-blur bg-opacity-95">
+            <img id="headerUserPhoto" src="https://via.placeholder.com/80" class="w-20 h-20 rounded-full mx-auto object-cover border-2 border-red-600 shadow mb-2">
+            <h2 id="headerUserName" class="text-xl font-bold text-slate-800"></h2>
+            <p class="text-sm text-slate-500">আইডি: <span id="headerUserId" class="font-semibold text-red-600"></span> | পদবী: <span id="headerUserRole" class="font-semibold text-slate-700"></span></p>
+        </div>
+
         <!-- STAFF PANEL -->
         <div id="staffPanel" class="hidden space-y-6">
-            <div class="bg-white rounded-xl shadow-sm border p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h2 class="text-2xl font-bold text-slate-800">স্বাগতম, <span id="staffNameDisplay" class="text-red-600"></span></h2>
-                    <p class="text-sm text-slate-500">আইডি: <span id="staffIdDisplay" class="font-semibold"></span> | পদবী: <span id="staffRoleDisplay" class="font-semibold"></span></p>
-                </div>
+            <div class="flex justify-end max-w-xl mx-auto">
                 <div class="flex gap-2">
-                    <button onclick="switchStaffTab('attendanceTab')" class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold" id="btnAttTab">হাজিরা প্যানেল</button>
-                    <button onclick="switchStaffTab('profileTab')" class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold" id="btnProfTab">আমার প্রফাইল</button>
+                    <button onclick="switchTab('staff', 'attendanceTab')" class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow" id="btnAttTab">হাজিরা প্যানেল</button>
+                    <button onclick="switchTab('staff', 'profileTab')" class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold" id="btnProfTab">আমার প্রফাইল</button>
                 </div>
             </div>
 
@@ -78,7 +99,6 @@
             <div id="staffAttendanceSection" class="grid md:grid-cols-2 gap-6">
                 <div class="bg-white rounded-xl border p-6 space-y-4 shadow-sm">
                     <h3 class="text-lg font-bold border-b pb-2 text-slate-800"><i class="fa-solid fa-camera text-red-600 mr-2"></i>হাজিরা ও মুভমেন্ট অপারেশন</h3>
-                    
                     <div class="bg-slate-900 rounded-lg overflow-hidden h-44 flex items-center justify-center relative">
                         <video id="webcam" autoplay playsinline class="w-full h-full object-cover hidden"></video>
                         <img id="photoPreview" class="w-full h-full object-cover hidden">
@@ -88,7 +108,6 @@
                         <button onclick="startCamera()" class="text-xs bg-slate-700 text-white px-3 py-1.5 rounded">ক্যামেরা অন</button>
                         <button onclick="capturePhoto()" class="text-xs bg-red-600 text-white px-3 py-1.5 rounded">ছবি তুলুন</button>
                     </div>
-
                     <div class="grid grid-cols-2 gap-2 pt-2">
                         <button onclick="recordAttendanceAction('in')" class="bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded text-sm font-bold">ইন-টাইম (In)</button>
                         <button onclick="recordAttendanceAction('out')" class="bg-rose-600 hover:bg-rose-700 text-white py-2 rounded text-sm font-bold">আউট-টাইম (Out)</button>
@@ -107,10 +126,13 @@
 
             <!-- Profile Tab -->
             <div id="staffProfileSection" class="hidden bg-white rounded-xl border p-6 max-w-xl mx-auto shadow-sm">
-                <h3 class="text-xl font-bold border-b pb-3 mb-4 text-slate-800">স্টাফ প্রফাইল আপডেট</h3>
-                <form onsubmit="updateStaffProfile(event)" class="space-y-4">
+                <h3 class="text-xl font-bold border-b pb-3 mb-4 text-slate-800">প্রফাইল ও তথ্য আপডেট</h3>
+                <form onsubmit="updateProfile(event)" class="space-y-4">
                     <div class="text-center mb-4">
-                        <img id="profileDisplayPic" src="https://via.placeholder.com/100" class="w-24 h-24 rounded-full mx-auto object-cover border-2 border-red-500 shadow">
+                        <label class="inline-block bg-slate-700 hover:bg-slate-800 text-white text-xs px-3 py-1.5 rounded cursor-pointer shadow">
+                            <i class="fa-solid fa-upload mr-1"></i> ছবি আপলোড করুন
+                            <input type="file" id="profileImageInput" accept="image/*" class="hidden" onchange="previewProfileImage(event)">
+                        </label>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold mb-1">ফোন নাম্বার</label>
@@ -135,79 +157,153 @@
             </div>
         </div>
 
-        <!-- ADMIN PANEL (VIEW ONLY) -->
+        <!-- ADMIN PANEL -->
         <div id="adminPanel" class="hidden space-y-6">
-            <div class="bg-white rounded-xl border p-6 shadow-sm flex justify-between items-center">
-                <div>
-                    <h2 class="text-2xl font-bold text-slate-800">অ্যাডমিন ড্যাশবোর্ড <span class="text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded ml-2">View-Only</span></h2>
-                    <p class="text-sm text-slate-500">সকল স্টাফের দৈনিক হাজিরা ও উপস্থিতি মনিটরিং</p>
+            <div class="flex justify-end max-w-xl mx-auto">
+                <div class="flex gap-2">
+                    <button onclick="switchTab('admin', 'attendanceTab')" class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow" id="adminBtnAttTab">হাজিরা মনিটর</button>
+                    <button onclick="switchTab('admin', 'profileTab')" class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold" id="adminBtnProfTab">আমার প্রফাইল</button>
                 </div>
             </div>
-            <div class="bg-white rounded-xl border p-6 shadow-sm">
-                <h3 class="text-lg font-bold mb-4 text-slate-800">সকল স্টাফের হাজিরার রেকর্ড</h3>
+
+            <div id="adminAttendanceSection" class="bg-white rounded-xl border p-6 shadow-sm">
+                <h3 class="text-lg font-bold mb-4 text-slate-800">সকল স্টাফের হাজিরার রেকর্ড (অ্যাডমিন ভিউ)</h3>
                 <div class="overflow-x-auto" id="adminAttendanceTableContainer">
                     <p class="text-xs text-slate-400">ডাটা লোড হচ্ছে...</p>
                 </div>
             </div>
+
+            <!-- Admin Profile Tab -->
+            <div id="adminProfileSection" class="hidden bg-white rounded-xl border p-6 max-w-xl mx-auto shadow-sm">
+                <h3 class="text-xl font-bold border-b pb-3 mb-4 text-slate-800">অ্যাডমিন প্রফাইল আপডেট</h3>
+                <form onsubmit="updateProfile(event)" class="space-y-4">
+                    <div class="text-center mb-4">
+                        <label class="inline-block bg-slate-700 hover:bg-slate-800 text-white text-xs px-3 py-1.5 rounded cursor-pointer shadow">
+                            <i class="fa-solid fa-upload mr-1"></i> ছবি আপলোড করুন
+                            <input type="file" id="adminProfileImageInput" accept="image/*" class="hidden" onchange="previewProfileImage(event)">
+                        </label>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">ফোন নাম্বার</label>
+                        <input type="text" id="adminProfPhone" class="w-full border px-3 py-2 rounded text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">ঠিকানা</label>
+                        <input type="text" id="adminProfAddress" class="w-full border px-3 py-2 rounded text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">ইমারজেন্সি ফোন নাম্বার</label>
+                        <input type="text" id="adminProfEmergency" class="w-full border px-3 py-2 rounded text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">পাসওয়ার্ড পরিবর্তন করুন</label>
+                        <input type="password" id="adminProfNewPass" placeholder="নতুন পাসওয়ার্ড দিন" class="w-full border px-3 py-2 rounded text-sm">
+                    </div>
+                    <button type="submit" id="adminProfUpdateBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-lg text-sm">
+                        প্রফাইল আপডেট করুন
+                    </button>
+                </form>
+            </div>
         </div>
 
-        <!-- SUPER ADMIN PANEL (MASTER CONTROL) -->
+        <!-- SUPER ADMIN PANEL -->
         <div id="superAdminPanel" class="hidden space-y-6">
-            <div class="bg-slate-900 text-white rounded-xl shadow-lg p-6 flex justify-between items-center">
-                <div>
-                    <h2 class="text-2xl font-bold">সুপার অ্যাডমিন ড্যাশবোর্ড (মালিক)</h2>
-                    <p class="text-xs text-slate-400">সম্পূর্ণ সিস্টেম কন্ট্রোল ও এক্সেল এক্সপোর্ট</p>
+            <div class="flex justify-end">
+                <div class="flex gap-2">
+                    <button onclick="switchTab('superadmin', 'controlTab')" class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow" id="ownerBtnCtrlTab">ম্যানেজমেন্ট প্যানেল</button>
+                    <button onclick="switchTab('superadmin', 'profileTab')" class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold" id="ownerBtnProfTab">আমার প্রফাইল</button>
                 </div>
-                <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-4 py-2.5 rounded-lg font-bold shadow">
-                    <i class="fa-solid fa-file-excel mr-1"></i> এক্সেল ডাউনলোড (CSV)
-                </button>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="bg-white rounded-xl border p-6 shadow-sm">
-                    <h3 class="text-lg font-bold border-b pb-3 mb-4 text-slate-800">নতুন স্টাফ অ্যাকাউন্ট</h3>
-                    <form onsubmit="createNewStaff(event)" class="space-y-3">
-                        <div>
-                            <label class="text-xs font-semibold">স্টাফ আইডি</label>
-                            <input type="text" id="newStaffId" required placeholder="BM-103" class="w-full border px-3 py-1.5 rounded text-sm">
-                        </div>
-                        <div>
-                            <label class="text-xs font-semibold">নাম</label>
-                            <input type="text" id="newStaffName" required placeholder="আব্দুর রহিম" class="w-full border px-3 py-1.5 rounded text-sm">
-                        </div>
-                        <div>
-                            <label class="text-xs font-semibold">পদবী</label>
-                            <input type="text" id="newStaffRole" required placeholder="মেকানিক" class="w-full border px-3 py-1.5 rounded text-sm">
-                        </div>
-                        <div>
-                            <label class="text-xs font-semibold">পাসওয়ার্ড</label>
-                            <input type="password" id="newStaffPass" required placeholder="••••••" class="w-full border px-3 py-1.5 rounded text-sm">
-                        </div>
-                        <button type="submit" id="addStaffBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded text-sm">
-                            অ্যাকাউন্ট তৈরি করুন
-                        </button>
-                    </form>
+            <div id="superAdminControlSection" class="space-y-6">
+                <div class="bg-slate-900 text-white rounded-xl shadow-lg p-6 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold">সুপার অ্যাডমিন ড্যাশবোর্ড (মালিক)</h2>
+                        <p class="text-xs text-slate-400">সম্পূর্ণ সিস্টেম কন্ট্রোল ও এক্সেল এক্সপোর্ট</p>
+                    </div>
+                    <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-4 py-2.5 rounded-lg font-bold shadow">
+                        <i class="fa-solid fa-file-excel mr-1"></i> এক্সেল ডাউনলোড (CSV)
+                    </button>
                 </div>
 
-                <div class="md:col-span-2 bg-white rounded-xl border p-6 shadow-sm">
-                    <h3 class="text-lg font-bold border-b pb-3 mb-4 text-slate-800">স্টাফ তালিকা ও পাসওয়ার্ড রিসেট</h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left">
-                            <thead class="bg-slate-50 text-slate-600">
-                                <tr>
-                                    <th class="p-2">আইডি</th>
-                                    <th class="p-2">নাম</th>
-                                    <th class="p-2">পদবী</th>
-                                    <th class="p-2">পাসওয়ার্ড পরিবর্তন</th>
-                                    <th class="p-2 text-right">অ্যাকশন</th>
-                                </tr>
-                            </thead>
-                            <tbody id="superAdminStaffList" class="divide-y">
-                                <tr><td colspan="5" class="p-4 text-center text-slate-400">লোড হচ্ছে...</td></tr>
-                            </tbody>
-                        </table>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-xl border p-6 shadow-sm">
+                        <h3 class="text-lg font-bold border-b pb-3 mb-4 text-slate-800">নতুন স্টাফ অ্যাকাউন্ট</h3>
+                        <form onsubmit="createNewStaff(event)" class="space-y-3">
+                            <div>
+                                <label class="text-xs font-semibold">স্টাফ আইডি</label>
+                                <input type="text" id="newStaffId" required placeholder="BM-103" class="w-full border px-3 py-1.5 rounded text-sm">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold">নাম</label>
+                                <input type="text" id="newStaffName" required placeholder="আব্দুর রহিম" class="w-full border px-3 py-1.5 rounded text-sm">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold">পদবী</label>
+                                <input type="text" id="newStaffRole" required placeholder="মেকানিক" class="w-full border px-3 py-1.5 rounded text-sm">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold">পাসওয়ার্ড</label>
+                                <input type="password" id="newStaffPass" required placeholder="••••••" class="w-full border px-3 py-1.5 rounded text-sm">
+                            </div>
+                            <button type="submit" id="addStaffBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded text-sm">
+                                অ্যাকাউন্ট তৈরি করুন
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="md:col-span-2 bg-white rounded-xl border p-6 shadow-sm">
+                        <h3 class="text-lg font-bold border-b pb-3 mb-4 text-slate-800">স্টাফ তালিকা ও পাসওয়ার্ড রিসেট</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left">
+                                <thead class="bg-slate-50 text-slate-600">
+                                    <tr>
+                                        <th class="p-2">আইডি</th>
+                                        <th class="p-2">নাম</th>
+                                        <th class="p-2">পদবী</th>
+                                        <th class="p-2">পাসওয়ার্ড পরিবর্তন</th>
+                                        <th class="p-2 text-right">অ্যাকশন</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="superAdminStaffList" class="divide-y">
+                                    <tr><td colspan="5" class="p-4 text-center text-slate-400">লোড হচ্ছে...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Super Admin Profile Tab -->
+            <div id="superAdminProfileSection" class="hidden bg-white rounded-xl border p-6 max-w-xl mx-auto shadow-sm">
+                <h3 class="text-xl font-bold border-b pb-3 mb-4 text-slate-800">সুপার অ্যাডমিন প্রফাইল আপডেট</h3>
+                <form onsubmit="updateProfile(event)" class="space-y-4">
+                    <div class="text-center mb-4">
+                        <label class="inline-block bg-slate-700 hover:bg-slate-800 text-white text-xs px-3 py-1.5 rounded cursor-pointer shadow">
+                            <i class="fa-solid fa-upload mr-1"></i> ছবি আপলোড করুন
+                            <input type="file" id="superAdminProfileImageInput" accept="image/*" class="hidden" onchange="previewProfileImage(event)">
+                        </label>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">ফোন নাম্বার</label>
+                        <input type="text" id="ownerProfPhone" class="w-full border px-3 py-2 rounded text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">ঠিকানা</label>
+                        <input type="text" id="ownerProfAddress" class="w-full border px-3 py-2 rounded text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">ইমারজেন্সি ফোন নাম্বার</label>
+                        <input type="text" id="ownerProfEmergency" class="w-full border px-3 py-2 rounded text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">পাসওয়ার্ড পরিবর্তন করুন</label>
+                        <input type="password" id="ownerProfNewPass" placeholder="নতুন পাসওয়ার্ড দিন" class="w-full border px-3 py-2 rounded text-sm">
+                    </div>
+                    <button type="submit" id="ownerProfUpdateBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-lg text-sm">
+                        প্রফাইল আপডেট করুন
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -218,6 +314,7 @@
         let globalUsers = [];
         let globalAttendance = [];
         let capturedPhotoData = null;
+        let uploadedProfilePhoto = null;
 
         async function handleLogin(e) {
             e.preventDefault();
@@ -239,11 +336,16 @@
                     document.getElementById("userBadge").classList.remove("hidden");
                     document.getElementById("roleTag").innerText = user.role;
 
+                    document.getElementById("topProfileCard").classList.remove("hidden");
+                    document.getElementById("headerUserName").innerText = user.name;
+                    document.getElementById("headerUserId").innerText = user.id;
+                    document.getElementById("headerUserRole").innerText = user.role;
+                    if(user.photo) {
+                        document.getElementById("headerUserPhoto").src = user.photo;
+                    }
+
                     if (user.type === "staff") {
                         document.getElementById("staffPanel").classList.remove("hidden");
-                        document.getElementById("staffNameDisplay").innerText = user.name;
-                        document.getElementById("staffIdDisplay").innerText = user.id;
-                        document.getElementById("staffRoleDisplay").innerText = user.role;
                         loadStaffData();
                     } else if (user.type === "admin") {
                         document.getElementById("adminPanel").classList.remove("hidden");
@@ -288,47 +390,112 @@
             video.classList.add("hidden");
         }
 
-        function switchStaffTab(tab) {
-            if (tab === 'attendanceTab') {
-                document.getElementById("staffAttendanceSection").classList.remove("hidden");
-                document.getElementById("staffProfileSection").classList.add("hidden");
-                document.getElementById("btnAttTab").className = "bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold";
-                document.getElementById("btnProfTab").className = "bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold";
-            } else {
-                document.getElementById("staffAttendanceSection").classList.add("hidden");
-                document.getElementById("staffProfileSection").classList.remove("hidden");
-                document.getElementById("btnProfTab").className = "bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold";
-                document.getElementById("btnAttTab").className = "bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold";
-                
-                document.getElementById("profPhone").value = currentUser.phone || "";
-                document.getElementById("profAddress").value = currentUser.address || "";
-                document.getElementById("profEmergency").value = currentUser.emergency || "";
-                if(currentUser.photo) document.getElementById("profileDisplayPic").src = currentUser.photo;
+        function previewProfileImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedProfilePhoto = e.target.result;
+                    document.getElementById("headerUserPhoto").src = uploadedProfilePhoto;
+                };
+                reader.readAsDataURL(file);
             }
         }
 
-        async function updateStaffProfile(e) {
+        function switchTab(role, tab) {
+            if (role === 'staff') {
+                if (tab === 'attendanceTab') {
+                    document.getElementById("staffAttendanceSection").classList.remove("hidden");
+                    document.getElementById("staffProfileSection").classList.add("hidden");
+                    document.getElementById("btnAttTab").className = "bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow";
+                    document.getElementById("btnProfTab").className = "bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold";
+                } else {
+                    document.getElementById("staffAttendanceSection").classList.add("hidden");
+                    document.getElementById("staffProfileSection").classList.remove("hidden");
+                    document.getElementById("btnProfTab").className = "bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow";
+                    document.getElementById("btnAttTab").className = "bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold";
+                    
+                    document.getElementById("profPhone").value = currentUser.phone || "";
+                    document.getElementById("profAddress").value = currentUser.address || "";
+                    document.getElementById("profEmergency").value = currentUser.emergency || "";
+                }
+            } else if (role === 'admin') {
+                if (tab === 'attendanceTab') {
+                    document.getElementById("adminAttendanceSection").classList.remove("hidden");
+                    document.getElementById("adminProfileSection").classList.add("hidden");
+                    document.getElementById("adminBtnAttTab").className = "bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow";
+                    document.getElementById("adminBtnProfTab").className = "bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold";
+                } else {
+                    document.getElementById("adminAttendanceSection").classList.add("hidden");
+                    document.getElementById("adminProfileSection").classList.remove("hidden");
+                    document.getElementById("adminBtnProfTab").className = "bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow";
+                    document.getElementById("adminBtnAttTab").className = "bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold";
+                    
+                    document.getElementById("adminProfPhone").value = currentUser.phone || "";
+                    document.getElementById("adminProfAddress").value = currentUser.address || "";
+                    document.getElementById("adminProfEmergency").value = currentUser.emergency || "";
+                }
+            } else if (role === 'superadmin') {
+                if (tab === 'controlTab') {
+                    document.getElementById("superAdminControlSection").classList.remove("hidden");
+                    document.getElementById("superAdminProfileSection").classList.add("hidden");
+                    document.getElementById("ownerBtnCtrlTab").className = "bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow";
+                    document.getElementById("ownerBtnProfTab").className = "bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold";
+                } else {
+                    document.getElementById("superAdminControlSection").classList.add("hidden");
+                    document.getElementById("superAdminProfileSection").classList.remove("hidden");
+                    document.getElementById("ownerBtnProfTab").className = "bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow";
+                    document.getElementById("ownerBtnCtrlTab").className = "bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold";
+                    
+                    document.getElementById("ownerProfPhone").value = currentUser.phone || "";
+                    document.getElementById("ownerProfAddress").value = currentUser.address || "";
+                    document.getElementById("ownerProfEmergency").value = currentUser.emergency || "";
+                }
+            }
+        }
+
+        async function updateProfile(e) {
             e.preventDefault();
-            const btn = document.getElementById("profUpdateBtn");
+            let btn, phone, address, emergency, newPass;
+
+            if (currentUser.type === 'staff') {
+                btn = document.getElementById("profUpdateBtn");
+                phone = document.getElementById("profPhone").value.trim();
+                address = document.getElementById("profAddress").value.trim();
+                emergency = document.getElementById("profEmergency").value.trim();
+                newPass = document.getElementById("profNewPass").value.trim();
+            } else if (currentUser.type === 'admin') {
+                btn = document.getElementById("adminProfUpdateBtn");
+                phone = document.getElementById("adminProfPhone").value.trim();
+                address = document.getElementById("adminProfAddress").value.trim();
+                emergency = document.getElementById("adminProfEmergency").value.trim();
+                newPass = document.getElementById("adminProfNewPass").value.trim();
+            } else {
+                btn = document.getElementById("ownerProfUpdateBtn");
+                phone = document.getElementById("ownerProfPhone").value.trim();
+                address = document.getElementById("ownerProfAddress").value.trim();
+                emergency = document.getElementById("ownerProfEmergency").value.trim();
+                newPass = document.getElementById("ownerProfNewPass").value.trim();
+            }
+
             btn.innerText = "আপডেট হচ্ছে...";
             btn.disabled = true;
 
-            const newPass = document.getElementById("profNewPass").value.trim();
             const payload = {
                 action: "updateUser",
                 id: currentUser.id,
-                phone: document.getElementById("profPhone").value.trim(),
-                address: document.getElementById("profAddress").value.trim(),
-                emergency: document.getElementById("profEmergency").value.trim(),
+                phone: phone,
+                address: address,
+                emergency: emergency,
                 pass: newPass ? newPass : currentUser.pass,
-                photo: capturedPhotoData || currentUser.photo || ""
+                photo: uploadedProfilePhoto || currentUser.photo || ""
             };
 
             await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
             alert("প্রফাইল সফলভাবে আপডেট হয়েছে!");
-            currentUser.phone = payload.phone;
-            currentUser.address = payload.address;
-            currentUser.emergency = payload.emergency;
+            currentUser.phone = phone;
+            currentUser.address = address;
+            currentUser.emergency = emergency;
             currentUser.pass = payload.pass;
             if(payload.photo) currentUser.photo = payload.photo;
             btn.innerText = "প্রফাইল আপডেট করুন";
