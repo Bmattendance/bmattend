@@ -13,7 +13,6 @@
             background-color: #f8fafc;
             position: relative;
         }
-        /* পেজের ব্যাকগ্রাউন্ড জলছাপ (Watermark) */
         body::after {
             content: "";
             position: fixed;
@@ -22,7 +21,7 @@
             background-repeat: no-repeat;
             background-position: center;
             background-size: 450px;
-            opacity: 0.04; /* হালকা জলছাপের জন্য অপাসিটি কম রাখা হয়েছে */
+            opacity: 0.04;
             z-index: -1;
             pointer-events: none;
         }
@@ -41,7 +40,7 @@
                 <img src="bacchu motors logo.jpeg" alt="Bachchu Motors Logo" class="w-10 h-10 rounded-full bg-white object-cover border-2 border-white shadow">
                 <div>
                     <h1 class="text-xl font-bold tracking-wide">বাচ্চু মটরস</h1>
-                    <p class="text-xs text-red-100">ডিজিটাল হাজিরা ও স্টাফ ম্যানেজমেন্ট</p>
+                    <p class="text-xs text-red-100">টু হুইলার বিজনেস, মাদারীপুর</p>
                 </div>
             </div>
             <div id="userBadge" class="hidden flex items-center space-x-3 space-x-reverse">
@@ -81,14 +80,15 @@
 
         <!-- TOP CENTER PROFILE CARD -->
         <div id="topProfileCard" class="hidden max-w-xl mx-auto mb-6 bg-white rounded-xl shadow-sm border p-4 text-center backdrop-blur bg-opacity-95">
-            <img id="headerUserPhoto" src="https://via.placeholder.com/80" class="w-20 h-20 rounded-full mx-auto object-cover border-2 border-red-600 shadow mb-2">
+            <img id="headerUserPhoto" src="bacchu motors logo.jpeg" class="w-20 h-20 rounded-full mx-auto object-cover border-2 border-red-600 shadow mb-2">
             <h2 id="headerUserName" class="text-xl font-bold text-slate-800"></h2>
             <p class="text-sm text-slate-500">আইডি: <span id="headerUserId" class="font-semibold text-red-600"></span> | পদবী: <span id="headerUserRole" class="font-semibold text-slate-700"></span></p>
+            <p id="headerUserOrg" class="text-xs text-slate-400 mt-1"></p>
         </div>
 
         <!-- STAFF PANEL -->
         <div id="staffPanel" class="hidden space-y-6">
-            <div class="flex justify-end max-w-xl mx-auto">
+            <div class="flex justify-end max-w-4xl mx-auto">
                 <div class="flex gap-2">
                     <button onclick="switchTab('staff', 'attendanceTab')" class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow" id="btnAttTab">হাজিরা প্যানেল</button>
                     <button onclick="switchTab('staff', 'profileTab')" class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold" id="btnProfTab">আমার প্রফাইল</button>
@@ -96,30 +96,53 @@
             </div>
 
             <!-- Attendance Tab -->
-            <div id="staffAttendanceSection" class="grid md:grid-cols-2 gap-6">
-                <div class="bg-white rounded-xl border p-6 space-y-4 shadow-sm">
-                    <h3 class="text-lg font-bold border-b pb-2 text-slate-800"><i class="fa-solid fa-camera text-red-600 mr-2"></i>হাজিরা ও মুভমেন্ট অপারেশন</h3>
-                    <div class="bg-slate-900 rounded-lg overflow-hidden h-44 flex items-center justify-center relative">
-                        <video id="webcam" autoplay playsinline class="w-full h-full object-cover hidden"></video>
-                        <img id="photoPreview" class="w-full h-full object-cover hidden">
-                        <span id="camPlaceholder" class="text-slate-400 text-sm">ক্যামেরা বন্ধ আছে</span>
+            <div id="staffAttendanceSection" class="space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl border p-6 space-y-4 shadow-sm">
+                        <h3 class="text-lg font-bold border-b pb-2 text-slate-800"><i class="fa-solid fa-camera text-red-600 mr-2"></i>হাজিরা ও মুভমেন্ট অপারেশন</h3>
+                        <div class="bg-slate-900 rounded-lg overflow-hidden h-44 flex items-center justify-center relative">
+                            <video id="webcam" autoplay playsinline class="w-full h-full object-cover hidden"></video>
+                            <img id="photoPreview" class="w-full h-full object-cover hidden">
+                            <span id="camPlaceholder" class="text-slate-400 text-sm">ক্যামেরা বন্ধ আছে</span>
+                        </div>
+                        <div class="flex justify-center gap-2">
+                            <button onclick="startCamera()" class="text-xs bg-slate-700 text-white px-3 py-1.5 rounded">ক্যামেরা অন</button>
+                            <button onclick="capturePhoto()" class="text-xs bg-red-600 text-white px-3 py-1.5 rounded">ছবি তুলুন</button>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 pt-2">
+                            <button onclick="recordAttendanceAction('in')" class="bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded text-sm font-bold">ইন-টাইম (In)</button>
+                            <button onclick="recordAttendanceAction('out')" class="bg-rose-600 hover:bg-rose-700 text-white py-2 rounded text-sm font-bold">আউট-টাইম (Out)</button>
+                            <button onclick="recordAttendanceAction('lunchOut')" class="bg-amber-600 hover:bg-amber-700 text-white py-2 rounded text-sm">লাঞ্চ আউট</button>
+                            <button onclick="recordAttendanceAction('lunchIn')" class="bg-blue-600 hover:bg-blue-700 text-white py-2 rounded text-sm">লাঞ্চ ইন</button>
+                        </div>
                     </div>
-                    <div class="flex justify-center gap-2">
-                        <button onclick="startCamera()" class="text-xs bg-slate-700 text-white px-3 py-1.5 rounded">ক্যামেরা অন</button>
-                        <button onclick="capturePhoto()" class="text-xs bg-red-600 text-white px-3 py-1.5 rounded">ছবি তুলুন</button>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 pt-2">
-                        <button onclick="recordAttendanceAction('in')" class="bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded text-sm font-bold">ইন-টাইম (In)</button>
-                        <button onclick="recordAttendanceAction('out')" class="bg-rose-600 hover:bg-rose-700 text-white py-2 rounded text-sm font-bold">আউট-টাইম (Out)</button>
-                        <button onclick="recordAttendanceAction('lunchOut')" class="bg-amber-600 hover:bg-amber-700 text-white py-2 rounded text-sm">লাঞ্চ আউট</button>
-                        <button onclick="recordAttendanceAction('lunchIn')" class="bg-blue-600 hover:bg-blue-700 text-white py-2 rounded text-sm">লাঞ্চ ইন</button>
+
+                    <div class="bg-white rounded-xl border p-6 shadow-sm">
+                        <h3 class="text-lg font-bold border-b pb-2 mb-3 text-slate-800">সাম্প্রতিক হাজিরা হিস্ট্রি</h3>
+                        <div class="overflow-y-auto max-h-72" id="staffHistoryContainer">
+                            <p class="text-xs text-slate-400 text-center py-4">ডাটা লোড হচ্ছে...</p>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Monthly Full Attendance Sheet Calendar -->
                 <div class="bg-white rounded-xl border p-6 shadow-sm">
-                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-slate-800">পুরো মাসের হাজিরা হিস্ট্রি</h3>
-                    <div class="overflow-y-auto max-h-72" id="staffHistoryContainer">
-                        <p class="text-xs text-slate-400 text-center py-4">ডাটা লোড হচ্ছে...</p>
+                    <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-2 border-b pb-3">
+                        <h3 class="text-lg font-bold text-slate-800">পুরো মাসের হাজিরা ক্যালেন্ডার ও স্ট্যাটাস</h3>
+                        <div class="flex items-center gap-2">
+                            <label class="text-xs font-semibold">মাস নির্বাচন করুন:</label>
+                            <input type="month" id="staffMonthPicker" onchange="renderStaffMonthlyCalendar()" class="border px-3 py-1 rounded text-sm">
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-4 text-xs">
+                        <span class="bg-emerald-100 text-emerald-800 px-2 py-1 rounded font-semibold">🟢 প্রেজেন্ট (On Time)</span>
+                        <span class="bg-amber-100 text-amber-800 px-2 py-1 rounded font-semibold">🟡 লেট (Late)</span>
+                        <span class="bg-rose-100 text-rose-800 px-2 py-1 rounded font-semibold">🔴 অনুপস্থিত (Absent)</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <div id="staffMonthlyCalendarGrid" class="grid grid-cols-7 sm:grid-cols-10 md:grid-cols-15 lg:grid-cols-31 gap-2">
+                            <!-- Dynamic days will render here -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -157,25 +180,48 @@
             </div>
         </div>
 
-        <!-- ADMIN PANEL -->
+        <!-- ADMIN PANEL (MANAGING DIRECTOR - DAILY REPORT & MONITOR) -->
         <div id="adminPanel" class="hidden space-y-6">
-            <div class="flex justify-end max-w-xl mx-auto">
-                <div class="flex gap-2">
-                    <button onclick="switchTab('admin', 'attendanceTab')" class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow" id="adminBtnAttTab">হাজিরা মনিটর</button>
-                    <button onclick="switchTab('admin', 'profileTab')" class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold" id="adminBtnProfTab">আমার প্রফাইল</button>
+            <div class="flex justify-between items-center max-w-7xl mx-auto bg-white rounded-xl border p-4 shadow-sm">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800">দৈনিক হাজিরা ও লাইভ রিপোর্ট (ম্যানেজিং ডিরেক্টর)</h3>
+                    <p class="text-xs text-slate-500">আজকের দিনে উপস্থিত স্টাফ ও মুভমেন্ট মনিটরিং</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="date" id="adminReportDate" onchange="loadAdminView()" class="border px-3 py-1.5 rounded text-sm">
+                    <button onclick="switchTab('admin', 'attendanceTab')" class="bg-red-600 text-white px-3 py-1.5 rounded text-xs font-semibold shadow" id="adminBtnAttTab">হাজিরা রিপোর্ট</button>
+                    <button onclick="switchTab('admin', 'profileTab')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded text-xs font-semibold" id="adminBtnProfTab">আমার প্রফাইল</button>
                 </div>
             </div>
 
-            <div id="adminAttendanceSection" class="bg-white rounded-xl border p-6 shadow-sm">
-                <h3 class="text-lg font-bold mb-4 text-slate-800">সকল স্টাফের হাজিরার রেকর্ড (অ্যাডমিন ভিউ)</h3>
-                <div class="overflow-x-auto" id="adminAttendanceTableContainer">
-                    <p class="text-xs text-slate-400">ডাটা লোড হচ্ছে...</p>
+            <div id="adminAttendanceSection" class="space-y-6">
+                <!-- Daily Summary Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white p-4 rounded-xl border shadow-sm border-l-4 border-l-emerald-500">
+                        <p class="text-xs text-slate-500 font-bold">আজ মোট উপস্থিত (Present/Late)</p>
+                        <h4 id="statTotalPresent" class="text-2xl font-bold text-emerald-600 mt-1">০ জন</h4>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border shadow-sm border-l-4 border-l-amber-500">
+                        <p class="text-xs text-slate-500 font-bold">আজ লেট এন্ট্রি</p>
+                        <h4 id="statTotalLate" class="text-2xl font-bold text-amber-600 mt-1">০ জন</h4>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border shadow-sm border-l-4 border-l-rose-500">
+                        <p class="text-xs text-slate-500 font-bold">আজ অনুপস্থিত (Absent)</p>
+                        <h4 id="statTotalAbsent" class="text-2xl font-bold text-rose-600 mt-1">০ জন</h4>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl border p-6 shadow-sm">
+                    <h3 class="text-lg font-bold mb-4 text-slate-800">আজকের স্টাফ উপস্থিতি ও সময় বিবরণী</h3>
+                    <div class="overflow-x-auto" id="adminAttendanceTableContainer">
+                        <p class="text-xs text-slate-400">ডাটা লোড হচ্ছে...</p>
+                    </div>
                 </div>
             </div>
 
             <!-- Admin Profile Tab -->
             <div id="adminProfileSection" class="hidden bg-white rounded-xl border p-6 max-w-xl mx-auto shadow-sm">
-                <h3 class="text-xl font-bold border-b pb-3 mb-4 text-slate-800">অ্যাডমিন প্রফাইল আপডেট</h3>
+                <h3 class="text-xl font-bold border-b pb-3 mb-4 text-slate-800">ম্যানেজিং ডিরেক্টর প্রফাইল আপডেট</h3>
                 <form onsubmit="updateProfile(event)" class="space-y-4">
                     <div class="text-center mb-4">
                         <label class="inline-block bg-slate-700 hover:bg-slate-800 text-white text-xs px-3 py-1.5 rounded cursor-pointer shadow">
@@ -316,6 +362,9 @@
         let capturedPhotoData = null;
         let uploadedProfilePhoto = null;
 
+        // Set default date picker for admin report to today
+        document.getElementById("adminReportDate").valueAsDate = new Date();
+
         async function handleLogin(e) {
             e.preventDefault();
             const btn = document.getElementById("loginBtn");
@@ -337,15 +386,33 @@
                     document.getElementById("roleTag").innerText = user.role;
 
                     document.getElementById("topProfileCard").classList.remove("hidden");
-                    document.getElementById("headerUserName").innerText = user.name;
+                    
+                    // Specific overrides for Admin (Managing Director) and Super Admin
+                    if (user.type === "admin") {
+                        document.getElementById("headerUserName").innerText = "জিয়াউল হাসান";
+                        document.getElementById("headerUserRole").innerText = "ম্যানেজিং ডিরেক্টর";
+                        document.getElementById("headerUserOrg").innerText = "বাচ্চু গ্রুপ, মাদারীপুর (টু হুইলার বিজনেস)";
+                    } else if (user.type === "superadmin") {
+                        document.getElementById("headerUserName").innerText = "সুপার অ্যাডমিন";
+                        document.getElementById("headerUserRole").innerText = "ফিন্যান্স অ্যান্ড অডিট";
+                        document.getElementById("headerUserOrg").innerText = "বাচ্চু গ্রুপ, মাদারীপুর (টু হুইলার বিজনেস)";
+                    } else {
+                        document.getElementById("headerUserName").innerText = user.name;
+                        document.getElementById("headerUserRole").innerText = user.role;
+                        document.getElementById("headerUserOrg").innerText = "বাচ্চু মটরস";
+                    }
+                    
                     document.getElementById("headerUserId").innerText = user.id;
-                    document.getElementById("headerUserRole").innerText = user.role;
                     if(user.photo) {
                         document.getElementById("headerUserPhoto").src = user.photo;
                     }
 
                     if (user.type === "staff") {
                         document.getElementById("staffPanel").classList.remove("hidden");
+                        // Set current month in picker (YYYY-MM)
+                        let now = new Date();
+                        let monthStr = now.toISOString().slice(0, 7);
+                        document.getElementById("staffMonthPicker").value = monthStr;
                         loadStaffData();
                     } else if (user.type === "admin") {
                         document.getElementById("adminPanel").classList.remove("hidden");
@@ -423,13 +490,13 @@
                 if (tab === 'attendanceTab') {
                     document.getElementById("adminAttendanceSection").classList.remove("hidden");
                     document.getElementById("adminProfileSection").classList.add("hidden");
-                    document.getElementById("adminBtnAttTab").className = "bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow";
-                    document.getElementById("adminBtnProfTab").className = "bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold";
+                    document.getElementById("adminBtnAttTab").className = "bg-red-600 text-white px-3 py-1.5 rounded text-xs font-semibold shadow";
+                    document.getElementById("adminBtnProfTab").className = "bg-slate-200 text-slate-700 px-3 py-1.5 rounded text-xs font-semibold";
                 } else {
                     document.getElementById("adminAttendanceSection").classList.add("hidden");
                     document.getElementById("adminProfileSection").classList.remove("hidden");
-                    document.getElementById("adminBtnProfTab").className = "bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow";
-                    document.getElementById("adminBtnAttTab").className = "bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold";
+                    document.getElementById("adminBtnProfTab").className = "bg-red-600 text-white px-3 py-1.5 rounded text-xs font-semibold shadow";
+                    document.getElementById("adminBtnAttTab").className = "bg-slate-200 text-slate-700 px-3 py-1.5 rounded text-xs font-semibold";
                     
                     document.getElementById("adminProfPhone").value = currentUser.phone || "";
                     document.getElementById("adminProfAddress").value = currentUser.address || "";
@@ -575,33 +642,98 @@
 
         async function loadStaffData() {
             const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
-            const records = await res.json();
-            const myRecords = records.filter(r => String(r.staffId) === String(currentUser.id));
+            globalAttendance = await res.json();
+            const myRecords = globalAttendance.filter(r => String(r.staffId) === String(currentUser.id));
             
             document.getElementById("staffHistoryContainer").innerHTML = myRecords.length === 0 ? `<p class="text-xs text-slate-400 text-center py-4">কোনো হাজিরা রেকর্ড নেই</p>` : `
                 <table class="w-full text-xs text-left border">
                     <tr class="bg-slate-100"><th class="p-2">তারিখ</th><th class="p-2">ইন</th><th class="p-2">স্ট্যাটাস</th><th class="p-2">আউট</th><th class="p-2">মোট ডিউটি</th></tr>
-                    ${myRecords.map(r => `<tr><td class="p-2">${r.dateStr}</td><td class="p-2">${r.inTime}</td><td class="p-2"><span class="px-1.5 py-0.5 rounded text-[10px] ${r.inStatus==='Late'?'bg-amber-100 text-amber-800':'bg-emerald-100 text-emerald-800'}">${r.inStatus}</span></td><td class="p-2">${r.outTime||'-'}</td><td class="p-2">${r.totalDuty||'-'}</td></tr>`).join('')}
+                    ${myRecords.slice(-5).reverse().map(r => `<tr><td class="p-2">${r.dateStr}</td><td class="p-2">${r.inTime}</td><td class="p-2"><span class="px-1.5 py-0.5 rounded text-[10px] ${r.inStatus==='Late'?'bg-amber-100 text-amber-800':'bg-emerald-100 text-emerald-800'}">${r.inStatus}</span></td><td class="p-2">${r.outTime||'-'}</td><td class="p-2">${r.totalDuty||'-'}</td></tr>`).join('')}
                 </table>
             `;
+            renderStaffMonthlyCalendar();
+        }
+
+        function renderStaffMonthlyCalendar() {
+            const monthVal = document.getElementById("staffMonthPicker").value; // e.g., 2026-11
+            if (!monthVal) return;
+            const [year, month] = monthVal.split('-').map(Number);
+            const daysInMonth = new Date(year, month, 0).getDate();
+            
+            let html = '';
+            const myRecords = globalAttendance.filter(r => String(r.staffId) === String(currentUser.id));
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                let formattedDayStr = `${day}/${month}/${year}`; 
+                // Alternatively format matching toDateString or custom check
+                let matched = myRecords.find(r => {
+                    let d = new Date(r.dateStr);
+                    return d.getDate() === day && (d.getMonth() + 1) === month && d.getFullYear() === year;
+                });
+
+                let bgClass = "bg-rose-100 text-rose-800 border-rose-300"; // Absent default red
+                let statusText = "Absent";
+
+                if (matched) {
+                    if (matched.inStatus === 'Late') {
+                        bgClass = "bg-amber-100 text-amber-800 border-amber-300"; // Late yellow
+                        statusText = "Late";
+                    } else {
+                        bgClass = "bg-emerald-100 text-emerald-800 border-emerald-300"; // Present green
+                        statusText = "Present";
+                    }
+                }
+
+                html += `
+                    <div class="border rounded-lg p-2 text-center ${bgClass} flex flex-col justify-between items-center shadow-sm">
+                        <span class="text-xs font-bold">${day}</span>
+                        <span class="text-[10px] font-semibold mt-1">${statusText === 'Present' ? 'প্রেজেন্ট' : (statusText === 'Late' ? 'লেট' : 'অনুপস্থিত')}</span>
+                    </div>
+                `;
+            }
+            document.getElementById("staffMonthlyCalendarGrid").innerHTML = html;
         }
 
         async function loadAdminView() {
+            const selectedDateVal = document.getElementById("adminReportDate").value; // YYYY-MM-DD
             const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
             const records = await res.json();
-            document.getElementById("adminAttendanceTableContainer").innerHTML = records.length === 0 ? `<p class="text-xs text-slate-400">কোনো ডাটা নেই</p>` : `
+
+            // Format selected date to match localized date string if needed, or compare date objects
+            let targetDate = new Date(selectedDateVal);
+            let targetStr = targetDate.toLocaleDateString();
+
+            const todaysRecords = records.filter(r => {
+                let rDate = new Date(r.dateStr);
+                return rDate.toDateString() === targetDate.toDateString() || String(r.dateStr) === String(targetStr);
+            });
+
+            let presentCount = todaysRecords.filter(r => r.inStatus === 'Present').length;
+            let lateCount = todaysRecords.filter(r => r.inStatus === 'Late').length;
+            let totalPresent = presentCount + lateCount;
+
+            document.getElementById("statTotalPresent").innerText = `${totalPresent} জন`;
+            document.getElementById("statTotalLate").innerText = `${lateCount} জন`;
+            
+            // Fetch total active staff count
+            const uRes = await fetch(`${SCRIPT_URL}?action=getUsers`);
+            const allUsers = await uRes.json();
+            const staffList = allUsers.filter(u => u.type === 'staff');
+            let absentCount = Math.max(0, staffList.length - totalPresent);
+            document.getElementById("statTotalAbsent").innerText = `${absentCount} জন`;
+
+            document.getElementById("adminAttendanceTableContainer").innerHTML = todaysRecords.length === 0 ? `<p class="text-xs text-slate-400 text-center py-4">নির্বাচিত তারিখে কোনো হাজিরা রেকর্ড নেই</p>` : `
                 <table class="w-full text-xs text-left border">
-                    <tr class="bg-slate-100"><th class="p-2">আইডি</th><th class="p-2">নাম</th><th class="p-2">তারিখ</th><th class="p-2">ইন-টাইম</th><th class="p-2">স্ট্যাটাস</th><th class="p-2">আউট-টাইম</th><th class="p-2">মোট ডিউটি</th></tr>
-                    ${records.map(r => `<tr><td class="p-2">${r.staffId}</td><td class="p-2">${r.staffName}</td><td class="p-2">${r.dateStr}</td><td class="p-2">${r.inTime}</td><td class="p-2"><span class="px-1.5 py-0.5 rounded text-[10px] ${r.inStatus==='Late'?'bg-amber-100 text-amber-800':'bg-emerald-100 text-emerald-800'}">${r.inStatus}</span></td><td class="p-2">${r.outTime||'-'}</td><td class="p-2">${r.totalDuty||'-'}</td></tr>`).join('')}
+                    <tr class="bg-slate-100"><th class="p-2">আইডি</th><th class="p-2">নাম</th><th class="p-2">ইন-টাইম</th><th class="p-2">স্ট্যাটাস</th><th class="p-2">লাঞ্চ আউট</th><th class="p-2">লাঞ্চ ইন</th><th class="p-2">আউট-টাইম</th><th class="p-2">মোট ডিউটি</th></tr>
+                    ${todaysRecords.map(r => `<tr><td class="p-2 font-bold">${r.staffId}</td><td class="p-2">${r.staffName}</td><td class="p-2">${r.inTime}</td><td class="p-2"><span class="px-1.5 py-0.5 rounded text-[10px] ${r.inStatus==='Late'?'bg-amber-100 text-amber-800':'bg-emerald-100 text-emerald-800'}">${r.inStatus}</span></td><td class="p-2">${r.lunchOut||'-'}</td><td class="p-2">${r.lunchIn||'-'}</td><td class="p-2">${r.outTime||'-'}</td><td class="p-2">${r.totalDuty||'-'}</td></tr>`).join('')}
                 </table>
             `;
         }
 
         async function loadSuperAdminView() {
             const res = await fetch(`${SCRIPT_URL}?action=getUsers`);
-            const users = await res.json();
-            const staffList = users.filter(u => u.type === 'staff');
-            document.getElementById("superAdminStaffList").innerHTML = staffList.map(u => `
+            globalUsers = await res.json();
+            document.getElementById("superAdminStaffList").innerHTML = globalUsers.map(u => `
                 <tr class="hover:bg-slate-50">
                     <td class="p-2 font-bold">${u.id}</td>
                     <td class="p-2">${u.name}</td>
@@ -623,7 +755,8 @@
                 id: document.getElementById("newStaffId").value.trim(),
                 name: document.getElementById("newStaffName").value.trim(),
                 role: document.getElementById("newStaffRole").value.trim(),
-                pass: document.getElementById("newStaffPass").value.trim()
+                pass: document.getElementById("newStaffPass").value.trim(),
+                type: "staff"
             };
 
             const res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
