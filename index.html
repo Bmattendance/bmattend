@@ -95,7 +95,6 @@
                 </div>
             </div>
 
-            <!-- Attendance Tab -->
             <div id="staffAttendanceSection" class="space-y-6">
                 <div class="grid md:grid-cols-2 gap-6">
                     <div class="bg-white rounded-xl border p-6 space-y-4 shadow-sm">
@@ -125,7 +124,6 @@
                     </div>
                 </div>
 
-                <!-- Monthly Full Attendance Sheet Calendar -->
                 <div class="bg-white rounded-xl border p-6 shadow-sm">
                     <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-2 border-b pb-3">
                         <h3 class="text-lg font-bold text-slate-800">পুরো মাসের হাজিরা ক্যালেন্ডার ও স্ট্যাটাস</h3>
@@ -140,14 +138,11 @@
                         <span class="bg-rose-100 text-rose-800 px-2 py-1 rounded font-semibold">🔴 অনুপস্থিত (Absent)</span>
                     </div>
                     <div class="overflow-x-auto">
-                        <div id="staffMonthlyCalendarGrid" class="grid grid-cols-7 sm:grid-cols-10 md:grid-cols-15 lg:grid-cols-31 gap-2">
-                            <!-- Dynamic days will render here -->
-                        </div>
+                        <div id="staffMonthlyCalendarGrid" class="grid grid-cols-7 sm:grid-cols-10 md:grid-cols-15 lg:grid-cols-31 gap-2"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Profile Tab -->
             <div id="staffProfileSection" class="hidden bg-white rounded-xl border p-6 max-w-xl mx-auto shadow-sm">
                 <h3 class="text-xl font-bold border-b pb-3 mb-4 text-slate-800">প্রফাইল ও তথ্য আপডেট</h3>
                 <form onsubmit="updateProfile(event)" class="space-y-4">
@@ -156,6 +151,7 @@
                             <i class="fa-solid fa-upload mr-1"></i> ছবি আপলোড করুন
                             <input type="file" id="profileImageInput" accept="image/*" class="hidden" onchange="previewProfileImage(event)">
                         </label>
+                        <p id="imgUploadStatus" class="text-xs text-emerald-600 mt-1 font-semibold hidden">ছবি সিলেক্ট করা হয়েছে!</p>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold mb-1">ফোন নাম্বার</label>
@@ -171,7 +167,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold mb-1">পাসওয়ার্ড পরিবর্তন করুন</label>
-                        <input type="password" id="profNewPass" placeholder="নতুন পাসওয়ার্ড দিন (ফাঁকা রাখলে পুরোনো থাকবে)" class="w-full border px-3 py-2 rounded text-sm">
+                        <input type="password" id="profNewPass" placeholder="নতুন পাসওয়ার্ড দিন" class="w-full border px-3 py-2 rounded text-sm">
                     </div>
                     <button type="submit" id="profUpdateBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-lg text-sm">
                         প্রফাইল আপডেট করুন
@@ -180,7 +176,7 @@
             </div>
         </div>
 
-        <!-- ADMIN PANEL (MANAGING DIRECTOR - DAILY REPORT & MONITOR) -->
+        <!-- ADMIN PANEL (MANAGING DIRECTOR) -->
         <div id="adminPanel" class="hidden space-y-6">
             <div class="flex justify-between items-center max-w-7xl mx-auto bg-white rounded-xl border p-4 shadow-sm">
                 <div>
@@ -195,10 +191,9 @@
             </div>
 
             <div id="adminAttendanceSection" class="space-y-6">
-                <!-- Daily Summary Stats Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="bg-white p-4 rounded-xl border shadow-sm border-l-4 border-l-emerald-500">
-                        <p class="text-xs text-slate-500 font-bold">আজ মোট উপস্থিত (Present/Late)</p>
+                        <p class="text-xs text-slate-500 font-bold">আজ মোট উপস্থিত</p>
                         <h4 id="statTotalPresent" class="text-2xl font-bold text-emerald-600 mt-1">০ জন</h4>
                     </div>
                     <div class="bg-white p-4 rounded-xl border shadow-sm border-l-4 border-l-amber-500">
@@ -206,7 +201,7 @@
                         <h4 id="statTotalLate" class="text-2xl font-bold text-amber-600 mt-1">০ জন</h4>
                     </div>
                     <div class="bg-white p-4 rounded-xl border shadow-sm border-l-4 border-l-rose-500">
-                        <p class="text-xs text-slate-500 font-bold">আজ অনুপস্থিত (Absent)</p>
+                        <p class="text-xs text-slate-500 font-bold">আজ অনুপস্থিত</p>
                         <h4 id="statTotalAbsent" class="text-2xl font-bold text-rose-600 mt-1">০ জন</h4>
                     </div>
                 </div>
@@ -219,7 +214,6 @@
                 </div>
             </div>
 
-            <!-- Admin Profile Tab -->
             <div id="adminProfileSection" class="hidden bg-white rounded-xl border p-6 max-w-xl mx-auto shadow-sm">
                 <h3 class="text-xl font-bold border-b pb-3 mb-4 text-slate-800">ম্যানেজিং ডিরেক্টর প্রফাইল আপডেট</h3>
                 <form onsubmit="updateProfile(event)" class="space-y-4">
@@ -229,64 +223,59 @@
                             <input type="file" id="adminProfileImageInput" accept="image/*" class="hidden" onchange="previewProfileImage(event)">
                         </label>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold mb-1">ফোন নাম্বার</label>
-                        <input type="text" id="adminProfPhone" class="w-full border px-3 py-2 rounded text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold mb-1">ঠিকানা</label>
-                        <input type="text" id="adminProfAddress" class="w-full border px-3 py-2 rounded text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold mb-1">ইমারজেন্সি ফোন নাম্বার</label>
-                        <input type="text" id="adminProfEmergency" class="w-full border px-3 py-2 rounded text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold mb-1">পাসওয়ার্ড পরিবর্তন করুন</label>
-                        <input type="password" id="adminProfNewPass" placeholder="নতুন পাসওয়ার্ড দিন" class="w-full border px-3 py-2 rounded text-sm">
-                    </div>
-                    <button type="submit" id="adminProfUpdateBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-lg text-sm">
-                        প্রফাইল আপডেট করুন
-                    </button>
+                    <div><label class="block text-xs font-semibold mb-1">ফোন নাম্বার</label><input type="text" id="adminProfPhone" class="w-full border px-3 py-2 rounded text-sm"></div>
+                    <div><label class="block text-xs font-semibold mb-1">ঠিকানা</label><input type="text" id="adminProfAddress" class="w-full border px-3 py-2 rounded text-sm"></div>
+                    <div><label class="block text-xs font-semibold mb-1">ইমারজেন্সি ফোন নাম্বার</label><input type="text" id="adminProfEmergency" class="w-full border px-3 py-2 rounded text-sm"></div>
+                    <div><label class="block text-xs font-semibold mb-1">পাসওয়ার্ড পরিবর্তন করুন</label><input type="password" id="adminProfNewPass" placeholder="নতুন পাসওয়ার্ড দিন" class="w-full border px-3 py-2 rounded text-sm"></div>
+                    <button type="submit" id="adminProfUpdateBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-lg text-sm">প্রফাইল আপডেট করুন</button>
                 </form>
             </div>
         </div>
 
         <!-- SUPER ADMIN PANEL -->
         <div id="superAdminPanel" class="hidden space-y-6">
-            <div class="flex justify-end">
+            <div class="flex justify-between items-center bg-slate-900 text-white rounded-xl shadow-lg p-4">
+                <div>
+                    <h2 class="text-xl font-bold">সুপার অ্যাডমিন ড্যাশবোর্ড (ফিন্যান্স অ্যান্ড অডিট)</h2>
+                    <p class="text-xs text-slate-400">সম্পূর্ণ সিস্টেম কন্ট্রোল, অ্যাকাউন্ট ম্যানেজমেন্ট ও স্টাফ রিপোর্ট</p>
+                </div>
                 <div class="flex gap-2">
-                    <button onclick="switchTab('superadmin', 'controlTab')" class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow" id="ownerBtnCtrlTab">ম্যানেজমেন্ট প্যানেল</button>
-                    <button onclick="switchTab('superadmin', 'profileTab')" class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold" id="ownerBtnProfTab">আমার প্রফাইল</button>
+                    <button onclick="switchTab('superadmin', 'controlTab')" class="bg-red-600 text-white px-3 py-2 rounded-lg text-xs font-semibold shadow" id="ownerBtnCtrlTab">ম্যানেজমেন্ট</button>
+                    <button onclick="switchTab('superadmin', 'reportTab')" class="bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold" id="ownerBtnRepTab">স্টাফ রিপোর্ট</button>
+                    <button onclick="switchTab('superadmin', 'profileTab')" class="bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold" id="ownerBtnProfTab">আমার প্রফাইল</button>
                 </div>
             </div>
 
+            <!-- Management Section -->
             <div id="superAdminControlSection" class="space-y-6">
-                <div class="bg-slate-900 text-white rounded-xl shadow-lg p-6 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <div>
-                        <h2 class="text-2xl font-bold">সুপার অ্যাডমিন ড্যাশবোর্ড (ফিন্যান্স)</h2>
-                        <p class="text-xs text-slate-400">সম্পূর্ণ সিস্টেম কন্ট্রোল ও এক্সেল এক্সপোর্ট</p>
-                    </div>
-                    <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-4 py-2.5 rounded-lg font-bold shadow">
+                <div class="flex justify-end">
+                    <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-4 py-2 rounded-lg font-bold shadow">
                         <i class="fa-solid fa-file-excel mr-1"></i> এক্সেল ডাউনলোড (CSV)
                     </button>
                 </div>
 
                 <div class="grid md:grid-cols-3 gap-6">
                     <div class="bg-white rounded-xl border p-6 shadow-sm">
-                        <h3 class="text-lg font-bold border-b pb-3 mb-4 text-slate-800">নতুন স্টাফ অ্যাকাউন্ট</h3>
+                        <h3 class="text-lg font-bold border-b pb-3 mb-4 text-slate-800">নতুন অ্যাকাউন্ট তৈরি</h3>
                         <form onsubmit="createNewStaff(event)" class="space-y-3">
                             <div>
-                                <label class="text-xs font-semibold">স্টাফ আইডি</label>
-                                <input type="text" id="newStaffId" required placeholder="BM-103" class="w-full border px-3 py-1.5 rounded text-sm">
+                                <label class="text-xs font-semibold">অ্যাকাউন্টের ধরন</label>
+                                <select id="newAccountType" class="w-full border px-3 py-1.5 rounded text-sm bg-white">
+                                    <option value="staff">স্টাফ অ্যাকাউন্ট</option>
+                                    <option value="admin">অ্যাডমিন অ্যাকাউন্ট (ম্যানেজিং ডিরেক্টর)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold">ইউজার আইডি</label>
+                                <input type="text" id="newStaffId" required placeholder="BM-103 / admin2" class="w-full border px-3 py-1.5 rounded text-sm">
                             </div>
                             <div>
                                 <label class="text-xs font-semibold">নাম</label>
-                                <input type="text" id="newStaffName" required placeholder="আব্দুর রহিম" class="w-full border px-3 py-1.5 rounded text-sm">
+                                <input type="text" id="newStaffName" required placeholder="আব্দুর রহিম / নাম" class="w-full border px-3 py-1.5 rounded text-sm">
                             </div>
                             <div>
                                 <label class="text-xs font-semibold">পদবী</label>
-                                <input type="text" id="newStaffRole" required placeholder="মেকানিক" class="w-full border px-3 py-1.5 rounded text-sm">
+                                <input type="text" id="newStaffRole" required placeholder="মেকানিক / ম্যানেজার" class="w-full border px-3 py-1.5 rounded text-sm">
                             </div>
                             <div>
                                 <label class="text-xs font-semibold">পাসওয়ার্ড</label>
@@ -298,24 +287,48 @@
                         </form>
                     </div>
 
-                    <div class="md:col-span-2 bg-white rounded-xl border p-6 shadow-sm">
-                        <h3 class="text-lg font-bold border-b pb-3 mb-4 text-slate-800">স্টাফ তালিকা ও পাসওয়ার্ড রিসেট</h3>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left">
-                                <thead class="bg-slate-50 text-slate-600">
-                                    <tr>
-                                        <th class="p-2">আইডি</th>
-                                        <th class="p-2">নাম</th>
-                                        <th class="p-2">পদবী</th>
-                                        <th class="p-2">পাসওয়ার্ড পরিবর্তন</th>
-                                        <th class="p-2 text-right">অ্যাকশন</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="superAdminStaffList" class="divide-y">
-                                    <tr><td colspan="5" class="p-4 text-center text-slate-400">লোড হচ্ছে...</td></tr>
-                                </tbody>
-                            </table>
+                    <div class="md:col-span-2 space-y-6">
+                        <!-- Staff List Box -->
+                        <div class="bg-white rounded-xl border p-6 shadow-sm">
+                            <h3 class="text-lg font-bold border-b pb-3 mb-4 text-slate-800 text-emerald-700">স্টাফ তালিকা ও পাসওয়ার্ড রিসেট</h3>
+                            <div class="overflow-x-auto max-h-60">
+                                <table class="w-full text-sm text-left">
+                                    <thead class="bg-slate-50 text-slate-600 sticky top-0">
+                                        <tr><th class="p-2">আইডি</th><th class="p-2">নাম</th><th class="p-2">পদবী</th><th class="p-2">পাসওয়ার্ড</th><th class="p-2 text-right">অ্যাকশন</th></tr>
+                                    </thead>
+                                    <tbody id="superAdminStaffList" class="divide-y"><tr><td colspan="5" class="p-4 text-center text-slate-400">লোড হচ্ছে...</td></tr></tbody>
+                                </table>
+                            </div>
                         </div>
+
+                        <!-- Admin Panel List Box (Separate for Safety) -->
+                        <div class="bg-white rounded-xl border p-6 shadow-sm">
+                            <h3 class="text-lg font-bold border-b pb-3 mb-4 text-slate-800 text-amber-700">অ্যাডমিন প্যানেল তালিকা (ম্যানেজিং ডিরেক্টরগণ)</h3>
+                            <div class="overflow-x-auto max-h-48">
+                                <table class="w-full text-sm text-left">
+                                    <thead class="bg-slate-50 text-slate-600 sticky top-0">
+                                        <tr><th class="p-2">আইডি</th><th class="p-2">নাম</th><th class="p-2">পদবী</th><th class="p-2">পাসওয়ার্ড</th><th class="p-2 text-right">অ্যাকশন</th></tr>
+                                    </thead>
+                                    <tbody id="superAdminAdminList" class="divide-y"><tr><td colspan="5" class="p-4 text-center text-slate-400">লোড হচ্ছে...</td></tr></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Super Admin Individual & Daily Report Section -->
+            <div id="superAdminReportSection" class="hidden space-y-6">
+                <div class="bg-white rounded-xl border p-6 shadow-sm space-y-6">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-4 border-b pb-4">
+                        <h3 class="text-lg font-bold text-slate-800">স্টাফদের ব্যক্তিগত মাসিক হাজিরা ও ডিউটি রিপোর্ট</h3>
+                        <div class="flex items-center gap-2">
+                            <select id="reportStaffSelect" onchange="loadSuperAdminIndividualReport()" class="border px-3 py-1.5 rounded text-sm bg-white"></select>
+                            <input type="month" id="reportMonthPicker" onchange="loadSuperAdminIndividualReport()" class="border px-3 py-1.5 rounded text-sm">
+                        </div>
+                    </div>
+                    <div id="superAdminIndividualReportContainer" class="overflow-x-auto">
+                        <p class="text-xs text-slate-400 text-center py-4">স্টাফ নির্বাচন করুন...</p>
                     </div>
                 </div>
             </div>
@@ -330,25 +343,11 @@
                             <input type="file" id="superAdminProfileImageInput" accept="image/*" class="hidden" onchange="previewProfileImage(event)">
                         </label>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold mb-1">ফোন নাম্বার</label>
-                        <input type="text" id="ownerProfPhone" class="w-full border px-3 py-2 rounded text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold mb-1">ঠিকানা</label>
-                        <input type="text" id="ownerProfAddress" class="w-full border px-3 py-2 rounded text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold mb-1">ইমারজেন্সি ফোন নাম্বার</label>
-                        <input type="text" id="ownerProfEmergency" class="w-full border px-3 py-2 rounded text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold mb-1">পাসওয়ার্ড পরিবর্তন করুন</label>
-                        <input type="password" id="ownerProfNewPass" placeholder="নতুন পাসওয়ার্ড দিন" class="w-full border px-3 py-2 rounded text-sm">
-                    </div>
-                    <button type="submit" id="ownerProfUpdateBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-lg text-sm">
-                        প্রফাইল আপডেট করুন
-                    </button>
+                    <div><label class="block text-xs font-semibold mb-1">ফোন নাম্বার</label><input type="text" id="ownerProfPhone" class="w-full border px-3 py-2 rounded text-sm"></div>
+                    <div><label class="block text-xs font-semibold mb-1">ঠিকানা</label><input type="text" id="ownerProfAddress" class="w-full border px-3 py-2 rounded text-sm"></div>
+                    <div><label class="block text-xs font-semibold mb-1">ইমারজেন্সি ফোন নাম্বার</label><input type="text" id="ownerProfEmergency" class="w-full border px-3 py-2 rounded text-sm"></div>
+                    <div><label class="block text-xs font-semibold mb-1">পাসওয়ার্ড পরিবর্তন করুন</label><input type="password" id="ownerProfNewPass" placeholder="নতুন পাসওয়ার্ড দিন" class="w-full border px-3 py-2 rounded text-sm"></div>
+                    <button type="submit" id="ownerProfUpdateBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-lg text-sm">প্রফাইল আপডেট করুন</button>
                 </form>
             </div>
         </div>
@@ -362,7 +361,6 @@
         let capturedPhotoData = null;
         let uploadedProfilePhoto = null;
 
-        // Set default date picker for admin report to today
         document.getElementById("adminReportDate").valueAsDate = new Date();
 
         async function handleLogin(e) {
@@ -384,10 +382,8 @@
                     document.getElementById("loginSection").classList.add("hidden");
                     document.getElementById("userBadge").classList.remove("hidden");
                     document.getElementById("roleTag").innerText = user.role;
-
                     document.getElementById("topProfileCard").classList.remove("hidden");
                     
-                    // Specific overrides for Admin (Managing Director) and Super Admin
                     if (user.type === "admin") {
                         document.getElementById("headerUserName").innerText = "জিয়াউল হাসান";
                         document.getElementById("headerUserRole").innerText = "ম্যানেজিং ডিরেক্টর";
@@ -409,16 +405,15 @@
 
                     if (user.type === "staff") {
                         document.getElementById("staffPanel").classList.remove("hidden");
-                        // Set current month in picker (YYYY-MM)
                         let now = new Date();
-                        let monthStr = now.toISOString().slice(0, 7);
-                        document.getElementById("staffMonthPicker").value = monthStr;
+                        document.getElementById("staffMonthPicker").value = now.toISOString().slice(0, 7);
                         loadStaffData();
                     } else if (user.type === "admin") {
                         document.getElementById("adminPanel").classList.remove("hidden");
                         loadAdminView();
                     } else if (user.type === "superadmin") {
                         document.getElementById("superAdminPanel").classList.remove("hidden");
+                        document.getElementById("reportMonthPicker").value = new Date().toISOString().slice(0, 7);
                         loadSuperAdminView();
                     }
                 } else {
@@ -451,7 +446,7 @@
             const canvas = document.createElement("canvas");
             canvas.width = 300; canvas.height = 200;
             canvas.getContext("2d").drawImage(video, 0, 0, 300, 200);
-            capturedPhotoData = canvas.toDataURL("image/jpeg");
+            capturedPhotoData = canvas.toDataURL("image/jpeg", 0.6);
             preview.src = capturedPhotoData;
             preview.classList.remove("hidden");
             video.classList.add("hidden");
@@ -462,8 +457,21 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    uploadedProfilePhoto = e.target.result;
-                    document.getElementById("headerUserPhoto").src = uploadedProfilePhoto;
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        let max_size = 250, width = img.width, height = img.height;
+                        if (width > height) { if (width > max_size) { height *= max_size / width; width = max_size; } }
+                        else { if (height > max_size) { width *= max_size / height; height = max_size; } }
+                        canvas.width = width; canvas.height = height;
+                        ctx.drawImage(img, 0, 0, width, height);
+                        uploadedProfilePhoto = canvas.toDataURL('image/jpeg', 0.7);
+                        document.getElementById("headerUserPhoto").src = uploadedProfilePhoto;
+                        let statusElem = document.getElementById("imgUploadStatus");
+                        if(statusElem) statusElem.classList.remove("hidden");
+                    }
                 };
                 reader.readAsDataURL(file);
             }
@@ -481,7 +489,6 @@
                     document.getElementById("staffProfileSection").classList.remove("hidden");
                     document.getElementById("btnProfTab").className = "bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow";
                     document.getElementById("btnAttTab").className = "bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold";
-                    
                     document.getElementById("profPhone").value = currentUser.phone || "";
                     document.getElementById("profAddress").value = currentUser.address || "";
                     document.getElementById("profEmergency").value = currentUser.emergency || "";
@@ -497,23 +504,28 @@
                     document.getElementById("adminProfileSection").classList.remove("hidden");
                     document.getElementById("adminBtnProfTab").className = "bg-red-600 text-white px-3 py-1.5 rounded text-xs font-semibold shadow";
                     document.getElementById("adminBtnAttTab").className = "bg-slate-200 text-slate-700 px-3 py-1.5 rounded text-xs font-semibold";
-                    
                     document.getElementById("adminProfPhone").value = currentUser.phone || "";
                     document.getElementById("adminProfAddress").value = currentUser.address || "";
                     document.getElementById("adminProfEmergency").value = currentUser.emergency || "";
                 }
             } else if (role === 'superadmin') {
+                document.getElementById("superAdminControlSection").classList.add("hidden");
+                document.getElementById("superAdminReportSection").classList.add("hidden");
+                document.getElementById("superAdminProfileSection").classList.add("hidden");
+                document.getElementById("ownerBtnCtrlTab").className = "bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold";
+                document.getElementById("ownerBtnRepTab").className = "bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold";
+                document.getElementById("ownerBtnProfTab").className = "bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold";
+
                 if (tab === 'controlTab') {
                     document.getElementById("superAdminControlSection").classList.remove("hidden");
-                    document.getElementById("superAdminProfileSection").classList.add("hidden");
-                    document.getElementById("ownerBtnCtrlTab").className = "bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow";
-                    document.getElementById("ownerBtnProfTab").className = "bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold";
-                } else {
-                    document.getElementById("superAdminControlSection").classList.add("hidden");
+                    document.getElementById("ownerBtnCtrlTab").className = "bg-red-600 text-white px-3 py-2 rounded-lg text-xs font-semibold shadow";
+                } else if (tab === 'reportTab') {
+                    document.getElementById("superAdminReportSection").classList.remove("hidden");
+                    document.getElementById("ownerBtnRepTab").className = "bg-red-600 text-white px-3 py-2 rounded-lg text-xs font-semibold shadow";
+                    loadSuperAdminReportDropdown();
+                } else if (tab === 'profileTab') {
                     document.getElementById("superAdminProfileSection").classList.remove("hidden");
-                    document.getElementById("ownerBtnProfTab").className = "bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow";
-                    document.getElementById("ownerBtnCtrlTab").className = "bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold";
-                    
+                    document.getElementById("ownerBtnProfTab").className = "bg-red-600 text-white px-3 py-2 rounded-lg text-xs font-semibold shadow";
                     document.getElementById("ownerProfPhone").value = currentUser.phone || "";
                     document.getElementById("ownerProfAddress").value = currentUser.address || "";
                     document.getElementById("ownerProfEmergency").value = currentUser.emergency || "";
@@ -524,7 +536,6 @@
         async function updateProfile(e) {
             e.preventDefault();
             let btn, phone, address, emergency, newPass;
-
             if (currentUser.type === 'staff') {
                 btn = document.getElementById("profUpdateBtn");
                 phone = document.getElementById("profPhone").value.trim();
@@ -551,20 +562,17 @@
             const payload = {
                 action: "updateUser",
                 id: currentUser.id,
-                phone: phone,
-                address: address,
-                emergency: emergency,
+                phone: phone, address: address, emergency: emergency,
                 pass: newPass ? newPass : currentUser.pass,
                 photo: uploadedProfilePhoto || currentUser.photo || ""
             };
 
-            await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
-            alert("প্রফাইল সফলভাবে আপডেট হয়েছে!");
-            currentUser.phone = phone;
-            currentUser.address = address;
-            currentUser.emergency = emergency;
-            currentUser.pass = payload.pass;
-            if(payload.photo) currentUser.photo = payload.photo;
+            try {
+                await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+                alert("প্রফাইল সফলভাবে আপডেট হয়েছে!");
+                currentUser.phone = phone; currentUser.address = address; currentUser.emergency = emergency; currentUser.pass = payload.pass;
+                if(payload.photo) currentUser.photo = payload.photo;
+            } catch (err) { alert("ত্রুটি হয়েছে!"); }
             btn.innerText = "প্রফাইল আপডেট করুন";
             btn.disabled = false;
         }
@@ -574,25 +582,17 @@
             const nowTime = new Date().toLocaleTimeString();
             const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
             globalAttendance = await res.json();
-            
             let todayRecord = globalAttendance.find(r => String(r.staffId) === String(currentUser.id) && String(r.dateStr) === String(todayStr));
 
             if (type === 'in') {
                 if (todayRecord) return alert("আজকের ইন-টাইম আগেই দেওয়া হয়েছে!");
                 if (!capturedPhotoData) return alert("ইন-টাইমের জন্য ছবি তুলুন!");
-
                 let now = new Date();
                 let isLate = (now.getHours() > 9 || (now.getHours() === 9 && now.getMinutes() > 30));
                 let status = isLate ? "Late" : "Present";
-
                 const payload = {
-                    action: "addAttendance",
-                    staffId: currentUser.id,
-                    staffName: currentUser.name,
-                    dateStr: todayStr,
-                    inTime: nowTime,
-                    inPhoto: capturedPhotoData,
-                    inStatus: status,
+                    action: "addAttendance", staffId: currentUser.id, staffName: currentUser.name,
+                    dateStr: todayStr, inTime: nowTime, inPhoto: capturedPhotoData, inStatus: status,
                     lunchOut: "", lunchIn: "", outTime: "", outPhoto: "", totalDuty: "", diffDuty: "", location: "Online"
                 };
                 await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
@@ -601,39 +601,27 @@
                 document.getElementById("photoPreview").classList.add("hidden");
             } else {
                 if (!todayRecord) return alert("প্রথমে আজকের ইন-টাইম দিন!");
-                
                 if (type === 'out') {
                     if (todayRecord.outTime) return alert("আউট-টাইম আগেই দেওয়া হয়েছে!");
                     if (!capturedPhotoData) return alert("আউট-টাইমের জন্য ছবি তুলুন!");
-
                     let inT = new Date(todayStr + " " + todayRecord.inTime);
                     let outT = new Date();
                     let diffMs = outT - inT;
                     let totalHours = (diffMs / (1000 * 60 * 60)).toFixed(2);
-                    
                     let isFriday = new Date().getDay() === 5;
-                    let regHours = isFriday ? 3 : 12;
-                    let diffHours = (totalHours - regHours).toFixed(2);
+                    let diffHours = (totalHours - (isFriday ? 3 : 12)).toFixed(2);
                     let diffText = diffHours >= 0 ? `+${diffHours} ঘণ্টা বেশি` : `${diffHours} ঘণ্টা কম`;
-
                     const payload = {
-                        action: "updateAttendance",
-                        staffId: currentUser.id,
-                        dateStr: todayStr,
-                        outTime: nowTime,
-                        outPhoto: capturedPhotoData,
-                        totalDuty: totalHours + " ঘণ্টা",
-                        diffDuty: diffText
+                        action: "updateAttendance", staffId: currentUser.id, dateStr: todayStr,
+                        outTime: nowTime, outPhoto: capturedPhotoData, totalDuty: totalHours + " ঘণ্টা", diffDuty: diffText
                     };
                     await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
                     alert(`আউট-টাইম সফল! মোট ডিউটি: ${totalHours} ঘণ্টা (${diffText})`);
                 } else if (type === 'lunchOut') {
-                    const payload = { action: "updateAttendance", staffId: currentUser.id, dateStr: todayStr, lunchOut: nowTime };
-                    await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+                    await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "updateAttendance", staffId: currentUser.id, dateStr: todayStr, lunchOut: nowTime }) });
                     alert("লাঞ্চ আউট রেকর্ড করা হয়েছে!");
                 } else if (type === 'lunchIn') {
-                    const payload = { action: "updateAttendance", staffId: currentUser.id, dateStr: todayStr, lunchIn: nowTime };
-                    await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+                    await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "updateAttendance", staffId: currentUser.id, dateStr: todayStr, lunchIn: nowTime }) });
                     alert("লাঞ্চ ইন রেকর্ড করা হয়েছে!");
                 }
             }
@@ -644,7 +632,6 @@
             const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
             globalAttendance = await res.json();
             const myRecords = globalAttendance.filter(r => String(r.staffId) === String(currentUser.id));
-            
             document.getElementById("staffHistoryContainer").innerHTML = myRecords.length === 0 ? `<p class="text-xs text-slate-400 text-center py-4">কোনো হাজিরা রেকর্ড নেই</p>` : `
                 <table class="w-full text-xs text-left border">
                     <tr class="bg-slate-100"><th class="p-2">তারিখ</th><th class="p-2">ইন</th><th class="p-2">স্ট্যাটাস</th><th class="p-2">আউট</th><th class="p-2">মোট ডিউটি</th></tr>
@@ -655,72 +642,44 @@
         }
 
         function renderStaffMonthlyCalendar() {
-            const monthVal = document.getElementById("staffMonthPicker").value; // e.g., 2026-11
+            const monthVal = document.getElementById("staffMonthPicker").value;
             if (!monthVal) return;
             const [year, month] = monthVal.split('-').map(Number);
             const daysInMonth = new Date(year, month, 0).getDate();
-            
             let html = '';
             const myRecords = globalAttendance.filter(r => String(r.staffId) === String(currentUser.id));
 
             for (let day = 1; day <= daysInMonth; day++) {
-                let formattedDayStr = `${day}/${month}/${year}`; 
-                // Alternatively format matching toDateString or custom check
                 let matched = myRecords.find(r => {
                     let d = new Date(r.dateStr);
                     return d.getDate() === day && (d.getMonth() + 1) === month && d.getFullYear() === year;
                 });
-
-                let bgClass = "bg-rose-100 text-rose-800 border-rose-300"; // Absent default red
-                let statusText = "Absent";
-
+                let bgClass = "bg-rose-100 text-rose-800 border-rose-300", statusText = "Absent";
                 if (matched) {
-                    if (matched.inStatus === 'Late') {
-                        bgClass = "bg-amber-100 text-amber-800 border-amber-300"; // Late yellow
-                        statusText = "Late";
-                    } else {
-                        bgClass = "bg-emerald-100 text-emerald-800 border-emerald-300"; // Present green
-                        statusText = "Present";
-                    }
+                    if (matched.inStatus === 'Late') { bgClass = "bg-amber-100 text-amber-800 border-amber-300"; statusText = "Late"; }
+                    else { bgClass = "bg-emerald-100 text-emerald-800 border-emerald-300"; statusText = "Present"; }
                 }
-
-                html += `
-                    <div class="border rounded-lg p-2 text-center ${bgClass} flex flex-col justify-between items-center shadow-sm">
-                        <span class="text-xs font-bold">${day}</span>
-                        <span class="text-[10px] font-semibold mt-1">${statusText === 'Present' ? 'প্রেজেন্ট' : (statusText === 'Late' ? 'লেট' : 'অনুপস্থিত')}</span>
-                    </div>
-                `;
+                html += `<div class="border rounded-lg p-2 text-center ${bgClass} flex flex-col justify-between items-center shadow-sm"><span class="text-xs font-bold">${day}</span><span class="text-[10px] font-semibold mt-1">${statusText === 'Present' ? 'প্রেজেন্ট' : (statusText === 'Late' ? 'লেট' : 'অনুপস্থিত')}</span></div>`;
             }
             document.getElementById("staffMonthlyCalendarGrid").innerHTML = html;
         }
 
         async function loadAdminView() {
-            const selectedDateVal = document.getElementById("adminReportDate").value; // YYYY-MM-DD
+            const selectedDateVal = document.getElementById("adminReportDate").value;
             const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
             const records = await res.json();
-
-            // Format selected date to match localized date string if needed, or compare date objects
-            let targetDate = new Date(selectedDateVal);
-            let targetStr = targetDate.toLocaleDateString();
-
-            const todaysRecords = records.filter(r => {
-                let rDate = new Date(r.dateStr);
-                return rDate.toDateString() === targetDate.toDateString() || String(r.dateStr) === String(targetStr);
-            });
-
+            let targetDate = new Date(selectedDateVal), targetStr = targetDate.toLocaleDateString();
+            const todaysRecords = records.filter(r => new Date(r.dateStr).toDateString() === targetDate.toDateString() || String(r.dateStr) === String(targetStr));
             let presentCount = todaysRecords.filter(r => r.inStatus === 'Present').length;
             let lateCount = todaysRecords.filter(r => r.inStatus === 'Late').length;
             let totalPresent = presentCount + lateCount;
-
             document.getElementById("statTotalPresent").innerText = `${totalPresent} জন`;
             document.getElementById("statTotalLate").innerText = `${lateCount} জন`;
             
-            // Fetch total active staff count
             const uRes = await fetch(`${SCRIPT_URL}?action=getUsers`);
             const allUsers = await uRes.json();
             const staffList = allUsers.filter(u => u.type === 'staff');
-            let absentCount = Math.max(0, staffList.length - totalPresent);
-            document.getElementById("statTotalAbsent").innerText = `${absentCount} জন`;
+            document.getElementById("statTotalAbsent").innerText = `${Math.max(0, staffList.length - totalPresent)} জন`;
 
             document.getElementById("adminAttendanceTableContainer").innerHTML = todaysRecords.length === 0 ? `<p class="text-xs text-slate-400 text-center py-4">নির্বাচিত তারিখে কোনো হাজিরা রেকর্ড নেই</p>` : `
                 <table class="w-full text-xs text-left border">
@@ -733,15 +692,61 @@
         async function loadSuperAdminView() {
             const res = await fetch(`${SCRIPT_URL}?action=getUsers`);
             globalUsers = await res.json();
-            document.getElementById("superAdminStaffList").innerHTML = globalUsers.map(u => `
+            
+            const staffList = globalUsers.filter(u => u.type === 'staff');
+            const adminList = globalUsers.filter(u => u.type === 'admin');
+
+            document.getElementById("superAdminStaffList").innerHTML = staffList.map(u => `
                 <tr class="hover:bg-slate-50">
-                    <td class="p-2 font-bold">${u.id}</td>
-                    <td class="p-2">${u.name}</td>
-                    <td class="p-2">${u.role}</td>
+                    <td class="p-2 font-bold">${u.id}</td><td class="p-2">${u.name}</td><td class="p-2">${u.role}</td>
                     <td class="p-2"><input type="text" id="pass_${u.id}" placeholder="নতুন পাসওয়ার্ড" class="border px-2 py-1 rounded text-xs w-28"> <button onclick="resetPass('${u.id}')" class="bg-blue-600 text-white px-2 py-1 rounded text-xs">সেভ</button></td>
-                    <td class="p-2 text-right"><button onclick="deleteStaff('${u.id}')" class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded">ডিলিট</button></td>
+                    <td class="p-2 text-right"><button onclick="deleteUser('${u.id}')" class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded font-semibold">ডিলিট স্টাফ</button></td>
                 </tr>
-            `).join('');
+            `).join('') || `<tr><td colspan="5" class="p-4 text-center text-slate-400">কোনো স্টাফ নেই</td></tr>`;
+
+            document.getElementById("superAdminAdminList").innerHTML = adminList.map(u => `
+                <tr class="hover:bg-slate-50">
+                    <td class="p-2 font-bold">${u.id}</td><td class="p-2">${u.name}</td><td class="p-2">${u.role}</td>
+                    <td class="p-2"><input type="text" id="pass_${u.id}" placeholder="নতুন পাসওয়ার্ড" class="border px-2 py-1 rounded text-xs w-28"> <button onclick="resetPass('${u.id}')" class="bg-blue-600 text-white px-2 py-1 rounded text-xs">সেভ</button></td>
+                    <td class="p-2 text-right"><button onclick="deleteUser('${u.id}')" class="text-xs bg-rose-100 text-rose-700 px-2 py-1 rounded font-semibold">ডিলিট অ্যাডমিন</button></td>
+                </tr>
+            `).join('') || `<tr><td colspan="5" class="p-4 text-center text-slate-400">কোনো অ্যাডমিন নেই</td></tr>`;
+        }
+
+        async function loadSuperAdminReportDropdown() {
+            const res = await fetch(`${SCRIPT_URL}?action=getUsers`);
+            const users = await res.json();
+            const staffList = users.filter(u => u.type === 'staff');
+            document.getElementById("reportStaffSelect").innerHTML = staffList.map(u => `<option value="${u.id}">${u.name} (${u.id})</option>`).join('');
+            loadSuperAdminIndividualReport();
+        }
+
+        async function loadSuperAdminIndividualReport() {
+            const staffId = document.getElementById("reportStaffSelect").value;
+            const monthVal = document.getElementById("reportMonthPicker").value;
+            if(!staffId || !monthVal) return;
+
+            const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
+            const records = await res.json();
+            const [year, month] = monthVal.split('-').map(Number);
+            const daysInMonth = new Date(year, month, 0).getDate();
+            const myRecords = records.filter(r => String(r.staffId) === String(staffId));
+
+            let html = `<div class="grid grid-cols-7 sm:grid-cols-10 md:grid-cols-15 lg:grid-cols-31 gap-2">`;
+            for (let day = 1; day <= daysInMonth; day++) {
+                let matched = myRecords.find(r => {
+                    let d = new Date(r.dateStr);
+                    return d.getDate() === day && (d.getMonth() + 1) === month && d.getFullYear() === year;
+                });
+                let bgClass = "bg-rose-100 text-rose-800 border-rose-300", statusText = "Absent";
+                if (matched) {
+                    if (matched.inStatus === 'Late') { bgClass = "bg-amber-100 text-amber-800 border-amber-300"; statusText = "Late"; }
+                    else { bgClass = "bg-emerald-100 text-emerald-800 border-emerald-300"; statusText = "Present"; }
+                }
+                html += `<div class="border rounded-lg p-2 text-center ${bgClass} flex flex-col justify-between items-center shadow-sm"><span class="text-xs font-bold">${day}</span><span class="text-[10px] font-semibold mt-1">${statusText === 'Present' ? 'প্রেজেন্ট' : (statusText === 'Late' ? 'লেট' : 'অনুপস্থিত')}</span></div>`;
+            }
+            html += `</div>`;
+            document.getElementById("superAdminIndividualReportContainer").innerHTML = html;
         }
 
         async function createNewStaff(e) {
@@ -756,7 +761,7 @@
                 name: document.getElementById("newStaffName").value.trim(),
                 role: document.getElementById("newStaffRole").value.trim(),
                 pass: document.getElementById("newStaffPass").value.trim(),
-                type: "staff"
+                type: document.getElementById("newAccountType").value
             };
 
             const res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
@@ -764,7 +769,7 @@
             if (result === "Duplicate") {
                 alert("এই ইউজার আইডি ইতিমধ্যে ব্যবহৃত হয়েছে! অন্য আইডি দিন।");
             } else {
-                alert("সফলভাবে নতুন স্টাফ অ্যাকাউন্ট খোলা হয়েছে!");
+                alert("সফলভাবে নতুন অ্যাকাউন্ট খোলা হয়েছে!");
                 e.target.reset();
                 loadSuperAdminView();
             }
@@ -780,10 +785,10 @@
             document.getElementById(`pass_${id}`).value = "";
         }
 
-        async function deleteStaff(id) {
+        async function deleteUser(id) {
             if(confirm(`আপনি কি নিশ্চিত ${id} ডিলিট করতে চান?`)) {
                 await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", id: id }) });
-                alert("স্টাফ ডিলিট করা হয়েছে!");
+                alert("সফলভাবে ডিলিট করা হয়েছে!");
                 loadSuperAdminView();
             }
         }
@@ -792,12 +797,8 @@
             const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
             const records = await res.json();
             if(records.length === 0) return alert("ডাউনলোড করার মতো কোনো হাজিরা ডাটা নেই!");
-
             let csv = "স্টাফ আইডি,নাম,তারিখ,ইন-টাইম,স্ট্যাটাস,লাঞ্চ আউট,লাঞ্চ ইন,আউট-টাইম,মোট ডিউটি,কম/বেশি\n";
-            records.forEach(r => {
-                csv += `${r.staffId},${r.staffName},${r.dateStr},${r.inTime},${r.inStatus},${r.lunchOut||''},${r.lunchIn||''},${r.outTime||''},${r.totalDuty||''},${r.diffDuty||''}\n`;
-            });
-
+            records.forEach(r => { csv += `${r.staffId},${r.staffName},${r.dateStr},${r.inTime},${r.inStatus},${r.lunchOut||''},${r.lunchIn||''},${r.outTime||''},${r.totalDuty||''},${r.diffDuty||''}\n`; });
             const link = document.createElement("a");
             link.href = encodeURI("data:text/csv;charset=utf-8," + csv);
             link.download = `Bachchu_Motors_Attendance_${new Date().toLocaleDateString()}.csv`;
