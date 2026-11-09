@@ -4,13 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>বাচ্চু মটরস - ডিজিটাল হাজিরা ও স্টাফ পোর্টাল</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Chart.js for Smart Analytics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { 
@@ -22,7 +18,7 @@
             content: "";
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('bacchu motors logo.jpeg');
+            background-image: url('BM Two Wheeler Business Crest.png');
             background-repeat: no-repeat;
             background-position: center;
             background-size: 450px;
@@ -30,9 +26,17 @@
             z-index: -1;
             pointer-events: none;
         }
-        /* Custom Toast Notification Animation */
-        #toastBox {
-            transition: all 0.4s ease-in-out;
+        #toastBox { transition: all 0.4s ease-in-out; }
+
+        /* Running Bike Animation */
+        @keyframes rideBike {
+            0% { transform: translateX(-150px) scaleX(1); }
+            50% { transform: translateX(calc(100vw - 150px)) scaleX(1); }
+            50.1% { transform: translateX(calc(100vw - 150px)) scaleX(-1); }
+            100% { transform: translateX(-150px) scaleX(-1); }
+        }
+        .bike-riding {
+            animation: rideBike 6s infinite linear;
         }
     </style>
 </head>
@@ -42,7 +46,16 @@
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyAs9zrzE8BvwbRNowUU741GBegCY9bK8mZNE_gSypKpErW58D3eOrT7YZ3htpY5T5zgQ/exec";
     </script>
 
-    <!-- TOAST NOTIFICATION CONTAINER -->
+    <!-- LOADING SCREEN WITH RUNNING BIKE -->
+    <div id="loadingScreen" class="fixed inset-0 bg-slate-900 z-50 flex flex-col items-center justify-center text-white transition-opacity duration-700">
+        <div class="w-full relative overflow-hidden h-40 mb-4 flex items-center">
+            <img src="images__4_-removebg-preview.png" alt="Running Bike" class="w-36 h-auto bike-riding absolute">
+        </div>
+        <h2 class="text-xl font-bold tracking-wider text-red-500 animate-pulse">বাচ্চু মটরস পোর্টাল লোড হচ্ছে...</h2>
+        <p class="text-xs text-slate-400 mt-2">টু হুইলার বিজনেস, মাদারীপুর</p>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
     <div id="toastBox" class="fixed top-5 right-5 z-50 transform translate-x-full opacity-0 max-w-sm w-full bg-slate-900 text-white rounded-xl shadow-2xl p-4 flex items-center gap-3 border border-slate-700">
         <div id="toastIcon" class="text-xl"></div>
         <div>
@@ -55,7 +68,7 @@
     <nav class="bg-red-700 text-white shadow-md sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3 space-x-reverse">
-                <img src="bacchu motors logo.jpeg" alt="Bachchu Motors Logo" class="w-10 h-10 rounded-full bg-white object-cover border-2 border-white shadow">
+                <img src="BM Two Wheeler Business Crest.png" alt="Logo" class="w-10 h-10 rounded-full bg-white object-cover border-2 border-white shadow">
                 <div>
                     <h1 class="text-xl font-bold tracking-wide">বাচ্চু মটরস</h1>
                     <p class="text-xs text-red-100">টু হুইলার বিজনেস, মাদারীপুর</p>
@@ -98,19 +111,45 @@
 
         <!-- TOP CENTER PROFILE CARD -->
         <div id="topProfileCard" class="hidden max-w-xl mx-auto mb-6 bg-white rounded-2xl shadow-sm border p-4 text-center backdrop-blur bg-opacity-95">
-            <img id="headerUserPhoto" src="bacchu motors logo.jpeg" class="w-20 h-20 rounded-full mx-auto object-cover border-2 border-red-600 shadow mb-2">
+            <img id="headerUserPhoto" src="BM Two Wheeler Business Crest.png" class="w-20 h-20 rounded-full mx-auto object-cover border-2 border-red-600 shadow mb-2">
             <h2 id="headerUserName" class="text-xl font-bold text-slate-800"></h2>
             <p class="text-sm text-slate-500">আইডি: <span id="headerUserId" class="font-semibold text-red-600"></span> | পদবী: <span id="headerUserRole" class="font-semibold text-slate-700"></span></p>
             <p id="headerUserOrg" class="text-xs text-slate-400 mt-1"></p>
         </div>
 
-        <!-- DIGITAL NOTICE BOARD (Notice Board Widget) -->
-        <div id="noticeBoardCard" class="hidden max-w-7xl mx-auto mb-6 bg-amber-50 border border-amber-200 rounded-2xl p-4 shadow-sm">
-            <div class="flex items-center gap-2 text-amber-800 font-bold mb-1">
-                <i class="fa-solid fa-bullhorn text-amber-600"></i>
-                <span>ডিজিটাল নোটিশ বোর্ড</span>
+        <!-- TWO NOTICE BOARDS SECTION (Staff & General View) -->
+        <div id="noticeBoardsContainer" class="hidden grid md:grid-cols-2 gap-6 mb-6">
+            <!-- Higher Authority Notice Board -->
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 shadow-sm space-y-3">
+                <div class="flex justify-between items-center border-b border-amber-200 pb-2">
+                    <div class="flex items-center gap-2 text-amber-900 font-bold">
+                        <i class="fa-solid fa-bullhorn text-amber-600"></i>
+                        <span>ঊর্ধ্বতন কর্তৃপক্ষ নোটিশ</span>
+                    </div>
+                    <button id="editAuthNoticeBtn" onclick="openNoticeModal('authority')" class="hidden text-xs bg-amber-600 text-white px-2.5 py-1 rounded-lg">নোটিশ আপডেট</button>
+                </div>
+                <div id="authNoticeDisplay" class="text-xs text-amber-950 font-medium">লোড হচ্ছে...</div>
+                <div class="mt-2 pt-2 border-t border-amber-200/60 max-h-24 overflow-y-auto">
+                    <p class="text-[10px] font-bold text-amber-800 mb-1">পূর্ববর্তী নোটিশ আর্কাইভ:</p>
+                    <div id="authNoticeArchive" class="space-y-1 text-[11px] text-amber-900"></div>
+                </div>
             </div>
-            <p id="noticeContent" class="text-xs text-amber-900">শোরুমের সকল কার্যক্রম ডিজিটাল উপস্থিতির আওতায় আনা হয়েছে। নির্ধারিত সময় সকাল ৯:৩০ মিনিটের মধ্যে উপস্থিতি নিশ্চিত করুন।</p>
+
+            <!-- Management Notice Board -->
+            <div class="bg-blue-50 border border-blue-200 rounded-2xl p-5 shadow-sm space-y-3">
+                <div class="flex justify-between items-center border-b border-blue-200 pb-2">
+                    <div class="flex items-center gap-2 text-blue-900 font-bold">
+                        <i class="fa-solid fa-clipboard-question text-blue-600"></i>
+                        <span>ম্যানেজমেন্ট নোটিশ</span>
+                    </div>
+                    <button id="editMgmtNoticeBtn" onclick="openNoticeModal('management')" class="hidden text-xs bg-blue-600 text-white px-2.5 py-1 rounded-lg">নোটিশ আপডেট</button>
+                </div>
+                <div id="mgmtNoticeDisplay" class="text-xs text-blue-950 font-medium">লোড হচ্ছে...</div>
+                <div class="mt-2 pt-2 border-t border-blue-200/60 max-h-24 overflow-y-auto">
+                    <p class="text-[10px] font-bold text-blue-800 mb-1">পূর্ববর্তী নোটিশ আর্কাইভ:</p>
+                    <div id="mgmtNoticeArchive" class="space-y-1 text-[11px] text-blue-900"></div>
+                </div>
+            </div>
         </div>
 
         <!-- STAFF PANEL -->
@@ -207,7 +246,6 @@
             </div>
 
             <div id="adminAttendanceSection" class="space-y-6">
-                <!-- Smart Analytics Chart & Stats -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="bg-white p-5 rounded-2xl border shadow-sm border-l-4 border-l-emerald-500">
                         <p class="text-xs text-slate-500 font-bold">আজ মোট উপস্থিত</p>
@@ -223,25 +261,20 @@
                     </div>
                 </div>
 
-                <!-- Graphical Analytics Container -->
                 <div class="bg-white p-6 rounded-2xl border shadow-sm grid md:grid-cols-2 gap-6 items-center">
                     <div>
                         <h4 class="text-sm font-bold text-slate-700 mb-2">উপস্থিতির অনুপাত (আজকের দিন)</h4>
-                        <div class="w-48 h-48 mx-auto">
-                            <canvas id="adminChartCanvas"></canvas>
-                        </div>
+                        <div class="w-48 h-48 mx-auto"><canvas id="adminChartCanvas"></canvas></div>
                     </div>
                     <div class="space-y-3">
                         <h4 class="text-sm font-bold text-slate-700">ডিজিটাল এটেনডেন্স সামারি</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed">বাচ্চু মটরসের এই রিয়েল-টাইম সিস্টেমের সাহায্যে শোরুমের প্রতিটি স্টাফের উপস্থিতির হার, লেট এন্ট্রি এবং মুভমেন্ট স্বয়ংক্রিয়ভাবে পরিমাপ করা হচ্ছে।</p>
+                        <p class="text-xs text-slate-500 leading-relaxed">বাচ্চু মটরস টু হুইলার বিজনেস, মাদারীপুর। রিয়েল-টাইম সিস্টেমের মাধ্যমে প্রতিটি স্টাফের উপস্থিতি ও মুভমেন্ট ট্র্যাক করা হচ্ছে।</p>
                     </div>
                 </div>
 
                 <div class="bg-white rounded-2xl border p-6 shadow-sm">
                     <h3 class="text-lg font-bold mb-4 text-slate-800">আজকের স্টাফ উপস্থিতি ও সময় বিবরণী</h3>
-                    <div class="overflow-x-auto" id="adminAttendanceTableContainer">
-                        <p class="text-xs text-slate-400">ডাটা লোড হচ্ছে...</p>
-                    </div>
+                    <div class="overflow-x-auto" id="adminAttendanceTableContainer"><p class="text-xs text-slate-400">ডাটা লোড হচ্ছে...</p></div>
                 </div>
             </div>
 
@@ -250,7 +283,7 @@
                 <form onsubmit="updateProfile(event)" class="space-y-4">
                     <div class="text-center mb-4">
                         <label class="inline-block bg-slate-700 hover:bg-slate-800 text-white text-xs px-3 py-1.5 rounded-lg cursor-pointer shadow">
-                            <i class="fa-solid fa-upload mr-1"></i> ছবি আপলোড করুন
+                            <i class="fa-solid fa-upload mr-1"></i> ছবি আপلود করুন
                             <input type="file" id="adminProfileImageInput" accept="image/*" class="hidden" onchange="previewProfileImage(event)">
                         </label>
                     </div>
@@ -296,25 +329,11 @@
                                     <option value="admin">অ্যাডমিন অ্যাকাউন্ট (ম্যানেজিং ডিরেক্টর)</option>
                                 </select>
                             </div>
-                            <div>
-                                <label class="text-xs font-semibold">ইউজার আইডি</label>
-                                <input type="text" id="newStaffId" required placeholder="BM-103 / admin2" class="w-full border px-3 py-1.5 rounded-lg text-sm">
-                            </div>
-                            <div>
-                                <label class="text-xs font-semibold">নাম</label>
-                                <input type="text" id="newStaffName" required placeholder="আব্দুর রহিম" class="w-full border px-3 py-1.5 rounded-lg text-sm">
-                            </div>
-                            <div>
-                                <label class="text-xs font-semibold">পদবী</label>
-                                <input type="text" id="newStaffRole" required placeholder="মেকানিক" class="w-full border px-3 py-1.5 rounded-lg text-sm">
-                            </div>
-                            <div>
-                                <label class="text-xs font-semibold">পাসওয়ার্ড</label>
-                                <input type="password" id="newStaffPass" required placeholder="••••••" class="w-full border px-3 py-1.5 rounded-lg text-sm">
-                            </div>
-                            <button type="submit" id="addStaffBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg text-sm shadow">
-                                অ্যাকাউন্ট তৈরি করুন
-                            </button>
+                            <div><label class="text-xs font-semibold">ইউজার আইডি</label><input type="text" id="newStaffId" required placeholder="BM-103" class="w-full border px-3 py-1.5 rounded-lg text-sm"></div>
+                            <div><label class="text-xs font-semibold">নাম</label><input type="text" id="newStaffName" required placeholder="নাম" class="w-full border px-3 py-1.5 rounded-lg text-sm"></div>
+                            <div><label class="text-xs font-semibold">পদবী</label><input type="text" id="newStaffRole" required placeholder="পদবী" class="w-full border px-3 py-1.5 rounded-lg text-sm"></div>
+                            <div><label class="text-xs font-semibold">পাসওয়ার্ড</label><input type="password" id="newStaffPass" required placeholder="••••••" class="w-full border px-3 py-1.5 rounded-lg text-sm"></div>
+                            <button type="submit" id="addStaffBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg text-sm shadow">অ্যাকাউন্ট তৈরি করুন</button>
                         </form>
                     </div>
 
@@ -323,9 +342,7 @@
                             <h3 class="text-lg font-bold border-b pb-3 mb-4 text-emerald-700">স্টাফ তালিকা ও পাসওয়ার্ড রিসেট</h3>
                             <div class="overflow-x-auto max-h-60">
                                 <table class="w-full text-sm text-left">
-                                    <thead class="bg-slate-50 text-slate-600 sticky top-0">
-                                        <tr><th class="p-2">আইডি</th><th class="p-2">নাম</th><th class="p-2">পদবী</th><th class="p-2">পাসওয়ার্ড</th><th class="p-2 text-right">অ্যাকশন</th></tr>
-                                    </thead>
+                                    <thead class="bg-slate-50 text-slate-600 sticky top-0"><tr><th class="p-2">আইডি</th><th class="p-2">নাম</th><th class="p-2">পদবী</th><th class="p-2">পাসওয়ার্ড</th><th class="p-2 text-right">অ্যাকশন</th></tr></thead>
                                     <tbody id="superAdminStaffList" class="divide-y"><tr><td colspan="5" class="p-4 text-center text-slate-400">লোড হচ্ছে...</td></tr></tbody>
                                 </table>
                             </div>
@@ -335,9 +352,7 @@
                             <h3 class="text-lg font-bold border-b pb-3 mb-4 text-amber-700">অ্যাডমিন প্যানেল তালিকা (ম্যানেজিং ডিরেক্টরগণ)</h3>
                             <div class="overflow-x-auto max-h-48">
                                 <table class="w-full text-sm text-left">
-                                    <thead class="bg-slate-50 text-slate-600 sticky top-0">
-                                        <tr><th class="p-2">আইডি</th><th class="p-2">নাম</th><th class="p-2">পদবী</th><th class="p-2">পাসওয়ার্ড</th><th class="p-2 text-right">অ্যাকশন</th></tr>
-                                    </thead>
+                                    <thead class="bg-slate-50 text-slate-600 sticky top-0"><tr><th class="p-2">আইডি</th><th class="p-2">নাম</th><th class="p-2">পদবী</th><th class="p-2">পাসওয়ার্ড</th><th class="p-2 text-right">অ্যাকশন</th></tr></thead>
                                     <tbody id="superAdminAdminList" class="divide-y"><tr><td colspan="5" class="p-4 text-center text-slate-400">লোড হচ্ছে...</td></tr></tbody>
                                 </table>
                             </div>
@@ -356,9 +371,7 @@
                             <input type="month" id="reportMonthPicker" onchange="loadSuperAdminIndividualReport()" class="border px-3 py-1.5 rounded-lg text-sm">
                         </div>
                     </div>
-                    <div id="superAdminIndividualReportContainer" class="overflow-x-auto">
-                        <p class="text-xs text-slate-400 text-center py-4">স্টাফ নির্বাচন করুন...</p>
-                    </div>
+                    <div id="superAdminIndividualReportContainer" class="overflow-x-auto"><p class="text-xs text-slate-400 text-center py-4">স্টাফ নির্বাচন করুন...</p></div>
                 </div>
             </div>
 
@@ -383,58 +396,59 @@
 
     </div>
 
+    <!-- NOTICE UPDATE MODAL -->
+    <div id="noticeModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+            <h3 id="noticeModalTitle" class="text-lg font-bold text-slate-800">নোটিশ আপডেট করুন</h3>
+            <textarea id="noticeInputText" rows="4" class="w-full border p-3 rounded-xl text-sm focus:ring-2 focus:ring-red-500" placeholder="এখানে নতুন নোটিশ লিখুন..."></textarea>
+            <div class="flex justify-end gap-2">
+                <button onclick="closeNoticeModal()" class="bg-slate-300 text-slate-700 px-4 py-2 rounded-lg text-xs font-semibold">বাতিল</button>
+                <button onclick="saveNewNotice()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-xs font-semibold">সংরক্ষণ করুন</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let currentUser = null;
         let globalUsers = [];
         let globalAttendance = [];
+        let globalNotices = [];
         let capturedPhotoData = null;
         let uploadedProfilePhoto = null;
         let currentGpsLocation = "অনলাইন";
         let adminChartInstance = null;
+        let activeNoticeType = '';
 
         document.getElementById("adminReportDate").valueAsDate = new Date();
         initGPS();
 
-        // Modern Toast Notification Function
+        // Hide loading screen after 2.5 seconds
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById("loadingScreen");
+                loader.classList.add("opacity-0");
+                setTimeout(() => loader.style.display = 'none', 700);
+            }, 2000);
+        });
+
         function showToast(title, message, type = 'success') {
             const toast = document.getElementById("toastBox");
-            const toastTitle = document.getElementById("toastTitle");
-            const toastMsg = document.getElementById("toastMessage");
-            const toastIcon = document.getElementById("toastIcon");
-
-            toastTitle.innerText = title;
-            toastMsg.innerText = message;
-
-            if (type === 'success') {
-                toastIcon.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i>`;
-            } else if (type === 'error') {
-                toastIcon.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-rose-400"></i>`;
-            } else {
-                toastIcon.innerHTML = `<i class="fa-solid fa-circle-info text-blue-400"></i>`;
-            }
-
+            document.getElementById("toastTitle").innerText = title;
+            document.getElementById("toastMessage").innerText = message;
+            document.getElementById("toastIcon").innerHTML = type === 'success' ? `<i class="fa-solid fa-circle-check text-emerald-400"></i>` : `<i class="fa-solid fa-triangle-exclamation text-rose-400"></i>`;
             toast.classList.remove("translate-x-full", "opacity-0");
-            setTimeout(() => {
-                toast.classList.add("translate-x-full", "opacity-0");
-            }, 3500);
+            setTimeout(() => toast.classList.add("translate-x-full", "opacity-0"), 3500);
         }
 
-        // GPS Location Fetching
         function initGPS() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
-                        const lat = position.coords.latitude.toFixed(4);
-                        const lng = position.coords.longitude.toFixed(4);
-                        currentGpsLocation = `GPS (${lat}, ${lng})`;
+                        currentGpsLocation = `GPS (${position.coords.latitude.toFixed(4)}, ${position.coords.longitude.toFixed(4)})`;
                         const elem = document.getElementById("gpsLocationStatus");
                         if(elem) elem.innerHTML = `<i class="fa-solid fa-location-dot text-emerald-500 mr-1"></i>${currentGpsLocation}`;
                     },
-                    () => {
-                        currentGpsLocation = "লোকেশন অন নেই";
-                        const elem = document.getElementById("gpsLocationStatus");
-                        if(elem) elem.innerHTML = `<i class="fa-solid fa-location-crosshairs text-amber-500 mr-1"></i>লোকেশন ট্র্যাকিং অফ`;
-                    }
+                    () => { currentGpsLocation = "লোকেশন অফ"; }
                 );
             }
         }
@@ -457,7 +471,7 @@
                     currentUser = user;
                     document.getElementById("loginSection").classList.add("hidden");
                     document.getElementById("userBadge").classList.remove("hidden");
-                    document.getElementById("noticeBoardCard").classList.remove("hidden");
+                    document.getElementById("noticeBoardsContainer").classList.remove("hidden");
                     document.getElementById("roleTag").innerText = user.role;
                     document.getElementById("topProfileCard").classList.remove("hidden");
                     
@@ -465,10 +479,12 @@
                         document.getElementById("headerUserName").innerText = "জিয়াউল হাসান";
                         document.getElementById("headerUserRole").innerText = "ম্যানেজিং ডিরেক্টর";
                         document.getElementById("headerUserOrg").innerText = "বাচ্চু গ্রুপ, মাদারীপুর (টু হুইলার বিজনেস)";
+                        document.getElementById("editAuthNoticeBtn").classList.remove("hidden"); // Admin can edit Authority Notice
                     } else if (user.type === "superadmin") {
                         document.getElementById("headerUserName").innerText = "সুপার অ্যাডমিন";
                         document.getElementById("headerUserRole").innerText = "ফিন্যান্স অ্যান্ড অডিট";
                         document.getElementById("headerUserOrg").innerText = "বাচ্চু গ্রুপ, মাদারীপুর (টু হুইলার বিজনেস)";
+                        document.getElementById("editMgmtNoticeBtn").classList.remove("hidden"); // SuperAdmin can edit Management Notice
                     } else {
                         document.getElementById("headerUserName").innerText = user.name;
                         document.getElementById("headerUserRole").innerText = user.role;
@@ -476,14 +492,13 @@
                     }
                     
                     document.getElementById("headerUserId").innerText = user.id;
-                    if(user.photo) {
-                        document.getElementById("headerUserPhoto").src = user.photo;
-                    }
+                    if(user.photo) document.getElementById("headerUserPhoto").src = user.photo;
+
+                    loadNotices();
 
                     if (user.type === "staff") {
                         document.getElementById("staffPanel").classList.remove("hidden");
-                        let now = new Date();
-                        document.getElementById("staffMonthPicker").value = now.toISOString().slice(0, 7);
+                        document.getElementById("staffMonthPicker").value = new Date().toISOString().slice(0, 7);
                         loadStaffData();
                     } else if (user.type === "admin") {
                         document.getElementById("adminPanel").classList.remove("hidden");
@@ -506,6 +521,79 @@
 
         function logout() { location.reload(); }
 
+        // Notice Board Logic (Save & Archive)
+        async function loadNotices() {
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getNotices`);
+                globalNotices = await res.json();
+            } catch (e) {
+                // Fallback local storage or array if script action not yet added
+                globalNotices = JSON.parse(localStorage.getItem('bachchu_notices') || '[]');
+            }
+            renderNotices();
+        }
+
+        function renderNotices() {
+            const authNotices = globalNotices.filter(n => n.type === 'authority');
+            const mgmtNotices = globalNotices.filter(n => n.type === 'management');
+
+            // Authority Notice
+            if (authNotices.length > 0) {
+                let latest = authNotices[authNotices.length - 1];
+                document.getElementById("authNoticeDisplay").innerText = latest.text;
+                let archiveHtml = authNotices.slice(0, -1).reverse().map(n => `<div class="p-1 bg-amber-100 rounded">🕒 ${n.date}: ${n.text}</div>`).join('');
+                document.getElementById("authNoticeArchive").innerHTML = archiveHtml || '<span class="text-slate-400">কোনো পূর্ববর্তী নোটিশ নেই</span>';
+            } else {
+                document.getElementById("authNoticeDisplay").innerText = "কোনো নোটিশ নেই।";
+                document.getElementById("authNoticeArchive").innerHTML = '<span class="text-slate-400">কোনো পূর্ববর্তী নোটিশ নেই</span>';
+            }
+
+            // Management Notice
+            if (mgmtNotices.length > 0) {
+                let latest = mgmtNotices[mgmtNotices.length - 1];
+                document.getElementById("mgmtNoticeDisplay").innerText = latest.text;
+                let archiveHtml = mgmtNotices.slice(0, -1).reverse().map(n => `<div class="p-1 bg-blue-100 rounded">🕒 ${n.date}: ${n.text}</div>`).join('');
+                document.getElementById("mgmtNoticeArchive").innerHTML = archiveHtml || '<span class="text-slate-400">কোনো পূর্ববর্তী নোটিশ নেই</span>';
+            } else {
+                document.getElementById("mgmtNoticeDisplay").innerText = "কোনো নোটিশ নেই।";
+                document.getElementById("mgmtNoticeArchive").innerHTML = '<span class="text-slate-400">কোনো পূর্ববর্তী নোটিশ নেই</span>';
+            }
+        }
+
+        function openNoticeModal(type) {
+            activeNoticeType = type;
+            document.getElementById("noticeModalTitle").innerText = type === 'authority' ? 'ঊর্ধ্বতন কর্তৃপক্ষ নোটিশ আপডেট' : 'ম্যানেজমেন্ট নোটিশ আপডেট';
+            document.getElementById("noticeInputText").value = '';
+            document.getElementById("noticeModal").classList.remove("hidden");
+        }
+
+        function closeNoticeModal() {
+            document.getElementById("noticeModal").classList.add("hidden");
+        }
+
+        async function saveNewNotice() {
+            const text = document.getElementById("noticeInputText").value.trim();
+            if(!text) return alert("নোটিশ লিখুন!");
+            
+            const newNotice = {
+                action: "addNotice",
+                type: activeNoticeType,
+                text: text,
+                date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
+            };
+
+            globalNotices.push(newNotice);
+            localStorage.setItem('bachchu_notices', JSON.stringify(globalNotices));
+            
+            try {
+                await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(newNotice) });
+            } catch(e) {}
+
+            closeNoticeModal();
+            renderNotices();
+            showToast("সফল!", "নোটিশ বোর্ডে নতুন নোটিশ যুক্ত করা হয়েছে এবং আগেরটি আর্কাইভে সংরক্ষিত হয়েছে।");
+        }
+
         function startCamera() {
             navigator.mediaDevices.getUserMedia({ video: true })
                 .then(stream => {
@@ -513,7 +601,6 @@
                     video.srcObject = stream;
                     video.classList.remove("hidden");
                     document.getElementById("camPlaceholder").classList.add("hidden");
-                    showToast("ক্যামেরা অন হয়েছে", "আপনার ছবি তুলুন");
                 })
                 .catch(() => showToast("ক্যামেরা সমস্যা", "ক্যামেরা অন করা যাচ্ছে না!", "error"));
         }
@@ -549,8 +636,7 @@
                         ctx.drawImage(img, 0, 0, width, height);
                         uploadedProfilePhoto = canvas.toDataURL('image/jpeg', 0.7);
                         document.getElementById("headerUserPhoto").src = uploadedProfilePhoto;
-                        let statusElem = document.getElementById("imgUploadStatus");
-                        if(statusElem) statusElem.classList.remove("hidden");
+                        document.getElementById("imgUploadStatus").classList.remove("hidden");
                         showToast("ছবি প্রস্তুত", "প্রফাইল সেভ করার জন্য নিচে ক্লিক করুন");
                     }
                 };
@@ -759,11 +845,9 @@
             const uRes = await fetch(`${SCRIPT_URL}?action=getUsers`);
             const allUsers = await uRes.json();
             const staffList = allUsers.filter(u => u.type === 'staff');
-            let absentCount = Math.max(0, staffList.length - totalPresent);
-            document.getElementById("statTotalAbsent").innerText = `${absentCount} জন`;
+            document.getElementById("statTotalAbsent").innerText = `${Math.max(0, staffList.length - totalPresent)} জন`;
 
-            // Render Chart.js Analytics
-            renderAdminChart(presentCount, lateCount, absentCount);
+            renderAdminChart(presentCount, lateCount, Math.max(0, staffList.length - totalPresent));
 
             document.getElementById("adminAttendanceTableContainer").innerHTML = todaysRecords.length === 0 ? `<p class="text-xs text-slate-400 text-center py-4">নির্বাচিত তারিখে কোনো হাজিরা রেকর্ড নেই</p>` : `
                 <table class="w-full text-xs text-left border">
@@ -780,10 +864,7 @@
                 type: 'doughnut',
                 data: {
                     labels: ['সময়মতো', 'লেট', 'অনুপস্থিত'],
-                    datasets: [{
-                        data: [present, late, absent],
-                        backgroundColor: ['#10b981', '#f59e0b', '#f43f5e']
-                    }]
+                    datasets: [{ data: [present, late, absent], backgroundColor: ['#10b981', '#f59e0b', '#f43f5e'] }]
                 },
                 options: { responsive: true, maintainAspectRatio: false }
             });
@@ -792,7 +873,6 @@
         async function loadSuperAdminView() {
             const res = await fetch(`${SCRIPT_URL}?action=getUsers`);
             globalUsers = await res.json();
-            
             const staffList = globalUsers.filter(u => u.type === 'staff');
             const adminList = globalUsers.filter(u => u.type === 'admin');
 
