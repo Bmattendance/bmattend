@@ -14,14 +14,15 @@
             background-color: #f8fafc;
             position: relative;
         }
+        /* Watermark Logo using inline SVG Data URI */
         body::after {
             content: "";
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('BM Two Wheeler Business Crest.png');
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="90" fill="none" stroke="%23fbbf24" stroke-width="15"/><text x="50%" y="55%" font-size="65" font-weight="bold" fill="%23dc2626" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif">BM</text></svg>');
             background-repeat: no-repeat;
             background-position: center;
-            background-size: 450px;
+            background-size: 400px;
             opacity: 0.04;
             z-index: -1;
             pointer-events: none;
@@ -30,13 +31,14 @@
 
         /* Running Bike Animation */
         @keyframes rideBike {
-            0% { transform: translateX(-150px) scaleX(1); }
-            50% { transform: translateX(calc(100vw - 150px)) scaleX(1); }
-            50.1% { transform: translateX(calc(100vw - 150px)) scaleX(-1); }
-            100% { transform: translateX(-150px) scaleX(-1); }
+            0% { transform: translateX(-120px) scaleX(1); }
+            49% { transform: translateX(calc(100vw - 120px)) scaleX(1); }
+            50% { transform: translateX(calc(100vw - 120px)) scaleX(-1); }
+            99% { transform: translateX(-120px) scaleX(-1); }
+            100% { transform: translateX(-120px) scaleX(1); }
         }
         .bike-riding {
-            animation: rideBike 6s infinite linear;
+            animation: rideBike 5s infinite linear;
         }
     </style>
 </head>
@@ -46,10 +48,12 @@
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyAs9zrzE8BvwbRNowUU741GBegCY9bK8mZNE_gSypKpErW58D3eOrT7YZ3htpY5T5zgQ/exec";
     </script>
 
-    <!-- LOADING SCREEN WITH RUNNING BIKE -->
+    <!-- LOADING SCREEN WITH SVG BIKE RUNNING ANIMATION -->
     <div id="loadingScreen" class="fixed inset-0 bg-slate-900 z-50 flex flex-col items-center justify-center text-white transition-opacity duration-700">
-        <div class="w-full relative overflow-hidden h-40 mb-4 flex items-center">
-            <img src="images__4_-removebg-preview.png" alt="Running Bike" class="w-36 h-auto bike-riding absolute">
+        <div class="w-full relative overflow-hidden h-36 mb-4 flex items-center">
+            <div class="bike-riding absolute text-red-500 text-6xl">
+                <i class="fa-solid fa-motorcycle drop-shadow-[0_10px_10px_rgba(239,68,68,0.5)]"></i>
+            </div>
         </div>
         <h2 class="text-xl font-bold tracking-wider text-red-500 animate-pulse">বাচ্চু মটরস পোর্টাল লোড হচ্ছে...</h2>
         <p class="text-xs text-slate-400 mt-2">টু হুইলার বিজনেস, মাদারীপুর</p>
@@ -68,7 +72,9 @@
     <nav class="bg-red-700 text-white shadow-md sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3 space-x-reverse">
-                <img src="BM Two Wheeler Business Crest.png" alt="Logo" class="w-10 h-10 rounded-full bg-white object-cover border-2 border-white shadow">
+                <div class="w-10 h-10 rounded-full bg-amber-400 text-red-700 flex items-center justify-center font-bold text-base shadow border-2 border-white">
+                    BM
+                </div>
                 <div>
                     <h1 class="text-xl font-bold tracking-wide">বাচ্চু মটরস</h1>
                     <p class="text-xs text-red-100">টু হুইলার বিজনেস, মাদারীপুর</p>
@@ -111,13 +117,15 @@
 
         <!-- TOP CENTER PROFILE CARD -->
         <div id="topProfileCard" class="hidden max-w-xl mx-auto mb-6 bg-white rounded-2xl shadow-sm border p-4 text-center backdrop-blur bg-opacity-95">
-            <img id="headerUserPhoto" src="BM Two Wheeler Business Crest.png" class="w-20 h-20 rounded-full mx-auto object-cover border-2 border-red-600 shadow mb-2">
+            <div class="w-20 h-20 rounded-full bg-amber-400 text-red-700 flex items-center justify-center font-extrabold text-2xl mx-auto border-2 border-red-600 shadow mb-2">
+                BM
+            </div>
             <h2 id="headerUserName" class="text-xl font-bold text-slate-800"></h2>
             <p class="text-sm text-slate-500">আইডি: <span id="headerUserId" class="font-semibold text-red-600"></span> | পদবী: <span id="headerUserRole" class="font-semibold text-slate-700"></span></p>
             <p id="headerUserOrg" class="text-xs text-slate-400 mt-1"></p>
         </div>
 
-        <!-- TWO NOTICE BOARDS SECTION (Staff & General View) -->
+        <!-- TWO NOTICE BOARDS SECTION -->
         <div id="noticeBoardsContainer" class="hidden grid md:grid-cols-2 gap-6 mb-6">
             <!-- Higher Authority Notice Board -->
             <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 shadow-sm space-y-3">
@@ -283,7 +291,7 @@
                 <form onsubmit="updateProfile(event)" class="space-y-4">
                     <div class="text-center mb-4">
                         <label class="inline-block bg-slate-700 hover:bg-slate-800 text-white text-xs px-3 py-1.5 rounded-lg cursor-pointer shadow">
-                            <i class="fa-solid fa-upload mr-1"></i> ছবি আপلود করুন
+                            <i class="fa-solid fa-upload mr-1"></i> ছবি আপলোড করুন
                             <input type="file" id="adminProfileImageInput" accept="image/*" class="hidden" onchange="previewProfileImage(event)">
                         </label>
                     </div>
@@ -422,7 +430,6 @@
         document.getElementById("adminReportDate").valueAsDate = new Date();
         initGPS();
 
-        // Hide loading screen after 2.5 seconds
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const loader = document.getElementById("loadingScreen");
@@ -479,12 +486,12 @@
                         document.getElementById("headerUserName").innerText = "জিয়াউল হাসান";
                         document.getElementById("headerUserRole").innerText = "ম্যানেজিং ডিরেক্টর";
                         document.getElementById("headerUserOrg").innerText = "বাচ্চু গ্রুপ, মাদারীপুর (টু হুইলার বিজনেস)";
-                        document.getElementById("editAuthNoticeBtn").classList.remove("hidden"); // Admin can edit Authority Notice
+                        document.getElementById("editAuthNoticeBtn").classList.remove("hidden");
                     } else if (user.type === "superadmin") {
                         document.getElementById("headerUserName").innerText = "সুপার অ্যাডমিন";
                         document.getElementById("headerUserRole").innerText = "ফিন্যান্স অ্যান্ড অডিট";
                         document.getElementById("headerUserOrg").innerText = "বাচ্চু গ্রুপ, মাদারীপুর (টু হুইলার বিজনেস)";
-                        document.getElementById("editMgmtNoticeBtn").classList.remove("hidden"); // SuperAdmin can edit Management Notice
+                        document.getElementById("editMgmtNoticeBtn").classList.remove("hidden");
                     } else {
                         document.getElementById("headerUserName").innerText = user.name;
                         document.getElementById("headerUserRole").innerText = user.role;
@@ -492,7 +499,6 @@
                     }
                     
                     document.getElementById("headerUserId").innerText = user.id;
-                    if(user.photo) document.getElementById("headerUserPhoto").src = user.photo;
 
                     loadNotices();
 
@@ -521,13 +527,11 @@
 
         function logout() { location.reload(); }
 
-        // Notice Board Logic (Save & Archive)
         async function loadNotices() {
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getNotices`);
                 globalNotices = await res.json();
             } catch (e) {
-                // Fallback local storage or array if script action not yet added
                 globalNotices = JSON.parse(localStorage.getItem('bachchu_notices') || '[]');
             }
             renderNotices();
@@ -537,7 +541,6 @@
             const authNotices = globalNotices.filter(n => n.type === 'authority');
             const mgmtNotices = globalNotices.filter(n => n.type === 'management');
 
-            // Authority Notice
             if (authNotices.length > 0) {
                 let latest = authNotices[authNotices.length - 1];
                 document.getElementById("authNoticeDisplay").innerText = latest.text;
@@ -548,7 +551,6 @@
                 document.getElementById("authNoticeArchive").innerHTML = '<span class="text-slate-400">কোনো পূর্ববর্তী নোটিশ নেই</span>';
             }
 
-            // Management Notice
             if (mgmtNotices.length > 0) {
                 let latest = mgmtNotices[mgmtNotices.length - 1];
                 document.getElementById("mgmtNoticeDisplay").innerText = latest.text;
@@ -635,7 +637,6 @@
                         canvas.width = width; canvas.height = height;
                         ctx.drawImage(img, 0, 0, width, height);
                         uploadedProfilePhoto = canvas.toDataURL('image/jpeg', 0.7);
-                        document.getElementById("headerUserPhoto").src = uploadedProfilePhoto;
                         document.getElementById("imgUploadStatus").classList.remove("hidden");
                         showToast("ছবি প্রস্তুত", "প্রফাইল সেভ করার জন্য নিচে ক্লিক করুন");
                     }
