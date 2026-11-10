@@ -34,6 +34,43 @@
             100% { transform: scale(1); opacity: 1; }
         }
         .success-tick-anim { animation: scaleUp 0.5s ease-in-out forwards; }
+
+        /* BIKE & WHEEL RUNNING ANIMATION */
+        @keyframes bikeRun {
+            0% {
+                left: -100px;
+                transform: scaleX(1);
+            }
+            48% {
+                left: calc(100% + 20px);
+                transform: scaleX(1);
+            }
+            50% {
+                left: calc(100% + 20px);
+                transform: scaleX(-1);
+            }
+            98% {
+                left: -100px;
+                transform: scaleX(-1);
+            }
+            100% {
+                left: -100px;
+                transform: scaleX(1);
+            }
+        }
+
+        @keyframes spinWheel {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .bike-runner {
+            animation: bikeRun 4s infinite linear;
+        }
+
+        .wheel-spinner {
+            animation: spinWheel 0.3s infinite linear;
+        }
     </style>
 </head>
 <body class="min-h-screen text-slate-800">
@@ -42,11 +79,26 @@
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyAs9zrzE8BvwbRNowUU741GBegCY9bK8mZNE_gSypKpErW58D3eOrT7YZ3htpY5T5zgQ/exec";
     </script>
 
-    <!-- LOADING SCREEN -->
-    <div id="loadingScreen" class="fixed inset-0 bg-slate-900 z-50 flex flex-col items-center justify-center text-white transition-opacity duration-700">
-        <div class="w-16 h-16 rounded-full bg-amber-400 text-red-700 flex items-center justify-center font-bold text-2xl mb-4 shadow-lg border-2 border-white animate-bounce">BM</div>
+    <!-- LOADING SCREEN WITH BIKE & ROTATING WHEELS -->
+    <div id="loadingScreen" class="fixed inset-0 bg-slate-900 z-50 flex flex-col items-center justify-center text-white transition-opacity duration-700 overflow-hidden">
+        <div class="relative w-full h-24 overflow-hidden mb-4">
+            <div class="bike-runner absolute bottom-2 flex items-center">
+                <div class="relative text-red-500 text-6xl drop-shadow-[0_10px_10px_rgba(239,68,68,0.5)]">
+                    <i class="fa-solid fa-motorcycle"></i>
+                    <!-- Front Wheel -->
+                    <div class="wheel-spinner text-amber-400 text-xl absolute bottom-0 right-1.5">
+                        <i class="fa-solid fa-gear"></i>
+                    </div>
+                    <!-- Rear Wheel -->
+                    <div class="wheel-spinner text-amber-400 text-xl absolute bottom-0 left-1.5">
+                        <i class="fa-solid fa-gear"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute bottom-0 w-full h-1 bg-slate-700 border-b border-dashed border-red-500"></div>
+        </div>
         <h2 class="text-xl font-bold tracking-wider text-red-500 animate-pulse">বাচ্চু মটরস পোর্টাল লোড হচ্ছে...</h2>
-        <p class="text-xs text-slate-400 mt-2">টু হুইলার বিজনেস, মাদারীপুর</p>
+        <p class="text-xs text-slate-400 mt-1">TVS Authorized Dealer, Madaripur</p>
     </div>
 
     <!-- SUCCESS TICK OVERLAY MODAL -->
@@ -683,8 +735,8 @@
             setTimeout(() => {
                 const loader = document.getElementById("loadingScreen");
                 loader.classList.add("opacity-0");
-                setTimeout(() => loader.style.display = 'none', 700);
-            }, 1000);
+                setTimeout(() => loader.style.display = 'none', 1000);
+            }, 1500);
         });
 
         function updateLiveClock() {
