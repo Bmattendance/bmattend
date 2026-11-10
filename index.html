@@ -74,17 +74,32 @@
                     <p class="text-xs text-red-100">টু হুইলার বিজনেস, মাদারীপুর</p>
                 </div>
             </div>
-            <div id="userBadge" class="hidden flex items-center space-x-3 space-x-reverse">
-                <span id="roleTag" class="px-3 py-1 rounded-full text-xs font-semibold bg-white text-red-700 shadow"></span>
-                <button onclick="logout()" class="bg-red-800 hover:bg-red-900 text-xs px-3 py-1.5 rounded transition flex items-center">
-                    <i class="fa-solid fa-right-from-bracket mr-1"></i> লগআউট
-                </button>
+            <div class="flex items-center gap-4">
+                <div id="liveClockDisplay" class="hidden md:block bg-red-800/80 px-3 py-1 rounded-lg text-xs font-semibold tracking-wider text-amber-300 border border-red-600"></div>
+                <div id="userBadge" class="hidden flex items-center space-x-3 space-x-reverse">
+                    <span id="roleTag" class="px-3 py-1 rounded-full text-xs font-semibold bg-white text-red-700 shadow"></span>
+                    <button onclick="logout()" class="bg-red-800 hover:bg-red-900 text-xs px-3 py-1.5 rounded transition flex items-center">
+                        <i class="fa-solid fa-right-from-bracket mr-1"></i> লগআউট
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
 
     <div class="max-w-7xl mx-auto p-4 md:p-6 relative z-10">
         
+        <!-- WINNER TROPHY BANNER (FOR ADMIN & SUPER ADMIN) -->
+        <div id="trophyBanner" class="hidden max-w-4xl mx-auto mb-6 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 text-slate-900 rounded-2xl shadow-lg p-4 flex items-center justify-between border-2 border-amber-300">
+            <div class="flex items-center gap-3">
+                <div class="text-4xl text-yellow-900 bg-white/80 p-3 rounded-xl shadow"><i class="fa-solid fa-trophy"></i></div>
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-yellow-950">মাসের সেরা পারফর্মার (Staff of the Month - সর্বোচ্চ ডিউটিদাতা)</h4>
+                    <p id="winnerDisplayInfo" class="text-sm font-extrabold text-slate-900 mt-0.5">হিসাব করা হচ্ছে...</p>
+                </div>
+            </div>
+            <span class="text-xs bg-slate-900 text-amber-300 px-3 py-1 rounded-full font-bold">👑 উইনার</span>
+        </div>
+
         <!-- LOGIN SECTION -->
         <div id="loginSection" class="max-w-md mx-auto my-12 bg-white rounded-2xl shadow-xl border p-6 md:p-8 backdrop-blur bg-opacity-95">
             <div class="text-center mb-6">
@@ -122,7 +137,6 @@
 
         <!-- TWO NOTICE BOARDS SECTION -->
         <div id="noticeBoardsContainer" class="hidden grid md:grid-cols-2 gap-4 mb-6">
-            <!-- Higher Authority Notice Board -->
             <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 shadow-sm space-y-1.5">
                 <div class="flex justify-between items-center border-b border-amber-200 pb-1">
                     <div class="flex items-center gap-1.5 text-amber-900 font-bold text-xs">
@@ -138,7 +152,6 @@
                 </div>
             </div>
 
-            <!-- Management Notice Board -->
             <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 shadow-sm space-y-1.5">
                 <div class="flex justify-between items-center border-b border-blue-200 pb-1">
                     <div class="flex items-center gap-1.5 text-blue-900 font-bold text-xs">
@@ -170,7 +183,7 @@
                     <div class="bg-white rounded-2xl border p-6 space-y-4 shadow-sm">
                         <h3 class="text-lg font-bold border-b pb-2 text-slate-800 flex justify-between items-center">
                             <span><i class="fa-solid fa-camera text-red-600 mr-2"></i>হাজিরা ও মুভমেন্ট অপারেশন</span>
-                            <span id="gpsLocationStatus" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-normal"><i class="fa-solid fa-location-dot text-red-500 mr-1"></i>জিপিএস অবস্থান নেওয়া হচ্ছে...</span>
+                            <span id="gpsLocationStatus" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-normal"><i class="fa-solid fa-location-dot text-red-500 mr-1"></i>জিপিএস...</span>
                         </h3>
                         <div class="bg-slate-900 rounded-xl overflow-hidden h-44 flex items-center justify-center relative shadow-inner">
                             <video id="webcam" autoplay playsinline class="w-full h-full object-cover hidden"></video>
@@ -187,10 +200,13 @@
                             <button onclick="recordAttendanceAction('lunchOut')" class="bg-amber-600 hover:bg-amber-700 text-white py-2 rounded-lg text-sm">লাঞ্চ আউট</button>
                             <button onclick="recordAttendanceAction('lunchIn')" class="bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm">লাঞ্চ ইন</button>
                         </div>
+                        <div class="pt-2 border-t text-center">
+                            <button onclick="openManualAttModal()" class="text-xs text-red-600 hover:text-red-800 font-semibold underline"><i class="fa-solid fa-pen-to-square mr-1"></i>ভুলে গেলে বা সার্ভার সমস্যা হলে হাজিরা আবেদন করুন</button>
+                        </div>
                     </div>
 
                     <div class="bg-white rounded-2xl border p-6 shadow-sm">
-                        <h3 class="text-lg font-bold border-b pb-2 mb-3 text-slate-800">সাম্প্রতিক হাজিরা হিস্ট্রি</h3>
+                        <h3 class="text-lg font-bold border-b pb-2 mb-3 text-slate-800">সাম্প্রতিক হাজিরা ও লাঞ্চ হিস্ট্রি</h3>
                         <div class="overflow-y-auto max-h-72" id="staffHistoryContainer">
                             <p class="text-xs text-slate-400 text-center py-4">ডাটা লোড হচ্ছে...</p>
                         </div>
@@ -199,12 +215,13 @@
 
                 <div class="bg-white rounded-2xl border p-6 shadow-sm">
                     <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-2 border-b pb-3">
-                        <h3 class="text-lg font-bold text-slate-800">পুরো মাসের হাজিরা ক্যালেন্ডার ও স্ট্যাটাস</h3>
+                        <h3 class="text-lg font-bold text-slate-800">পুরো মাসের হাজিরা ক্যালেন্ডার ও ডিউটি সময় বিবরণী</h3>
                         <div class="flex items-center gap-2">
                             <label class="text-xs font-semibold">মাস নির্বাচন করুন:</label>
                             <input type="month" id="staffMonthPicker" onchange="renderStaffMonthlyCalendar()" class="border px-3 py-1 rounded-lg text-sm">
                         </div>
                     </div>
+                    <div id="monthlySummaryBadge" class="mb-4 text-xs font-bold text-slate-700 bg-slate-100 p-3 rounded-xl border"></div>
                     <div class="flex flex-wrap gap-2 mb-4 text-xs">
                         <span class="bg-emerald-100 text-emerald-800 px-2 py-1 rounded-md font-semibold">🟢 প্রেজেন্ট (On Time)</span>
                         <span class="bg-amber-100 text-amber-800 px-2 py-1 rounded-md font-semibold">🟡 লেট (Late)</span>
@@ -220,13 +237,14 @@
             <div id="staffLeaveSection" class="hidden space-y-6">
                 <div class="bg-white rounded-2xl border p-6 max-w-xl mx-auto shadow-sm space-y-4">
                     <h3 class="text-lg font-bold text-slate-800 border-b pb-2">ছুটির নতুন আবেদন করুন</h3>
+                    <div id="leaveBalanceCard" class="grid grid-cols-3 gap-2 text-center text-xs bg-slate-50 p-3 rounded-xl border font-semibold"></div>
                     <form onsubmit="submitLeaveApplication(event)" class="space-y-3">
                         <div>
                             <label class="block text-xs font-semibold mb-1">ছুটির ধরন</label>
-                            <select id="leaveType" class="w-full border px-3 py-2 rounded-lg text-sm bg-white">
-                                <option value="ক্যাজুয়াল লিভ (Casual Leave)">ক্যাজুয়াল লিভ</option>
-                                <option value="সিক লিভ (Sick Leave)">সিক লিভ</option>
-                                <option value="ইমারজেন্সি লিভ (Emergency Leave)">ইমারজেন্সি লিভ</option>
+                            <select id="leaveType" onchange="checkLeaveType()" class="w-full border px-3 py-2 rounded-lg text-sm bg-white">
+                                <option value="ক্যাজুয়াল লিভ">ক্যাজুয়াল লিভ (মোকাবেলা বাকি: <span id="remCasual">১০</span> দিন)</option>
+                                <option value="সিক লিভ">সিক লিভ (মোকাবেলা বাকি: <span id="remSick">১০</span> দিন)</option>
+                                <option value="ইমারজেন্সি লিভ">ইমারজেন্সি লিভ (মোকাবেলা বাকি: <span id="remEmergency">৬</span> দিন)</option>
                             </select>
                         </div>
                         <div class="grid grid-cols-2 gap-2">
@@ -236,6 +254,10 @@
                         <div>
                             <label class="block text-xs font-semibold mb-1">ছুটির কারণ</label>
                             <textarea id="leaveReason" rows="3" required placeholder="ছুটির কারণ বিস্তারিত লিখুন..." class="w-full border px-3 py-2 rounded-lg text-sm"></textarea>
+                        </div>
+                        <div id="prescriptionUploadBox" class="hidden">
+                            <label class="block text-xs font-semibold mb-1 text-red-600">প্রেসক্রিপশন / ডাক্তারের রিপোর্টের ছবি আপলোড করুন (সিক লিভের জন্য বাধ্যতামূলক)</label>
+                            <input type="file" id="prescriptionFileInput" accept="image/*" class="w-full border px-3 py-2 rounded-lg text-sm bg-slate-50">
                         </div>
                         <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-lg text-sm shadow">আবেদন জমা দিন</button>
                     </form>
@@ -274,7 +296,8 @@
                 </div>
                 <div class="flex gap-2">
                     <button onclick="switchTab('manager', 'attTab')" class="bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow" id="mgrBtnAtt">হাজিরা ও স্টাফ</button>
-                    <button onclick="switchTab('manager', 'leaveTab')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold" id="mgrBtnLeave">ছুটির অনুমোদন</button>
+                    <button onclick="switchTab('manager', 'leaveTab')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold relative" id="mgrBtnLeave">ছুটির অনুমোদন <span id="mgrLeaveBadge" class="hidden absolute -top-1 -right-1 bg-rose-600 text-white rounded-full text-[9px] px-1.5 py-0.2">0</span></button>
+                    <button onclick="switchTab('manager', 'myLeaveTab')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold" id="mgrBtnMyLeave">আমার ছুটি</button>
                     <button onclick="switchTab('manager', 'profileTab')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold" id="mgrBtnProf">আমার প্রফাইল</button>
                 </div>
             </div>
@@ -283,7 +306,7 @@
                 <div class="grid md:grid-cols-2 gap-6">
                     <div class="bg-white rounded-2xl border p-6 space-y-4 shadow-sm">
                         <h3 class="text-lg font-bold border-b pb-2 text-slate-800 flex justify-between items-center">
-                            <span><i class="fa-solid fa-camera text-red-600 mr-2"></i>আমার হাজিরা অপারেশন</span>
+                            <span><i class="fa-solid fa-camera text-red-600 mr-2"></i>আমার হাজিরা ও লাঞ্চ অপারেশন</span>
                             <span id="mgrGpsStatus" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-normal">লোকেশন...</span>
                         </h3>
                         <div class="bg-slate-900 rounded-xl overflow-hidden h-40 flex items-center justify-center relative shadow-inner">
@@ -296,12 +319,14 @@
                             <button onclick="captureMgrPhoto()" class="text-xs bg-red-600 text-white px-3 py-1.5 rounded-lg">ছবি তুলুন</button>
                         </div>
                         <div class="grid grid-cols-2 gap-2">
-                            <button onclick="recordManagerAttendance('in')" class="bg-emerald-600 text-white py-2 rounded-lg text-xs font-bold">ইন-টাইম</button>
-                            <button onclick="recordManagerAttendance('out')" class="bg-rose-600 text-white py-2 rounded-lg text-xs font-bold">আউট-টাইম</button>
+                            <button onclick="recordManagerAttendance('in')" class="bg-emerald-600 text-white py-2 rounded-lg text-xs font-bold">ইন-টাইম (In)</button>
+                            <button onclick="recordManagerAttendance('out')" class="bg-rose-600 text-white py-2 rounded-lg text-xs font-bold">আউট-টাইম (Out)</button>
+                            <button onclick="recordManagerAttendance('lunchOut')" class="bg-amber-600 text-white py-1.5 rounded-lg text-xs">লাঞ্চ আউট</button>
+                            <button onclick="recordManagerAttendance('lunchIn')" class="bg-blue-600 text-white py-1.5 rounded-lg text-xs">লাঞ্চ ইন</button>
                         </div>
                     </div>
                     <div class="bg-white rounded-2xl border p-6 shadow-sm">
-                        <h3 class="text-lg font-bold border-b pb-2 mb-3 text-slate-800">আজকের স্টাফ উপস্থিতি সারসংক্ষেপ</h3>
+                        <h3 class="text-lg font-bold border-b pb-2 mb-3 text-slate-800">আজকের স্টাফ উপস্থিতি ও লাঞ্চ সারসংক্ষেপ</h3>
                         <div id="managerTodayStaffSummary" class="overflow-y-auto max-h-60 text-xs"><p class="text-slate-400">লোড হচ্ছে...</p></div>
                     </div>
                 </div>
@@ -311,6 +336,37 @@
                 <div class="bg-white rounded-2xl border p-6 shadow-sm">
                     <h3 class="text-lg font-bold text-slate-800 mb-4 border-b pb-2">স্টাফদের ছুটির আবেদন (১ম অনুমোদন প্যানেল)</h3>
                     <div id="managerLeaveListContainer" class="overflow-x-auto"><p class="text-xs text-slate-400">কোনো আবেদন নেই</p></div>
+                </div>
+            </div>
+
+            <!-- Manager's Own Leave Section -->
+            <div id="managerMyLeaveSection" class="hidden space-y-6">
+                <div class="bg-white rounded-2xl border p-6 max-w-xl mx-auto shadow-sm space-y-4">
+                    <h3 class="text-lg font-bold text-slate-800 border-b pb-2">আমার ছুটির আবেদন (অ্যাডমিন বা এমডি অনুমোদন করবেন)</h3>
+                    <div id="mgrLeaveBalanceCard" class="grid grid-cols-3 gap-2 text-center text-xs bg-slate-50 p-3 rounded-xl border font-semibold"></div>
+                    <form onsubmit="submitLeaveApplication(event)" class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-semibold mb-1">ছুটির ধরন</label>
+                            <select id="leaveTypeMgr" onchange="checkLeaveTypeMgr()" class="w-full border px-3 py-2 rounded-lg text-sm bg-white">
+                                <option value="ক্যাজুয়াল লিভ">ক্যাজুয়াল লিভ</option>
+                                <option value="সিক লিভ">সিক লিভ</option>
+                                <option value="ইমারজেন্সি লিভ">ইমারজেন্সি লিভ</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div><label class="block text-xs font-semibold mb-1">শুরুর তারিখ</label><input type="date" id="leaveStartMgr" required class="w-full border px-3 py-2 rounded-lg text-sm"></div>
+                            <div><label class="block text-xs font-semibold mb-1">শেষ তারিখ</label><input type="date" id="leaveEndMgr" required class="w-full border px-3 py-2 rounded-lg text-sm"></div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold mb-1">ছুটির কারণ</label>
+                            <textarea id="leaveReasonMgr" rows="3" required placeholder="ছুটির কারণ বিস্তারিত লিখুন..." class="w-full border px-3 py-2 rounded-lg text-sm"></textarea>
+                        </div>
+                        <div id="prescriptionUploadBoxMgr" class="hidden">
+                            <label class="block text-xs font-semibold mb-1 text-red-600">প্রেসক্রিপশন আপলোড করুন (সিক লিভের জন্য বাধ্যতামূলক)</label>
+                            <input type="file" id="prescriptionFileInputMgr" accept="image/*" class="w-full border px-3 py-2 rounded-lg text-sm bg-slate-50">
+                        </div>
+                        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-lg text-sm shadow">আবেদন জমা দিন</button>
+                    </form>
                 </div>
             </div>
 
@@ -342,7 +398,8 @@
                 <div class="flex items-center gap-2">
                     <input type="date" id="adminReportDate" onchange="loadAdminView()" class="border px-3 py-1.5 rounded-lg text-sm">
                     <button onclick="switchTab('admin', 'attendanceTab')" class="bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow" id="adminBtnAttTab">হাজিরা রিপোর্ট</button>
-                    <button onclick="switchTab('admin', 'leaveTab')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold" id="adminBtnLeaveTab">ছুটির ফাইনাল অনুমোদন</button>
+                    <button onclick="switchTab('admin', 'leaveTab')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold relative" id="adminBtnLeaveTab">ছুটির অনুমোদন <span id="adminLeaveBadge" class="hidden absolute -top-1 -right-1 bg-rose-600 text-white rounded-full text-[9px] px-1.5 py-0.2">0</span></button>
+                    <button onclick="switchTab('admin', 'attAppTab')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold relative" id="adminBtnAttAppTab">হাজিরা আবেদন <span id="adminAttAppBadge" class="hidden absolute -top-1 -right-1 bg-rose-600 text-white rounded-full text-[9px] px-1.5 py-0.2">0</span></button>
                     <button onclick="switchTab('admin', 'profileTab')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold" id="adminBtnProfTab">আমার প্রফাইল</button>
                 </div>
             </div>
@@ -376,7 +433,7 @@
 
                 <div class="bg-white rounded-2xl border p-6 shadow-sm">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold text-slate-800">আজকের স্টাফ উপস্থিতি ও সময় বিবরণী</h3>
+                        <h3 class="text-lg font-bold text-slate-800">আজকের স্টাফ উপস্থিতি, লাঞ্চ ও ডিউটি বিবরণী</h3>
                         <button onclick="exportAttendancePDF()" class="bg-slate-700 hover:bg-slate-800 text-white text-xs px-3 py-1.5 rounded-lg shadow"><i class="fa-solid fa-file-pdf mr-1"></i> পিডিএফ প্রিন্ট রিপোর্ট</button>
                     </div>
                     <div class="overflow-x-auto" id="adminAttendanceTableContainer"><p class="text-xs text-slate-400">ডাটা লোড হচ্ছে...</p></div>
@@ -388,6 +445,14 @@
                 <div class="bg-white rounded-2xl border p-6 shadow-sm">
                     <h3 class="text-lg font-bold text-slate-800 mb-4 border-b pb-2">ছুটির ফাইনাল অনুমোদন (Managing Director & Super Admin)</h3>
                     <div id="adminLeaveListContainer" class="overflow-x-auto"><p class="text-xs text-slate-400">কোনো আবেদন নেই</p></div>
+                </div>
+            </div>
+
+            <!-- Admin Attendance Approval Section -->
+            <div id="adminAttApprovalSection" class="hidden space-y-6">
+                <div class="bg-white rounded-2xl border p-6 shadow-sm">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 border-b pb-2">স্টাফদের হাজিরা মিসিং আবেদন অনুমোদন প্যানেল</h3>
+                    <div id="adminAttAppListContainer" class="overflow-x-auto"><p class="text-xs text-slate-400">কোনো আবেদন নেই</p></div>
                 </div>
             </div>
 
@@ -419,6 +484,8 @@
                 <div class="flex gap-2">
                     <button onclick="switchTab('superadmin', 'controlTab')" class="bg-red-600 text-white px-3 py-2 rounded-lg text-xs font-semibold shadow" id="ownerBtnCtrlTab">ম্যানেজমেন্ট</button>
                     <button onclick="switchTab('superadmin', 'reportTab')" class="bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold" id="ownerBtnRepTab">স্টাফ রিপোর্ট</button>
+                    <button onclick="switchTab('superadmin', 'leaveTab')" class="bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold relative" id="ownerBtnLeaveTab">ছুটির অনুমোদন <span id="superLeaveBadge" class="hidden absolute -top-1 -right-1 bg-rose-600 text-white rounded-full text-[9px] px-1.5 py-0.2">0</span></button>
+                    <button onclick="switchTab('superadmin', 'attAppTab')" class="bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold relative" id="ownerBtnAttAppTab">হাজিরা আবেদন <span id="superAttAppBadge" class="hidden absolute -top-1 -right-1 bg-rose-600 text-white rounded-full text-[9px] px-1.5 py-0.2">0</span></button>
                     <button onclick="switchTab('superadmin', 'profileTab')" class="bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold" id="ownerBtnProfTab">আমার প্রফাইল</button>
                 </div>
             </div>
@@ -441,6 +508,7 @@
                                     <option value="staff">স্টাফ অ্যাকাউন্ট</option>
                                     <option value="manager">ম্যানেজার অ্যাকাউন্ট</option>
                                     <option value="admin">অ্যাডমিন অ্যাকাউন্ট (ম্যানেজিং ডিরেক্টর)</option>
+                                    <option value="superadmin">সুপার অ্যাডমিন অ্যাকাউন্ট</option>
                                 </select>
                             </div>
                             <div><label class="text-xs font-semibold">ইউজার আইডি</label><input type="text" id="newStaffId" required placeholder="BM-103" class="w-full border px-3 py-1.5 rounded-lg text-sm"></div>
@@ -463,7 +531,7 @@
                         </div>
 
                         <div class="bg-white rounded-2xl border p-6 shadow-sm">
-                            <h3 class="text-lg font-bold border-b pb-3 mb-4 text-amber-700">ম্যানেজার ও অ্যাডমিন প্যানেল তালিকা</h3>
+                            <h3 class="text-lg font-bold border-b pb-3 mb-4 text-amber-700">ম্যানেজার, অ্যাডমিন ও সুপার অ্যাডমিন তালিকা</h3>
                             <div class="overflow-x-auto max-h-48">
                                 <table class="w-full text-sm text-left">
                                     <thead class="bg-slate-50 text-slate-600 sticky top-0"><tr><th class="p-2">আইডি</th><th class="p-2">নাম</th><th class="p-2">পদবী</th><th class="p-2">পাসওয়ার্ড</th><th class="p-2 text-right">অ্যাকশন</th></tr></thead>
@@ -486,6 +554,22 @@
                         </div>
                     </div>
                     <div id="superAdminIndividualReportContainer" class="overflow-x-auto"><p class="text-xs text-slate-400 text-center py-4">স্টাফ নির্বাচন করুন...</p></div>
+                </div>
+            </div>
+
+            <!-- Super Admin Leave Approval Section -->
+            <div id="superAdminLeaveSection" class="hidden space-y-6">
+                <div class="bg-white rounded-2xl border p-6 shadow-sm">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 border-b pb-2">ছুটির ফাইনাল অনুমোদন প্যানেল (সুপার অ্যাডমিন)</h3>
+                    <div id="superAdminLeaveListContainer" class="overflow-x-auto"><p class="text-xs text-slate-400">কোনো আবেদন নেই</p></div>
+                </div>
+            </div>
+
+            <!-- Super Admin Attendance Approval Section -->
+            <div id="superAdminAttApprovalSection" class="hidden space-y-6">
+                <div class="bg-white rounded-2xl border p-6 shadow-sm">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 border-b pb-2">হাজিরা আবেদন অনুমোদন প্যানেল (সুপার অ্যাডমিন)</h3>
+                    <div id="superAdminAttAppListContainer" class="overflow-x-auto"><p class="text-xs text-slate-400">কোনো আবেদন নেই</p></div>
                 </div>
             </div>
 
@@ -529,12 +613,36 @@
         </div>
     </div>
 
+    <!-- MANUAL ATTENDANCE APPLICATION MODAL -->
+    <div id="manualAttModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+            <h3 class="text-lg font-bold text-slate-800 border-b pb-2">হাজিরা বা মুভমেন্ট মিসিং আবেদন</h3>
+            <form onsubmit="submitManualAttendance(event)" class="space-y-3">
+                <div><label class="block text-xs font-semibold mb-1">তারিখ</label><input type="date" id="manDate" required class="w-full border px-3 py-2 rounded-lg text-sm"></div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div><label class="block text-xs font-semibold mb-1">ইন-টাইম</label><input type="time" id="manInTime" class="w-full border px-3 py-2 rounded-lg text-sm"></div>
+                    <div><label class="block text-xs font-semibold mb-1">আউট-টাইম</label><input type="time" id="manOutTime" class="w-full border px-3 py-2 rounded-lg text-sm"></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div><label class="block text-xs font-semibold mb-1">লাঞ্চ আউট</label><input type="time" id="manLunchOut" class="w-full border px-3 py-2 rounded-lg text-sm"></div>
+                    <div><label class="block text-xs font-semibold mb-1">লাঞ্চ ইন</label><input type="time" id="manLunchIn" class="w-full border px-3 py-2 rounded-lg text-sm"></div>
+                </div>
+                <div><label class="block text-xs font-semibold mb-1">কারণ বা বিস্তারিত</label><textarea id="manReason" rows="2" required placeholder="কেন হাজিরা দিতে পারেননি..." class="w-full border px-3 py-2 rounded-lg text-sm"></textarea></div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeManualAttModal()" class="bg-slate-300 text-slate-700 px-4 py-2 rounded-lg text-xs font-semibold">বাতিল</button>
+                    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg text-xs font-semibold">আবেদন জমা দিন</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         let currentUser = null;
         let globalUsers = [];
         let globalAttendance = [];
         let globalNotices = [];
         let globalLeaves = [];
+        let globalAttApplications = [];
         let capturedPhotoData = null;
         let mgrCapturedPhoto = null;
         let uploadedProfilePhoto = null;
@@ -544,6 +652,7 @@
 
         document.getElementById("adminReportDate").valueAsDate = new Date();
         initGPS();
+        setInterval(updateLiveClock, 1000);
 
         window.addEventListener('load', () => {
             setTimeout(() => {
@@ -552,6 +661,14 @@
                 setTimeout(() => loader.style.display = 'none', 700);
             }, 2000);
         });
+
+        function updateLiveClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const dateStr = now.toLocaleDateString('bn-BD', { day: 'numeric', month: 'long', year: 'numeric' });
+            const elem = document.getElementById("liveClockDisplay");
+            if(elem) elem.innerHTML = `<i class="fa-regular fa-clock text-amber-300 mr-1"></i> ${dateStr} | ${timeStr}`;
+        }
 
         function showToast(title, message, type = 'success') {
             const toast = document.getElementById("toastBox");
@@ -604,16 +721,20 @@
                         document.getElementById("headerUserRole").innerText = "ম্যানেজিং ডিরেক্টর";
                         document.getElementById("headerUserOrg").innerText = "বাচ্চু গ্রুপ, মাদারীপুর (টু হুইলার বিজনেস)";
                         document.getElementById("editAuthNoticeBtn").classList.remove("hidden");
+                        document.getElementById("trophyBanner").classList.remove("hidden");
+                        calculateWinnerOfHonor();
                     } else if (user.type === "superadmin") {
                         document.getElementById("headerUserName").innerText = "সুপার অ্যাডমিন";
                         document.getElementById("headerUserRole").innerText = "ফিন্যান্স অ্যান্ড অডিট";
                         document.getElementById("headerUserOrg").innerText = "বাচ্চু গ্রুপ, মাদারীপুর (টু হুইলার বিজনেস)";
                         document.getElementById("editMgmtNoticeBtn").classList.remove("hidden");
+                        document.getElementById("trophyBanner").classList.remove("hidden");
+                        calculateWinnerOfHonor();
                     } else if (user.type === "manager") {
                         document.getElementById("headerUserName").innerText = user.name;
                         document.getElementById("headerUserRole").innerText = "শোরুম ম্যানেজার";
                         document.getElementById("headerUserOrg").innerText = "বাচ্চু মটরস";
-                        document.getElementById("editMgmtNoticeBtn").classList.remove("hidden"); // Manager can edit Management Notice
+                        document.getElementById("editMgmtNoticeBtn").classList.remove("hidden");
                     } else {
                         document.getElementById("headerUserName").innerText = user.name;
                         document.getElementById("headerUserRole").innerText = user.role;
@@ -625,6 +746,7 @@
 
                     loadNotices();
                     loadLeavesData();
+                    loadAttApplicationsData();
 
                     if (user.type === "staff") {
                         document.getElementById("staffPanel").classList.remove("hidden");
@@ -681,7 +803,6 @@
             const authNotices = globalNotices.filter(n => n.type === 'authority');
             const mgmtNotices = globalNotices.filter(n => n.type === 'management');
 
-            // Authority Notice
             if (authNotices.length > 0) {
                 let latest = authNotices[authNotices.length - 1];
                 document.getElementById("authNoticeDisplay").innerHTML = `
@@ -695,7 +816,6 @@
                     <div class="mt-2 pt-1 border-t border-amber-200 text-right">
                         <p class="font-bold text-amber-900 text-[11px]">${latest.sigName || 'জিয়াউল হাসান'}</p>
                         <p class="text-[10px] text-amber-800">${latest.sigRole || 'ম্যানেজিং ডিরেক্টর'}</p>
-                        <p class="text-[9px] text-amber-700">${latest.sigOrg || 'বাচ্চু গ্রুপ, মাদারীপুর'}</p>
                     </div>
                 `;
                 let archiveHtml = authNotices.slice(0, -1).reverse().map(n => `
@@ -703,7 +823,6 @@
                         <div class="font-bold text-amber-900 text-center">${n.subject}</div>
                         <div class="text-center"><span class="text-[9px] bg-amber-200/70 px-1.5 py-0.2 rounded font-semibold">${n.date}</span></div>
                         <div class="text-slate-700">${n.text}</div>
-                        <div class="text-right font-semibold text-[10px] text-amber-900">${n.sigName} (${n.sigRole})</div>
                     </div>
                 `).join('');
                 document.getElementById("authNoticeArchive").innerHTML = archiveHtml || '<span class="text-slate-400">কোনো পূর্ববর্তী নোটিশ নেই</span>';
@@ -712,7 +831,6 @@
                 document.getElementById("authNoticeArchive").innerHTML = '<span class="text-slate-400">কোনো পূর্ববর্তী নোটিশ নেই</span>';
             }
 
-            // Management Notice
             if (mgmtNotices.length > 0) {
                 let latest = mgmtNotices[mgmtNotices.length - 1];
                 document.getElementById("mgmtNoticeDisplay").innerHTML = `
@@ -726,7 +844,6 @@
                     <div class="mt-2 pt-1 border-t border-blue-200 text-right">
                         <p class="font-bold text-blue-900 text-[11px]">${latest.sigName || 'ম্যানেজমেন্ট'}</p>
                         <p class="text-[10px] text-blue-800">${latest.sigRole || 'শোরুম ম্যানেজার'}</p>
-                        <p class="text-[9px] text-blue-700">${latest.sigOrg || 'বাচ্চু গ্রুপ, মাদারীপুর'}</p>
                     </div>
                 `;
                 let archiveHtml = mgmtNotices.slice(0, -1).reverse().map(n => `
@@ -734,7 +851,6 @@
                         <div class="font-bold text-blue-900 text-center">${n.subject}</div>
                         <div class="text-center"><span class="text-[9px] bg-blue-200/70 px-1.5 py-0.2 rounded font-semibold">${n.date}</span></div>
                         <div class="text-slate-700">${n.text}</div>
-                        <div class="text-right font-semibold text-[10px] text-blue-900">${n.sigName} (${n.sigRole})</div>
                     </div>
                 `).join('');
                 document.getElementById("mgmtNoticeArchive").innerHTML = archiveHtml || '<span class="text-slate-400">কোনো পূর্ববর্তী নোটিশ নেই</span>';
@@ -752,9 +868,7 @@
             document.getElementById("noticeModal").classList.remove("hidden");
         }
 
-        function closeNoticeModal() {
-            document.getElementById("noticeModal").classList.add("hidden");
-        }
+        function closeNoticeModal() { document.getElementById("noticeModal").classList.add("hidden"); }
 
         async function saveNewNotice() {
             const subject = document.getElementById("noticeInputSubject").value.trim();
@@ -763,32 +877,35 @@
             
             let sigName = currentUser.type === 'admin' ? "জিয়াউল হাসান" : (currentUser.type === 'superadmin' ? "সুপার অ্যাডমিন" : currentUser.name);
             let sigRole = currentUser.type === 'admin' ? "ম্যানেজিং ডিরেক্টর" : (currentUser.type === 'superadmin' ? "ফিন্যান্স অ্যান্ড অডিট" : currentUser.role);
-            let sigOrg = "বাচ্চু গ্রুপ, মাদারীপুর (টু হুইলার বিজনেস)";
 
             const newNotice = {
-                action: "addNotice",
-                type: activeNoticeType,
-                subject: subject,
-                text: text,
+                action: "addNotice", type: activeNoticeType, subject: subject, text: text,
                 date: new Date().toLocaleDateString('bn-BD', { day: 'numeric', month: 'long', year: 'numeric' }) + ' | ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                sigName: sigName,
-                sigRole: sigRole,
-                sigOrg: sigOrg
+                sigName: sigName, sigRole: sigRole
             };
 
             globalNotices.push(newNotice);
             localStorage.setItem('bachchu_notices', JSON.stringify(globalNotices));
-            
-            try {
-                await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(newNotice) });
-            } catch(e) {}
+            try { await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(newNotice) }); } catch(e) {}
 
             closeNoticeModal();
             renderNotices();
-            showToast("সফল!", "নোটিশ বোর্ডে নতুন নোটিশ প্রকাশিত হয়েছে এবং আগেরটি আর্কাইভে সংরক্ষিত হয়েছে।");
+            showToast("সফল!", "নোটিশ বোর্ডে নতুন নোটিশ প্রকাশিত হয়েছে।");
         }
 
-        // LEAVE SYSTEM FUNCTIONS
+        // LEAVE SYSTEM WITH BALANCES & PRESCRIPTION
+        function checkLeaveType() {
+            const lType = document.getElementById("leaveType").value;
+            const box = document.getElementById("prescriptionUploadBox");
+            if (lType === 'সিক লিভ') { box.classList.remove("hidden"); } else { box.classList.add("hidden"); }
+        }
+
+        function checkLeaveTypeMgr() {
+            const lType = document.getElementById("leaveTypeMgr").value;
+            const box = document.getElementById("prescriptionUploadBoxMgr");
+            if (lType === 'সিক লিভ') { box.classList.remove("hidden"); } else { box.classList.add("hidden"); }
+        }
+
         async function loadLeavesData() {
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getLeaves`);
@@ -796,72 +913,141 @@
             } catch(e) {
                 globalLeaves = JSON.parse(localStorage.getItem('bachchu_leaves') || '[]');
             }
+            updateLeaveBalancesAndBadges();
             renderLeaveLists();
+        }
+
+        function updateLeaveBalancesAndBadges() {
+            if(!currentUser) return;
+            const myLeaves = globalLeaves.filter(l => String(l.staffId) === String(currentUser.id) && l.finalApproval === 'Approved');
+            let usedCasual = 0, usedSick = 0, usedEmergency = 0;
+            myLeaves.forEach(l => {
+                let days = Math.ceil(Math.abs(new Date(l.endDate) - new Date(l.startDate)) / (1000 * 60 * 60 * 24)) + 1;
+                if(l.type.includes('ক্যাজুয়াল')) usedCasual += days;
+                if(l.type.includes('সিক')) usedSick += days;
+                if(l.type.includes('ইমারজেন্সি')) usedEmergency += days;
+            });
+
+            let remC = Math.max(0, 10 - usedCasual);
+            let remS = Math.max(0, 10 - usedSick);
+            let remE = Math.max(0, 6 - usedEmergency);
+
+            if(document.getElementById("remCasual")) {
+                document.getElementById("remCasual").innerText = remC;
+                document.getElementById("remSick").innerText = remS;
+                document.getElementById("remEmergency").innerText = remE;
+                document.getElementById("leaveBalanceCard").innerHTML = `
+                    <div class="bg-blue-50 p-2 rounded border">ক্যাজুয়াল বাকি: <strong class="text-blue-700">${remC}/10</strong></div>
+                    <div class="bg-emerald-50 p-2 rounded border">সিক বাকি: <strong class="text-emerald-700">${remS}/10</strong></div>
+                    <div class="bg-amber-50 p-2 rounded border">ইমারজেন্সি বাকি: <strong class="text-amber-700">${remE}/6</strong></div>
+                `;
+            }
+            if(document.getElementById("mgrLeaveBalanceCard")) {
+                document.getElementById("mgrLeaveBalanceCard").innerHTML = `
+                    <div class="bg-blue-50 p-2 rounded border">ক্যাজুয়াল বাকি: <strong class="text-blue-700">${remC}/10</strong></div>
+                    <div class="bg-emerald-50 p-2 rounded border">সিক বাকি: <strong class="text-emerald-700">${remS}/10</strong></div>
+                    <div class="bg-amber-50 p-2 rounded border">ইমারজেন্সি বাকি: <strong class="text-amber-700">${remE}/6</strong></div>
+                `;
+            }
+
+            let pendingForManager = globalLeaves.filter(l => l.managerApproval === 'Pending').length;
+            let pendingForMD = globalLeaves.filter(l => (l.managerApproval === 'Approved' || l.managerApproval.includes('Skipped')) && l.finalApproval === 'Pending').length;
+
+            if(document.getElementById("mgrLeaveBadge")) {
+                const b1 = document.getElementById("mgrLeaveBadge");
+                if(pendingForManager > 0) { b1.innerText = pendingForManager; b1.classList.remove("hidden"); } else { b1.classList.add("hidden"); }
+            }
+            if(document.getElementById("adminLeaveBadge")) {
+                const b2 = document.getElementById("adminLeaveBadge");
+                if(pendingForMD > 0) { b2.innerText = pendingForMD; b2.classList.remove("hidden"); } else { b2.classList.add("hidden"); }
+            }
+            if(document.getElementById("superLeaveBadge")) {
+                const b3 = document.getElementById("superLeaveBadge");
+                if(pendingForMD > 0) { b3.innerText = pendingForMD; b3.classList.remove("hidden"); } else { b3.classList.add("hidden"); }
+            }
         }
 
         async function submitLeaveApplication(e) {
             e.preventDefault();
-            const leaveType = document.getElementById("leaveType").value;
-            const start = document.getElementById("leaveStart").value;
-            const end = document.getElementById("leaveEnd").value;
-            const reason = document.getElementById("leaveReason").value.trim();
+            let isMgr = (currentUser.type === 'manager');
+            const leaveType = document.getElementById(isMgr ? "leaveTypeMgr" : "leaveType").value;
+            const start = document.getElementById(isMgr ? "leaveStartMgr" : "leaveStart").value;
+            const end = document.getElementById(isMgr ? "leaveEndMgr" : "leaveEnd").value;
+            const reason = document.getElementById(isMgr ? "leaveReasonMgr" : "leaveReason").value.trim();
+            const fileInput = document.getElementById(isMgr ? "prescriptionFileInputMgr" : "prescriptionFileInput");
+
+            let prescriptionData = "";
+            if (leaveType === 'সিক লিভ' && fileInput.files.length > 0) {
+                const reader = new FileReader();
+                reader.readAsDataURL(fileInput.files[0]);
+                await new Promise(resolve => reader.onload = () => { prescriptionData = reader.result; resolve(); });
+            } else if (leaveType === 'সিক লিভ' && fileInput.files.length === 0) {
+                return showToast("সতর্কতা", "সিক লিভের জন্য প্রেসক্রিপশনের ছবি আপলোড করা বাধ্যতামূলক!", "error");
+            }
+
+            // Calculate total days requested
+            let totalDays = Math.ceil(Math.abs(new Date(end) - new Date(start)) / (1000 * 60 * 60 * 24)) + 1;
 
             const newLeave = {
                 action: "addLeave",
                 leaveId: 'LV-' + Math.floor(1000 + Math.random() * 9000),
                 staffId: currentUser.id,
                 staffName: currentUser.name,
-                type: leaveType,
+                type: leaveType + ` (${totalDays} দিন)`,
                 startDate: start,
                 endDate: end,
                 reason: reason,
-                status: "Pending (Manager Approval)",
-                managerApproval: "Pending",
+                prescription: prescriptionData,
+                status: isMgr ? "Pending (MD/SuperAdmin Approval)" : "Pending (Manager Approval)",
+                managerApproval: isMgr ? "Skipped (Manager)" : "Pending",
                 finalApproval: "Pending"
             };
 
             globalLeaves.push(newLeave);
             localStorage.setItem('bachchu_leaves', JSON.stringify(globalLeaves));
-            try {
-                await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(newLeave) });
-            } catch(e) {}
+            try { await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(newLeave) }); } catch(e) {}
 
-            showToast("আবেদন সফল!", "ছুটির আবেদন ম্যানেজারের কাছে পাঠানো হয়েছে।");
+            showToast("আবেদন সফল!", "ছুটির আবেদন জমা দেওয়া হয়েছে।");
             e.target.reset();
             loadLeavesData();
         }
 
         function renderLeaveLists() {
-            // Staff my leaves
-            if(currentUser.type === 'staff') {
+            if(currentUser.type === 'staff' || currentUser.type === 'manager') {
                 const myLeaves = globalLeaves.filter(l => String(l.staffId) === String(currentUser.id));
-                document.getElementById("myLeaveHistoryContainer").innerHTML = myLeaves.length === 0 ? `<p class="text-xs text-slate-400">কোনো ছুটির আবেদন নেই</p>` : `
-                    <table class="w-full text-xs text-left border">
-                        <tr class="bg-slate-100"><th class="p-2">আইডি</th><th class="p-2">ধরন</th><th class="p-2">তারিখ</th><th class="p-2">কারণ</th><th class="p-2">স্ট্যাটাস</th></tr>
-                        ${myLeaves.map(l => `<tr><td class="p-2 font-bold">${l.leaveId}</td><td class="p-2">${l.type}</td><td class="p-2">${l.startDate} হতে ${l.endDate}</td><td class="p-2">${l.reason}</td><td class="p-2"><span class="px-2 py-0.5 rounded text-[10px] ${l.finalApproval==='Approved'?'bg-emerald-100 text-emerald-800':(l.finalApproval==='Rejected'?'bg-rose-100 text-rose-800':'bg-amber-100 text-amber-800')}">${l.status}</span></td></tr>`).join('')}
-                    </table>
-                `;
+                const containerId = currentUser.type === 'staff' ? "myLeaveHistoryContainer" : null;
+                if(containerId && document.getElementById(containerId)) {
+                    document.getElementById(containerId).innerHTML = myLeaves.length === 0 ? `<p class="text-xs text-slate-400">কোনো ছুটির আবেদন নেই</p>` : `
+                        <table class="w-full text-xs text-left border">
+                            <tr class="bg-slate-100"><th class="p-2">আইডি</th><th class="p-2">ধরন</th><th class="p-2">তারিখ</th><th class="p-2">কারণ</th><th class="p-2">প্রেসক্রিপশন</th><th class="p-2">স্ট্যাটাস</th></tr>
+                            ${myLeaves.map(l => `<tr><td class="p-2 font-bold">${l.leaveId}</td><td class="p-2">${l.type}</td><td class="p-2">${l.startDate} হতে ${l.endDate}</td><td class="p-2">${l.reason}</td><td class="p-2">${l.prescription ? `<a href="${l.prescription}" target="_blank" class="text-blue-600 underline">দেখুন</a>` : 'নেই'}</td><td class="p-2"><span class="px-2 py-0.5 rounded text-[10px] ${l.finalApproval==='Approved'?'bg-emerald-100 text-emerald-800':(l.finalApproval==='Rejected'?'bg-rose-100 text-rose-800':'bg-amber-100 text-amber-800')}">${l.status}</span></td></tr>`).join('')}
+                        </table>
+                    `;
+                }
             }
 
-            // Manager Leave List (1st approval)
             if(currentUser.type === 'manager') {
-                document.getElementById("managerLeaveListContainer").innerHTML = globalLeaves.length === 0 ? `<p class="text-xs text-slate-400">কোনো আবেদন নেই</p>` : `
+                const pendingForMgr = globalLeaves.filter(l => l.managerApproval === 'Pending');
+                document.getElementById("managerLeaveListContainer").innerHTML = pendingForMgr.length === 0 ? `<p class="text-xs text-slate-400">কোনো আবেদন নেই</p>` : `
                     <table class="w-full text-xs text-left border">
-                        <tr class="bg-slate-100"><th class="p-2">স্টাফ</th><th class="p-2">ধরন</th><th class="p-2">তারিখ</th><th class="p-2">কারণ</th><th class="p-2">ম্যানেজার অনুমোদন</th><th class="p-2 text-right">অ্যাকশন</th></tr>
-                        ${globalLeaves.map(l => `<tr><td class="p-2 font-bold">${l.staffName} (${l.staffId})</td><td class="p-2">${l.type}</td><td class="p-2">${l.startDate} হতে ${l.endDate}</td><td class="p-2">${l.reason}</td><td class="p-2">${l.managerApproval}</td><td class="p-2 text-right">${l.managerApproval==='Pending'?`<button onclick="processLeave('${l.leaveId}', 'manager', 'Approved')" class="bg-emerald-600 text-white px-2 py-1 rounded text-xs mr-1">অনুমোদন</button><button onclick="processLeave('${l.leaveId}', 'manager', 'Rejected')" class="bg-rose-600 text-white px-2 py-1 rounded text-xs">বাতিল</button>`:'সম্পন্ন'}</td></tr>`).join('')}
+                        <tr class="bg-slate-100"><th class="p-2">স্টাফ</th><th class="p-2">ধরন</th><th class="p-2">তারিখ</th><th class="p-2">কারণ</th><th class="p-2">প্রেসক্রিপশন</th><th class="p-2 text-right">অ্যাকশন</th></tr>
+                        ${pendingForMgr.map(l => `<tr><td class="p-2 font-bold">${l.staffName} (${l.staffId})</td><td class="p-2">${l.type}</td><td class="p-2">${l.startDate} হতে ${l.endDate}</td><td class="p-2">${l.reason}</td><td class="p-2">${l.prescription ? `<a href="${l.prescription}" target="_blank" class="text-blue-600 underline">দেখুন</a>` : 'নেই'}</td><td class="p-2 text-right"><button onclick="processLeave('${l.leaveId}', 'manager', 'Approved')" class="bg-emerald-600 text-white px-2 py-1 rounded text-xs mr-1">অনুমোদন</button><button onclick="processLeave('${l.leaveId}', 'manager', 'Rejected')" class="bg-rose-600 text-white px-2 py-1 rounded text-xs">বাতিল</button></td></tr>`).join('')}
                     </table>
                 `;
             }
 
-            // Admin Leave List (Final approval)
             if(currentUser.type === 'admin' || currentUser.type === 'superadmin') {
-                const pendingForFinal = globalLeaves.filter(l => l.managerApproval === 'Approved');
-                document.getElementById("adminLeaveListContainer").innerHTML = pendingForFinal.length === 0 ? `<p class="text-xs text-slate-400">অনুমোদনের জন্য কোনো আবেদন নেই</p>` : `
-                    <table class="w-full text-xs text-left border">
-                        <tr class="bg-slate-100"><th class="p-2">স্টাফ</th><th class="p-2">ধরন</th><th class="p-2">তারিখ</th><th class="p-2">কারণ</th><th class="p-2">ম্যানেজার স্ট্যাটাস</th><th class="p-2 text-right">ফাইনাল অ্যাকশন</th></tr>
-                        ${pendingForFinal.map(l => `<tr><td class="p-2 font-bold">${l.staffName} (${l.staffId})</td><td class="p-2">${l.type}</td><td class="p-2">${l.startDate} হতে ${l.endDate}</td><td class="p-2">${l.reason}</td><td class="p-2 text-emerald-600 font-semibold">${l.managerApproval}</td><td class="p-2 text-right">${l.finalApproval==='Pending'?`<button onclick="processLeave('${l.leaveId}', 'admin', 'Approved')" class="bg-emerald-600 text-white px-2 py-1 rounded text-xs mr-1">ফাইনাল অ্যাপ্রুভ</button><button onclick="processLeave('${l.leaveId}', 'admin', 'Rejected')" class="bg-rose-600 text-white px-2 py-1 rounded text-xs">রিজেক্ট</button>`:l.finalApproval}</td></tr>`).join('')}
-                    </table>
-                `;
+                const pendingForFinal = globalLeaves.filter(l => l.managerApproval !== 'Pending' && l.finalApproval === 'Pending');
+                let targetId = currentUser.type === 'admin' ? "adminLeaveListContainer" : "superAdminLeaveListContainer";
+                const elem = document.getElementById(targetId);
+                if(elem) {
+                    elem.innerHTML = pendingForFinal.length === 0 ? `<p class="text-xs text-slate-400">অনুমোদনের জন্য কোনো আবেদন নেই</p>` : `
+                        <table class="w-full text-xs text-left border">
+                            <tr class="bg-slate-100"><th class="p-2">স্টাফ</th><th class="p-2">ধরন</th><th class="p-2">তারিখ</th><th class="p-2">কারণ</th><th class="p-2">প্রেসক্রিপশন</th><th class="p-2">ম্যানেজার স্ট্যাটাস</th><th class="p-2 text-right">ফাইনাল অ্যাকশন</th></tr>
+                            ${pendingForFinal.map(l => `<tr><td class="p-2 font-bold">${l.staffName} (${l.staffId})</td><td class="p-2">${l.type}</td><td class="p-2">${l.startDate} হতে ${l.endDate}</td><td class="p-2">${l.reason}</td><td class="p-2">${l.prescription ? `<a href="${l.prescription}" target="_blank" class="text-blue-600 underline">দেখুন</a>` : 'নেই'}</td><td class="p-2 text-emerald-600 font-semibold">${l.managerApproval}</td><td class="p-2 text-right"><button onclick="processLeave('${l.leaveId}', 'admin', 'Approved')" class="bg-emerald-600 text-white px-2 py-1 rounded text-xs mr-1">ফাইনাল অ্যাপ্রুভ</button><button onclick="processLeave('${l.leaveId}', 'admin', 'Rejected')" class="bg-rose-600 text-white px-2 py-1 rounded text-xs">রিজেক্ট</button></td></tr>`).join('')}
+                        </table>
+                    `;
+                }
             }
         }
 
@@ -870,14 +1056,108 @@
             if(!leave) return;
             if(byRole === 'manager') {
                 leave.managerApproval = decision;
-                leave.status = decision === 'Approved' ? 'Pending (Final MD Approval)' : 'Rejected by Manager';
+                leave.status = decision === 'Approved' ? 'Pending (Final MD/SuperAdmin Approval)' : 'Rejected by Manager';
             } else {
                 leave.finalApproval = decision;
-                leave.status = decision === 'Approved' ? 'Approved (Final)' : 'Rejected by MD';
+                leave.status = decision === 'Approved' ? 'Approved (Final)' : 'Rejected by MD/SuperAdmin';
             }
             localStorage.setItem('bachchu_leaves', JSON.stringify(globalLeaves));
             loadLeavesData();
             showToast("সফল!", `ছুটির আবেদন ${decision === 'Approved' ? 'অনুমোদন' : 'বাতিল'} করা হয়েছে।`);
+        }
+
+        // ATTENDANCE APPLICATIONS (FOR FORGOTTEN / SERVER ISSUES)
+        async function loadAttApplicationsData() {
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getAttApps`);
+                globalAttApplications = await res.json();
+            } catch(e) {
+                globalAttApplications = JSON.parse(localStorage.getItem('bachchu_att_apps') || '[]');
+            }
+            updateAttAppBadges();
+            renderAttAppLists();
+        }
+
+        function updateAttAppBadges() {
+            let pendingCount = globalAttApplications.filter(a => a.status === 'Pending').length;
+            ['adminAttAppBadge', 'superAttAppBadge'].forEach(id => {
+                const elem = document.getElementById(id);
+                if(elem) {
+                    if(pendingCount > 0) { elem.innerText = pendingCount; elem.classList.remove("hidden"); } else { elem.classList.add("hidden"); }
+                }
+            });
+        }
+
+        function openManualAttModal() { document.getElementById("manualAttModal").classList.remove("hidden"); }
+        function closeManualAttModal() { document.getElementById("manualAttModal").classList.add("hidden"); }
+
+        async function submitManualAttendance(e) {
+            e.preventDefault();
+            const dateStr = document.getElementById("manDate").value;
+            const inT = document.getElementById("manInTime").value || "";
+            const outT = document.getElementById("manOutTime").value || "";
+            const lOut = document.getElementById("manLunchOut").value || "";
+            const lIn = document.getElementById("manLunchIn").value || "";
+            const reason = document.getElementById("manReason").value.trim();
+
+            const newApp = {
+                action: "addAttApp",
+                appId: 'ATT-' + Math.floor(1000 + Math.random() * 9000),
+                staffId: currentUser.id,
+                staffName: currentUser.name,
+                dateStr: dateStr,
+                inTime: inT,
+                outTime: outT,
+                lunchOut: lOut,
+                lunchIn: lIn,
+                reason: reason,
+                status: "Pending"
+            };
+
+            globalAttApplications.push(newApp);
+            localStorage.setItem('bachchu_att_apps', JSON.stringify(globalAttApplications));
+            try { await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(newApp) }); } catch(e) {}
+
+            closeManualAttModal();
+            showToast("সফল!", "হাজিরা মিসিং আবেদন অ্যাডমিন/সুপার অ্যাডমিনের কাছে পাঠানো হয়েছে।");
+            loadAttApplicationsData();
+        }
+
+        function renderAttAppLists() {
+            if(currentUser.type === 'admin' || currentUser.type === 'superadmin') {
+                const pendingApps = globalAttApplications.filter(a => a.status === 'Pending');
+                let targetId = currentUser.type === 'admin' ? "adminAttAppListContainer" : "superAdminAttAppListContainer";
+                const elem = document.getElementById(targetId);
+                if(elem) {
+                    elem.innerHTML = pendingApps.length === 0 ? `<p class="text-xs text-slate-400">অনুমোদনের জন্য কোনো হাজিরার আবেদন নেই</p>` : `
+                        <table class="w-full text-xs text-left border">
+                            <tr class="bg-slate-100"><th class="p-2">স্টাফ</th><th class="p-2">তারিখ</th><th class="p-2">ইন ও আউট</th><th class="p-2">লাঞ্চ</th><th class="p-2">কারণ</th><th class="p-2 text-right">অ্যাকশন</th></tr>
+                            ${pendingApps.map(a => `<tr><td class="p-2 font-bold">${a.staffName} (${a.staffId})</td><td class="p-2">${a.dateStr}</td><td class="p-2">ইন: ${a.inTime||'-'} <br>আউট: ${a.outTime||'-'}</td><td class="p-2">${a.lunchOut||'-'} থেকে ${a.lunchIn||'-'}</td><td class="p-2">${a.reason}</td><td class="p-2 text-right"><button onclick="processAttApp('${a.appId}', 'Approved')" class="bg-emerald-600 text-white px-2 py-1 rounded text-xs mr-1">অনুমোদন</button><button onclick="processAttApp('${a.appId}', 'Rejected')" class="bg-rose-600 text-white px-2 py-1 rounded text-xs">বাতিল</button></td></tr>`).join('')}
+                        </table>
+                    `;
+                }
+            }
+        }
+
+        async function processAttApp(appId, decision) {
+            let app = globalAttApplications.find(a => a.appId === appId);
+            if(!app) return;
+            app.status = decision;
+            localStorage.setItem('bachchu_att_apps', JSON.stringify(globalAttApplications));
+            
+            if(decision === 'Approved') {
+                // Add to official attendance
+                let totalHours = "8.00 ঘণ্টা (আবেদনকৃত)";
+                const attPayload = {
+                    action: "addAttendance", staffId: app.staffId, staffName: app.staffName,
+                    dateStr: new Date(app.dateStr).toLocaleDateString(), inTime: app.inTime || "09:30 AM", inPhoto: "", inStatus: "Manual/Present",
+                    lunchOut: app.lunchOut, lunchIn: app.lunchIn, outTime: app.outTime || "06:00 PM", outPhoto: "", totalDuty: totalHours, diffDuty: "সফল", location: "Manual Approved"
+                };
+                try { await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(attPayload) }); } catch(e){}
+            }
+
+            loadAttApplicationsData();
+            showToast("সফল!", `হাজিরা আবেদন ${decision === 'Approved' ? 'অনুমোদন ও প্রেজেন্ট' : 'বাতিল'} করা হয়েছে।`);
         }
 
         // CAMERA & ATTENDANCE
@@ -971,6 +1251,7 @@
                 } else if (tab === 'leaveTab') {
                     document.getElementById("staffLeaveSection").classList.remove("hidden");
                     document.getElementById("btnLeaveTab").className = "bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow";
+                    loadLeavesData();
                 } else {
                     document.getElementById("staffProfileSection").classList.remove("hidden");
                     document.getElementById("btnProfTab").className = "bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow";
@@ -981,9 +1262,11 @@
             } else if (role === 'manager') {
                 document.getElementById("managerAttendanceSection").classList.add("hidden");
                 document.getElementById("managerLeaveApprovalSection").classList.add("hidden");
+                document.getElementById("managerMyLeaveSection").classList.add("hidden");
                 document.getElementById("managerProfileSection").classList.add("hidden");
                 document.getElementById("mgrBtnAtt").className = "bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold";
                 document.getElementById("mgrBtnLeave").className = "bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold";
+                document.getElementById("mgrBtnMyLeave").className = "bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold";
                 document.getElementById("mgrBtnProf").className = "bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold";
 
                 if(tab === 'attTab') {
@@ -992,6 +1275,10 @@
                 } else if(tab === 'leaveTab') {
                     document.getElementById("managerLeaveApprovalSection").classList.remove("hidden");
                     document.getElementById("mgrBtnLeave").className = "bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow";
+                    loadLeavesData();
+                } else if(tab === 'myLeaveTab') {
+                    document.getElementById("managerMyLeaveSection").classList.remove("hidden");
+                    document.getElementById("mgrBtnMyLeave").className = "bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow";
                     loadLeavesData();
                 } else {
                     document.getElementById("managerProfileSection").classList.remove("hidden");
@@ -1003,9 +1290,11 @@
             } else if (role === 'admin') {
                 document.getElementById("adminAttendanceSection").classList.add("hidden");
                 document.getElementById("adminLeaveApprovalSection").classList.add("hidden");
+                document.getElementById("adminAttApprovalSection").classList.add("hidden");
                 document.getElementById("adminProfileSection").classList.add("hidden");
                 document.getElementById("adminBtnAttTab").className = "bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold";
                 document.getElementById("adminBtnLeaveTab").className = "bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold";
+                document.getElementById("adminBtnAttAppTab").className = "bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold";
                 document.getElementById("adminBtnProfTab").className = "bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold";
 
                 if (tab === 'attendanceTab') {
@@ -1015,6 +1304,10 @@
                     document.getElementById("adminLeaveApprovalSection").classList.remove("hidden");
                     document.getElementById("adminBtnLeaveTab").className = "bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow";
                     loadLeavesData();
+                } else if(tab === 'attAppTab') {
+                    document.getElementById("adminAttApprovalSection").classList.remove("hidden");
+                    document.getElementById("adminBtnAttAppTab").className = "bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow";
+                    loadAttApplicationsData();
                 } else {
                     document.getElementById("adminProfileSection").classList.remove("hidden");
                     document.getElementById("adminBtnProfTab").className = "bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow";
@@ -1025,9 +1318,13 @@
             } else if (role === 'superadmin') {
                 document.getElementById("superAdminControlSection").classList.add("hidden");
                 document.getElementById("superAdminReportSection").classList.add("hidden");
+                document.getElementById("superAdminLeaveSection").classList.add("hidden");
+                document.getElementById("superAdminAttApprovalSection").classList.add("hidden");
                 document.getElementById("superAdminProfileSection").classList.add("hidden");
                 document.getElementById("ownerBtnCtrlTab").className = "bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold";
                 document.getElementById("ownerBtnRepTab").className = "bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold";
+                document.getElementById("ownerBtnLeaveTab").className = "bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold";
+                document.getElementById("ownerBtnAttAppTab").className = "bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold";
                 document.getElementById("ownerBtnProfTab").className = "bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold";
 
                 if (tab === 'controlTab') {
@@ -1037,6 +1334,14 @@
                     document.getElementById("superAdminReportSection").classList.remove("hidden");
                     document.getElementById("ownerBtnRepTab").className = "bg-red-600 text-white px-3 py-2 rounded-lg text-xs font-semibold shadow";
                     loadSuperAdminReportDropdown();
+                } else if (tab === 'leaveTab') {
+                    document.getElementById("superAdminLeaveSection").classList.remove("hidden");
+                    document.getElementById("ownerBtnLeaveTab").className = "bg-red-600 text-white px-3 py-2 rounded-lg text-xs font-semibold shadow";
+                    loadLeavesData();
+                } else if (tab === 'attAppTab') {
+                    document.getElementById("superAdminAttApprovalSection").classList.remove("hidden");
+                    document.getElementById("ownerBtnAttAppTab").className = "bg-red-600 text-white px-3 py-2 rounded-lg text-xs font-semibold shadow";
+                    loadAttApplicationsData();
                 } else if (tab === 'profileTab') {
                     document.getElementById("superAdminProfileSection").classList.remove("hidden");
                     document.getElementById("ownerBtnProfTab").className = "bg-red-600 text-white px-3 py-2 rounded-lg text-xs font-semibold shadow";
@@ -1137,15 +1442,12 @@
                     let outT = new Date();
                     let diffMs = outT - inT;
                     let totalHours = (diffMs / (1000 * 60 * 60)).toFixed(2);
-                    let isFriday = new Date().getDay() === 5;
-                    let diffHours = (totalHours - (isFriday ? 3 : 12)).toFixed(2);
-                    let diffText = diffHours >= 0 ? `+${diffHours} ঘণ্টা বেশি` : `${diffHours} ঘণ্টা কম`;
                     const payload = {
                         action: "updateAttendance", staffId: user.id, dateStr: todayStr,
-                        outTime: nowTime, outPhoto: photoData, totalDuty: totalHours + " ঘণ্টা", diffDuty: diffText
+                        outTime: nowTime, outPhoto: photoData, totalDuty: totalHours + " ঘণ্টা", diffDuty: "সফল"
                     };
                     await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
-                    showToast("আউট-টাইম সফল!", `ডিউটি: ${totalHours} ঘণ্টা (${diffText})`);
+                    showToast("আউট-টাইম সফল!", `ডিউটি: ${totalHours} ঘণ্টা`);
                 } else if (type === 'lunchOut') {
                     await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "updateAttendance", staffId: user.id, dateStr: todayStr, lunchOut: nowTime }) });
                     showToast("লাঞ্চ আউট সেভ হয়েছে", nowTime);
@@ -1162,8 +1464,8 @@
             const myRecords = globalAttendance.filter(r => String(r.staffId) === String(currentUser.id));
             document.getElementById("staffHistoryContainer").innerHTML = myRecords.length === 0 ? `<p class="text-xs text-slate-400 text-center py-4">কোনো হাজিরা রেকর্ড নেই</p>` : `
                 <table class="w-full text-xs text-left border">
-                    <tr class="bg-slate-100"><th class="p-2">তারিখ</th><th class="p-2">ইন</th><th class="p-2">স্ট্যাটাস</th><th class="p-2">আউট</th><th class="p-2">মোট ডিউটি</th><th class="p-2">অবস্থান</th></tr>
-                    ${myRecords.slice(-5).reverse().map(r => `<tr><td class="p-2">${r.dateStr}</td><td class="p-2">${r.inTime}</td><td class="p-2"><span class="px-1.5 py-0.5 rounded text-[10px] ${r.inStatus==='Late'?'bg-amber-100 text-amber-800':'bg-emerald-100 text-emerald-800'}">${r.inStatus}</span></td><td class="p-2">${r.outTime||'-'}</td><td class="p-2">${r.totalDuty||'-'}</td><td class="p-2 text-[10px] text-slate-500">${r.location||'Online'}</td></tr>`).join('')}
+                    <tr class="bg-slate-100"><th class="p-2">তারিখ</th><th class="p-2">ইন</th><th class="p-2">লাঞ্চ আউট-ইন</th><th class="p-2">আউট</th><th class="p-2">ডিউটি ও লাঞ্চ</th></tr>
+                    ${myRecords.slice(-5).reverse().map(r => `<tr><td class="p-2">${r.dateStr}</td><td class="p-2">${r.inTime}</td><td class="p-2">${r.lunchOut||'-'} থেকে ${r.lunchIn||'-'}</td><td class="p-2">${r.outTime||'-'}</td><td class="p-2">${r.totalDuty||'-'}</td></tr>`).join('')}
                 </table>
             `;
             renderStaffMonthlyCalendar();
@@ -1177,8 +1479,8 @@
 
             document.getElementById("managerTodayStaffSummary").innerHTML = todaysRecords.length === 0 ? `<p class="text-slate-400">আজ এখনো কেউ হাজিরা দেয়নি</p>` : `
                 <table class="w-full text-xs text-left border">
-                    <tr class="bg-slate-100"><th class="p-2">আইডি</th><th class="p-2">নাম</th><th class="p-2">ইন-টাইম</th><th class="p-2">স্ট্যাটাস</th><th class="p-2">আউট-টাইম</th></tr>
-                    ${todaysRecords.map(r => `<tr><td class="p-2 font-bold">${r.staffId}</td><td class="p-2">${r.staffName}</td><td class="p-2">${r.inTime}</td><td class="p-2"><span class="px-1.5 py-0.5 rounded text-[10px] ${r.inStatus==='Late'?'bg-amber-100 text-amber-800':'bg-emerald-100 text-emerald-800'}">${r.inStatus}</span></td><td class="p-2">${r.outTime||'-'}</td></tr>`).join('')}
+                    <tr class="bg-slate-100"><th class="p-2">আইডি</th><th class="p-2">নাম</th><th class="p-2">ইন-টাইম</th><th class="p-2">লাঞ্চ</th><th class="p-2">আউট</th></tr>
+                    ${todaysRecords.map(r => `<tr><td class="p-2 font-bold">${r.staffId}</td><td class="p-2">${r.staffName}</td><td class="p-2">${r.inTime}</td><td class="p-2">${r.lunchOut ? r.lunchOut+' - '+r.lunchIn : 'না'}</td><td class="p-2">${r.outTime||'-'}</td></tr>`).join('')}
                 </table>
             `;
         }
@@ -1188,7 +1490,7 @@
             if (!monthVal) return;
             const [year, month] = monthVal.split('-').map(Number);
             const daysInMonth = new Date(year, month, 0).getDate();
-            let html = '';
+            let html = '', totalDaysPresent = 0, totalDutyHoursSum = 0;
             const myRecords = globalAttendance.filter(r => String(r.staffId) === String(currentUser.id));
 
             for (let day = 1; day <= daysInMonth; day++) {
@@ -1198,12 +1500,18 @@
                 });
                 let bgClass = "bg-rose-100 text-rose-800 border-rose-300", statusText = "Absent";
                 if (matched) {
+                    totalDaysPresent++;
+                    if(matched.totalDuty) {
+                        let h = parseFloat(matched.totalDuty) || 8;
+                        totalDutyHoursSum += h;
+                    }
                     if (matched.inStatus === 'Late') { bgClass = "bg-amber-100 text-amber-800 border-amber-300"; statusText = "Late"; }
                     else { bgClass = "bg-emerald-100 text-emerald-800 border-emerald-300"; statusText = "Present"; }
                 }
                 html += `<div class="border rounded-xl p-2 text-center ${bgClass} flex flex-col justify-between items-center shadow-sm"><span class="text-xs font-bold">${day}</span><span class="text-[10px] font-semibold mt-1">${statusText === 'Present' ? 'প্রেজেন্ট' : (statusText === 'Late' ? 'লেট' : 'অনুপস্থিত')}</span></div>`;
             }
             document.getElementById("staffMonthlyCalendarGrid").innerHTML = html;
+            document.getElementById("monthlySummaryBadge").innerHTML = `<i class="fa-solid fa-calculator mr-2 text-red-600"></i>এই মাসে মোট উপস্থিতি: <strong class="text-emerald-700">${totalDaysPresent} দিন</strong> | মোট ডিউটি সময়: <strong class="text-blue-700">${totalDutyHoursSum.toFixed(1)} ঘণ্টা</strong>`;
         }
 
         async function loadAdminView() {
@@ -1213,7 +1521,7 @@
             let targetDate = new Date(selectedDateVal), targetStr = targetDate.toLocaleDateString();
             const todaysRecords = records.filter(r => new Date(r.dateStr).toDateString() === targetDate.toDateString() || String(r.dateStr) === String(targetStr));
             
-            let presentCount = todaysRecords.filter(r => r.inStatus === 'Present').length;
+            let presentCount = todaysRecords.filter(r => r.inStatus === 'Present' || r.inStatus === 'Manual/Present').length;
             let lateCount = todaysRecords.filter(r => r.inStatus === 'Late').length;
             let totalPresent = presentCount + lateCount;
             
@@ -1222,17 +1530,38 @@
             
             const uRes = await fetch(`${SCRIPT_URL}?action=getUsers`);
             const allUsers = await uRes.json();
-            const staffList = allUsers.filter(u => u.type === 'staff');
+            const staffList = allUsers.filter(u => u.type === 'staff' || u.type === 'manager');
             document.getElementById("statTotalAbsent").innerText = `${Math.max(0, staffList.length - totalPresent)} জন`;
 
             renderAdminChart(presentCount, lateCount, Math.max(0, staffList.length - totalPresent));
 
             document.getElementById("adminAttendanceTableContainer").innerHTML = todaysRecords.length === 0 ? `<p class="text-xs text-slate-400 text-center py-4">নির্বাচিত তারিখে কোনো হাজিরা রেকর্ড নেই</p>` : `
                 <table class="w-full text-xs text-left border">
-                    <tr class="bg-slate-100"><th class="p-2">আইডি</th><th class="p-2">নাম</th><th class="p-2">ইন-টাইম</th><th class="p-2">স্ট্যাটাস</th><th class="p-2">লাঞ্চ আউট</th><th class="p-2">লাঞ্চ ইন</th><th class="p-2">আউট-টাইম</th><th class="p-2">মোট ডিউটি</th><th class="p-2">অবস্থান</th></tr>
-                    ${todaysRecords.map(r => `<tr><td class="p-2 font-bold">${r.staffId}</td><td class="p-2">${r.staffName}</td><td class="p-2">${r.inTime}</td><td class="p-2"><span class="px-1.5 py-0.5 rounded text-[10px] ${r.inStatus==='Late'?'bg-amber-100 text-amber-800':'bg-emerald-100 text-emerald-800'}">${r.inStatus}</span></td><td class="p-2">${r.lunchOut||'-'}</td><td class="p-2">${r.lunchIn||'-'}</td><td class="p-2">${r.outTime||'-'}</td><td class="p-2">${r.totalDuty||'-'}</td><td class="p-2 text-[10px] text-slate-500">${r.location||'Online'}</td></tr>`).join('')}
+                    <tr class="bg-slate-100"><th class="p-2">আইডি</th><th class="p-2">নাম</th><th class="p-2">ইন-টাইম</th><th class="p-2">লাঞ্চ আউট</th><th class="p-2">লাঞ্চ ইন</th><th class="p-2">আউট-টাইম</th><th class="p-2">মোট ডিউটি</th></tr>
+                    ${todaysRecords.map(r => `<tr><td class="p-2 font-bold">${r.staffId}</td><td class="p-2">${r.staffName}</td><td class="p-2">${r.inTime}</td><td class="p-2">${r.lunchOut||'-'}</td><td class="p-2">${r.lunchIn||'-'}</td><td class="p-2">${r.outTime||'-'}</td><td class="p-2 font-semibold text-emerald-700">${r.totalDuty||'-'}</td></tr>`).join('')}
                 </table>
             `;
+            calculateWinnerOfHonor();
+        }
+
+        async function calculateWinnerOfHonor() {
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
+                const records = await res.json();
+                let dutyMap = {};
+                records.forEach(r => {
+                    if(r.totalDuty) {
+                        let h = parseFloat(r.totalDuty) || 0;
+                        dutyMap[r.staffName] = (dutyMap[r.staffName] || 0) + h;
+                    }
+                });
+                let winnerName = "এখনো নির্ধারিত হয়নি", maxH = 0;
+                for(let name in dutyMap) {
+                    if(dutyMap[name] > maxH) { maxH = dutyMap[name]; winnerName = name; }
+                }
+                const elem = document.getElementById("winnerDisplayInfo");
+                if(elem) elem.innerText = `${winnerName} (সর্বমোট ডিউটি: ${maxH.toFixed(1)} ঘণ্টা)`;
+            } catch(e) {}
         }
 
         function renderAdminChart(present, late, absent) {
@@ -1252,13 +1581,13 @@
             const res = await fetch(`${SCRIPT_URL}?action=getUsers`);
             globalUsers = await res.json();
             const staffList = globalUsers.filter(u => u.type === 'staff');
-            const adminMgrList = globalUsers.filter(u => u.type === 'admin' || u.type === 'manager');
+            const adminMgrList = globalUsers.filter(u => u.type !== 'staff');
 
             document.getElementById("superAdminStaffList").innerHTML = staffList.map(u => `
                 <tr class="hover:bg-slate-50">
                     <td class="p-2 font-bold">${u.id}</td><td class="p-2">${u.name}</td><td class="p-2">${u.role}</td>
                     <td class="p-2"><input type="text" id="pass_${u.id}" placeholder="নতুন পাসওয়ার্ড" class="border px-2 py-1 rounded text-xs w-28"> <button onclick="resetPass('${u.id}')" class="bg-blue-600 text-white px-2 py-1 rounded text-xs">সেভ</button></td>
-                    <td class="p-2 text-right"><button onclick="deleteUser('${u.id}')" class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded font-semibold">ডিলিট স্টাফ</button></td>
+                    <td class="p-2 text-right"><button onclick="deleteUser('${u.id}')" class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded font-semibold">ডিলিট</button></td>
                 </tr>
             `).join('') || `<tr><td colspan="5" class="p-4 text-center text-slate-400">কোনো স্টাফ নেই</td></tr>`;
 
@@ -1268,7 +1597,8 @@
                     <td class="p-2"><input type="text" id="pass_${u.id}" placeholder="নতুন পাসওয়ার্ড" class="border px-2 py-1 rounded text-xs w-28"> <button onclick="resetPass('${u.id}')" class="bg-blue-600 text-white px-2 py-1 rounded text-xs">সেভ</button></td>
                     <td class="p-2 text-right"><button onclick="deleteUser('${u.id}')" class="text-xs bg-rose-100 text-rose-700 px-2 py-1 rounded font-semibold">ডিলিট</button></td>
                 </tr>
-            `).join('') || `<tr><td colspan="5" class="p-4 text-center text-slate-400">কোনো ম্যানেজার বা অ্যাডমিন নেই</td></tr>`;
+            `).join('') || `<tr><td colspan="5" class="p-4 text-center text-slate-400">কোনো অ্যাকাউন্ট নেই</td></tr>`;
+            calculateWinnerOfHonor();
         }
 
         async function loadSuperAdminReportDropdown() {
@@ -1355,8 +1685,8 @@
             const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
             const records = await res.json();
             if(records.length === 0) return showToast("সতর্কতা", "ডাউনলোড করার মতো ডাটা নেই!", "info");
-            let csv = "স্টাফ আইডি,নাম,তারিখ,ইন-টাইম,স্ট্যাটাস,লাঞ্চ আউট,লাঞ্চ ইন,আউট-টাইম,মোট ডিউটি,কম/বেশি,অবস্থান\n";
-            records.forEach(r => { csv += `${r.staffId},${r.staffName},${r.dateStr},${r.inTime},${r.inStatus},${r.lunchOut||''},${r.lunchIn||''},${r.outTime||''},${r.totalDuty||''},${r.diffDuty||''},${r.location||''}\n`; });
+            let csv = "স্টাফ আইডি,নাম,তারিখ,ইন-টাইম,স্ট্যাটাস,লাঞ্চ আউট,লাঞ্চ ইন,আউট-টাইম,মোট ডিউটি,অবস্থান\n";
+            records.forEach(r => { csv += `${r.staffId},${r.staffName},${r.dateStr},${r.inTime},${r.inStatus},${r.lunchOut||''},${r.lunchIn||''},${r.outTime||''},${r.totalDuty||''},${r.location||''}\n`; });
             const link = document.createElement("a");
             link.href = encodeURI("data:text/csv;charset=utf-8," + csv);
             link.download = `Bachchu_Motors_Attendance_${new Date().toLocaleDateString()}.csv`;
@@ -1365,9 +1695,7 @@
             showToast("ডাউনলোড সম্পন্ন", "CSV ফাইল সেভ হয়েছে");
         }
 
-        function exportAttendancePDF() {
-            window.print();
-        }
+        function exportAttendancePDF() { window.print(); }
     </script>
 </body>
 </html>
