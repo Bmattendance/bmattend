@@ -36,6 +36,13 @@
             100% { transform: translateX(-120px) scaleX(1); }
         }
         .bike-riding { animation: rideBike 5s infinite linear; }
+
+        @keyframes scaleUp {
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .success-tick-anim { animation: scaleUp 0.5s ease-in-out forwards; }
     </style>
 </head>
 <body class="min-h-screen text-slate-800">
@@ -53,6 +60,17 @@
         </div>
         <h2 class="text-xl font-bold tracking-wider text-red-500 animate-pulse">বাচ্চু মটরস পোর্টাল লোড হচ্ছে...</h2>
         <p class="text-xs text-slate-400 mt-2">টু হুইলার বিজনেস, মাদারীপুর</p>
+    </div>
+
+    <!-- SUCCESS TICK OVERLAY MODAL -->
+    <div id="successTickModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-xs w-full text-center space-y-4 shadow-2xl success-tick-anim">
+            <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-4xl shadow-inner">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-800">সফলভাবে সম্পন্ন!</h3>
+            <p id="successTickText" class="text-xs text-slate-500">আপনার অনুরোধ সফলভাবে প্রসেস করা হয়েছে।</p>
+        </div>
     </div>
 
     <!-- TOAST NOTIFICATION -->
@@ -200,8 +218,12 @@
                             <button onclick="recordAttendanceAction('lunchOut')" class="bg-amber-600 hover:bg-amber-700 text-white py-2 rounded-lg text-sm">লাঞ্চ আউট</button>
                             <button onclick="recordAttendanceAction('lunchIn')" class="bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm">লাঞ্চ ইন</button>
                         </div>
-                        <div class="pt-2 border-t text-center">
-                            <button onclick="openManualAttModal()" class="text-xs text-red-600 hover:text-red-800 font-semibold underline"><i class="fa-solid fa-pen-to-square mr-1"></i>ভুলে গেলে বা সার্ভার সমস্যা হলে হাজিরা আবেদন করুন</button>
+                        <!-- HIGHLIGHTED MANUAL ATTENDANCE BUTTON -->
+                        <div class="pt-3 border-t">
+                            <button onclick="openManualAttModal()" class="w-full bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-700 hover:to-rose-800 text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-md flex items-center justify-center gap-2 transition transform hover:scale-[1.01]">
+                                <i class="fa-solid fa-pen-to-square text-amber-300 text-sm"></i>
+                                <span>হাজিরা মিসিং বা সার্ভার সমস্যা হলে এখানে আবেদন করুন</span>
+                            </button>
                         </div>
                     </div>
 
@@ -242,9 +264,9 @@
                         <div>
                             <label class="block text-xs font-semibold mb-1">ছুটির ধরন</label>
                             <select id="leaveType" onchange="checkLeaveType()" class="w-full border px-3 py-2 rounded-lg text-sm bg-white">
-                                <option value="ক্যাজুয়াল লিভ">ক্যাজুয়াল লিভ (মোকাবেলা বাকি: <span id="remCasual">১০</span> দিন)</option>
-                                <option value="সিক লিভ">সিক লিভ (মোকাবেলা বাকি: <span id="remSick">১০</span> দিন)</option>
-                                <option value="ইমারজেন্সি লিভ">ইমারজেন্সি লিভ (মোকাবেলা বাকি: <span id="remEmergency">৬</span> দিন)</option>
+                                <option value="ক্যাজুয়াল লিভ">ক্যাজুয়াল লিভ (বাকি: <span id="remCasual">১০</span> দিন)</option>
+                                <option value="সিক লিভ">সিক লিভ (বাকি: <span id="remSick">১০</span> দিন)</option>
+                                <option value="ইমারজেন্সি লিভ">ইমারজেন্সি লিভ (বাকি: <span id="remEmergency">৬</span> দিন)</option>
                             </select>
                         </div>
                         <div class="grid grid-cols-2 gap-2">
@@ -679,6 +701,15 @@
             setTimeout(() => toast.classList.add("translate-x-full", "opacity-0"), 3500);
         }
 
+        function triggerSuccessTick(msg = "আপনার অনুরোধ সফলভাবে সম্পন্ন হয়েছে।") {
+            document.getElementById("successTickText").innerText = msg;
+            const tickModal = document.getElementById("successTickModal");
+            tickModal.classList.remove("hidden");
+            setTimeout(() => {
+                tickModal.classList.add("hidden");
+            }, 1800);
+        }
+
         function initGPS() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
@@ -763,7 +794,7 @@
                         document.getElementById("reportMonthPicker").value = new Date().toISOString().slice(0, 7);
                         loadSuperAdminView();
                     }
-                    showToast("লগইন সফল!", `স্বাগতম ${user.name}`);
+                    triggerSuccessTick(`স্বাগতম ${user.name}!`);
                 } else {
                     showToast("লগইন ব্যর্থ!", "ইউজার আইডি বা পাসওয়ার্ড ভুল হয়েছে!", "error");
                 }
@@ -890,7 +921,7 @@
 
             closeNoticeModal();
             renderNotices();
-            showToast("সফল!", "নোটিশ বোর্ডে নতুন নোটিশ প্রকাশিত হয়েছে।");
+            triggerSuccessTick("নোটিশ সফলভাবে প্রকাশিত হয়েছে!");
         }
 
         // LEAVE SYSTEM WITH BALANCES & PRESCRIPTION
@@ -985,7 +1016,6 @@
                 return showToast("সতর্কতা", "সিক লিভের জন্য প্রেসক্রিপশনের ছবি আপলোড করা বাধ্যতামূলক!", "error");
             }
 
-            // Calculate total days requested
             let totalDays = Math.ceil(Math.abs(new Date(end) - new Date(start)) / (1000 * 60 * 60 * 24)) + 1;
 
             const newLeave = {
@@ -1007,9 +1037,9 @@
             localStorage.setItem('bachchu_leaves', JSON.stringify(globalLeaves));
             try { await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(newLeave) }); } catch(e) {}
 
-            showToast("আবেদন সফল!", "ছুটির আবেদন জমা দেওয়া হয়েছে।");
             e.target.reset();
             loadLeavesData();
+            triggerSuccessTick("ছুটির আবেদন সফলভাবে জমা হয়েছে!");
         }
 
         function renderLeaveLists() {
@@ -1063,7 +1093,7 @@
             }
             localStorage.setItem('bachchu_leaves', JSON.stringify(globalLeaves));
             loadLeavesData();
-            showToast("সফল!", `ছুটির আবেদন ${decision === 'Approved' ? 'অনুমোদন' : 'বাতিল'} করা হয়েছে।`);
+            triggerSuccessTick(`ছুটির আবেদন ${decision === 'Approved' ? 'অনুমোদন' : 'বাতিল'} করা হয়েছে!`);
         }
 
         // ATTENDANCE APPLICATIONS (FOR FORGOTTEN / SERVER ISSUES)
@@ -1119,8 +1149,8 @@
             try { await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(newApp) }); } catch(e) {}
 
             closeManualAttModal();
-            showToast("সফল!", "হাজিরা মিসিং আবেদন অ্যাডমিন/সুপার অ্যাডমিনের কাছে পাঠানো হয়েছে।");
             loadAttApplicationsData();
+            triggerSuccessTick("হাজিরা মিসিং আবেদন সফলভাবে জমা হয়েছে!");
         }
 
         function renderAttAppLists() {
@@ -1146,7 +1176,6 @@
             localStorage.setItem('bachchu_att_apps', JSON.stringify(globalAttApplications));
             
             if(decision === 'Approved') {
-                // Add to official attendance
                 let totalHours = "8.00 ঘণ্টা (আবেদনকৃত)";
                 const attPayload = {
                     action: "addAttendance", staffId: app.staffId, staffName: app.staffName,
@@ -1157,7 +1186,7 @@
             }
 
             loadAttApplicationsData();
-            showToast("সফল!", `হাজিরা আবেদন ${decision === 'Approved' ? 'অনুমোদন ও প্রেজেন্ট' : 'বাতিল'} করা হয়েছে।`);
+            triggerSuccessTick(`হাজিরা আবেদন ${decision === 'Approved' ? 'অনুমোদন ও প্রেজেন্ট' : 'বাতিল'} করা হয়েছে!`);
         }
 
         // CAMERA & ATTENDANCE
@@ -1391,9 +1420,9 @@
 
             try {
                 await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
-                showToast("প্রফাইল আপডেট সম্পন্ন", "আপনার তথ্য সেভ করা হয়েছে");
                 currentUser.phone = phone; currentUser.address = address; currentUser.emergency = emergency; currentUser.pass = payload.pass;
                 if(payload.photo) currentUser.photo = payload.photo;
+                triggerSuccessTick("প্রফাইল সফলভাবে আপডেট হয়েছে!");
             } catch (err) { showToast("ত্রুটি", "আপডেট করা সম্ভব হয়নি!", "error"); }
             btn.innerText = "প্রফাইল আপডেট করুন";
             btn.disabled = false;
@@ -1432,7 +1461,7 @@
                     lunchOut: "", lunchIn: "", outTime: "", outPhoto: "", totalDuty: "", diffDuty: "", location: currentGpsLocation
                 };
                 await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
-                showToast("ইন-টাইম সফল!", `স্ট্যাটাস: ${status} | ${currentGpsLocation}`);
+                triggerSuccessTick(`ইন-টাইম সফল (${status})!`);
             } else {
                 if (!todayRecord) return showToast("সতর্কতা", "প্রথমে আজকের ইন-টাইম দিন!", "error");
                 if (type === 'out') {
@@ -1447,13 +1476,13 @@
                         outTime: nowTime, outPhoto: photoData, totalDuty: totalHours + " ঘণ্টা", diffDuty: "সফল"
                     };
                     await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
-                    showToast("আউট-টাইম সফল!", `ডিউটি: ${totalHours} ঘণ্টা`);
+                    triggerSuccessTick(`আউট-টাইম সফল! ডিউটি: ${totalHours} ঘণ্টা`);
                 } else if (type === 'lunchOut') {
                     await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "updateAttendance", staffId: user.id, dateStr: todayStr, lunchOut: nowTime }) });
-                    showToast("লাঞ্চ আউট সেভ হয়েছে", nowTime);
+                    triggerSuccessTick("লাঞ্চ আউট সফল!");
                 } else if (type === 'lunchIn') {
                     await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "updateAttendance", staffId: user.id, dateStr: todayStr, lunchIn: nowTime }) });
-                    showToast("লাঞ্চ ইন সেভ হয়েছে", nowTime);
+                    triggerSuccessTick("লাঞ্চ ইন সফল!");
                 }
             }
         }
@@ -1657,9 +1686,9 @@
             if (result === "Duplicate") {
                 showToast("ব্যর্থ!", "এই ইউজার আইডি ইতিমধ্যে ব্যবহৃত হয়েছে!", "error");
             } else {
-                showToast("সফল!", "নতুন অ্যাকাউন্ট তৈরি করা হয়েছে!");
                 e.target.reset();
                 loadSuperAdminView();
+                triggerSuccessTick("নতুন অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে!");
             }
             btn.innerText = "অ্যাকাউন্ট তৈরি করুন";
             btn.disabled = false;
@@ -1669,15 +1698,15 @@
             const newPass = document.getElementById(`pass_${id}`).value.trim();
             if(!newPass) return showToast("সতর্কতা", "নতুন পাসওয়ার্ড লিখুন!", "info");
             await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "updateUser", id: id, pass: newPass }) });
-            showToast("পাসওয়ার্ড রিসেট সফল", `${id} এর নতুন পাসওয়ার্ড সেভ করা হয়েছে`);
             document.getElementById(`pass_${id}`).value = "";
+            triggerSuccessTick(`${id} এর পাসওয়ার্ড সফলভাবে রিসেট হয়েছে!`);
         }
 
         async function deleteUser(id) {
             if(confirm(`আপনি কি নিশ্চিত ${id} ডিলিট করতে চান?`)) {
                 await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", id: id }) });
-                showToast("ডিলিট সম্পন্ন", `${id} মুছে ফেলা হয়েছে`);
                 loadSuperAdminView();
+                triggerSuccessTick(`${id} সফলভাবে মুছে ফেলা হয়েছে!`);
             }
         }
 
@@ -1692,7 +1721,7 @@
             link.download = `Bachchu_Motors_Attendance_${new Date().toLocaleDateString()}.csv`;
             document.body.appendChild(link);
             link.click();
-            showToast("ডাউনলোড সম্পন্ন", "CSV ফাইল সেভ হয়েছে");
+            triggerSuccessTick("এক্সেল ফাইল সফলভাবে ডাউনলোড হয়েছে!");
         }
 
         function exportAttendancePDF() { window.print(); }
