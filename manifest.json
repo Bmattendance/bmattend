@@ -1,0 +1,20 @@
+{
+  "name": "বাচ্চু মটরস পোর্টাল",
+  "short_name": "বাচ্চু মটরস",
+  "start_url": "./bachchu_motors_portal.html",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#dc2626",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
