@@ -4,10 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>বাচ্চু মটরস - ডিজিটাল হাজিরা ও স্টাফ পোর্টাল</title>
+    
+    <!-- PWA & Home Screen Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#dc2626">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="বাচ্চু মটরস">
+
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Bengali Font (Hind Siliguri) -->
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js for Admin Analytics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
         body { 
             font-family: 'Hind Siliguri', sans-serif; 
@@ -21,42 +34,27 @@
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="90" fill="none" stroke="%23fbbf24" stroke-width="15"/><text x="50%" y="55%" font-size="65" font-weight="bold" fill="%23dc2626" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif">BM</text></svg>');
             background-repeat: no-repeat;
             background-position: center;
-            background-size: 400px;
-            opacity: 0.04;
+            background-size: 380px;
+            opacity: 0.035;
             z-index: -1;
             pointer-events: none;
         }
+
         #toastBox { transition: all 0.4s ease-in-out; }
 
         @keyframes scaleUp {
             0% { transform: scale(0); opacity: 0; }
-            60% { transform: scale(1.2); opacity: 1; }
+            60% { transform: scale(1.15); opacity: 1; }
             100% { transform: scale(1); opacity: 1; }
         }
-        .success-tick-anim { animation: scaleUp 0.5s ease-in-out forwards; }
+        .success-tick-anim { animation: scaleUp 0.4s ease-in-out forwards; }
 
-        /* BIKE & WHEEL RUNNING ANIMATION */
         @keyframes bikeRun {
-            0% {
-                left: -100px;
-                transform: scaleX(1);
-            }
-            48% {
-                left: calc(100% + 20px);
-                transform: scaleX(1);
-            }
-            50% {
-                left: calc(100% + 20px);
-                transform: scaleX(-1);
-            }
-            98% {
-                left: -100px;
-                transform: scaleX(-1);
-            }
-            100% {
-                left: -100px;
-                transform: scaleX(1);
-            }
+            0% { left: -110px; transform: scaleX(1); }
+            48% { left: calc(100% + 20px); transform: scaleX(1); }
+            50% { left: calc(100% + 20px); transform: scaleX(-1); }
+            98% { left: -110px; transform: scaleX(-1); }
+            100% { left: -110px; transform: scaleX(1); }
         }
 
         @keyframes spinWheel {
@@ -64,13 +62,8 @@
             100% { transform: rotate(360deg); }
         }
 
-        .bike-runner {
-            animation: bikeRun 4s infinite linear;
-        }
-
-        .wheel-spinner {
-            animation: spinWheel 0.3s infinite linear;
-        }
+        .bike-runner { animation: bikeRun 4s infinite linear; }
+        .wheel-spinner { animation: spinWheel 0.35s infinite linear; }
     </style>
 </head>
 <body class="min-h-screen text-slate-800">
@@ -79,20 +72,14 @@
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyAs9zrzE8BvwbRNowUU741GBegCY9bK8mZNE_gSypKpErW58D3eOrT7YZ3htpY5T5zgQ/exec";
     </script>
 
-    <!-- LOADING SCREEN WITH BIKE & ROTATING WHEELS -->
+    <!-- MOTORCYCLE ANIMATED LOADING SCREEN -->
     <div id="loadingScreen" class="fixed inset-0 bg-slate-900 z-50 flex flex-col items-center justify-center text-white transition-opacity duration-700 overflow-hidden">
-        <div class="relative w-full h-24 overflow-hidden mb-4">
+        <div class="relative w-full h-24 overflow-hidden mb-4 max-w-2xl">
             <div class="bike-runner absolute bottom-2 flex items-center">
-                <div class="relative text-red-500 text-6xl drop-shadow-[0_10px_10px_rgba(239,68,68,0.5)]">
+                <div class="relative text-red-500 text-6xl drop-shadow-[0_8px_8px_rgba(239,68,68,0.5)]">
                     <i class="fa-solid fa-motorcycle"></i>
-                    <!-- Front Wheel -->
-                    <div class="wheel-spinner text-amber-400 text-xl absolute bottom-0 right-1.5">
-                        <i class="fa-solid fa-gear"></i>
-                    </div>
-                    <!-- Rear Wheel -->
-                    <div class="wheel-spinner text-amber-400 text-xl absolute bottom-0 left-1.5">
-                        <i class="fa-solid fa-gear"></i>
-                    </div>
+                    <div class="wheel-spinner text-amber-400 text-xl absolute bottom-0 right-1.5"><i class="fa-solid fa-gear"></i></div>
+                    <div class="wheel-spinner text-amber-400 text-xl absolute bottom-0 left-1.5"><i class="fa-solid fa-gear"></i></div>
                 </div>
             </div>
             <div class="absolute bottom-0 w-full h-1 bg-slate-700 border-b border-dashed border-red-500"></div>
@@ -121,7 +108,7 @@
         </div>
     </div>
 
-    <!-- Navigation -->
+    <!-- Navigation Header -->
     <nav class="bg-red-700 text-white shadow-md sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3 space-x-reverse">
@@ -185,7 +172,7 @@
         <div id="topProfileCard" class="hidden max-w-lg mx-auto mb-6 bg-white rounded-2xl shadow-sm border p-4 text-center backdrop-blur bg-opacity-95">
             <div id="profileAvatarContainer" class="w-20 h-20 rounded-full mx-auto border-2 border-red-600 shadow mb-2 overflow-hidden flex items-center justify-center bg-amber-400 text-red-700 font-extrabold text-2xl">
                 <span id="profileAvatarText">BM</span>
-                <img id="profileAvatarImg" class="w-full h-full object-cover hidden">
+                <img id="profileAvatarImg" class="w-full h-full object-cover hidden" alt="Profile">
             </div>
             <h2 id="headerUserName" class="text-xl font-bold text-slate-800"></h2>
             <p class="text-sm text-slate-500">আইডি: <span id="headerUserId" class="font-semibold text-red-600"></span> | পদবী: <span id="headerUserRole" class="font-semibold text-slate-700"></span></p>
@@ -244,7 +231,7 @@
                         </h3>
                         <div class="bg-slate-900 rounded-xl overflow-hidden h-44 flex items-center justify-center relative shadow-inner">
                             <video id="webcam" autoplay playsinline class="w-full h-full object-cover hidden"></video>
-                            <img id="photoPreview" class="w-full h-full object-cover hidden">
+                            <img id="photoPreview" class="w-full h-full object-cover hidden" alt="Captured Preview">
                             <span id="camPlaceholder" class="text-slate-400 text-sm">ক্যামেরা বন্ধ আছে</span>
                         </div>
                         <div class="flex justify-center gap-2">
@@ -273,22 +260,39 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl border p-6 shadow-sm">
-                    <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-2 border-b pb-3">
-                        <h3 class="text-lg font-bold text-slate-800">পুরো মাসের হাজিরা ক্যালেন্ডার ও ডিউটি সময় বিবরণী</h3>
+                <!-- 30/31 Days Monthly Detailed History Table Section -->
+                <div class="bg-white rounded-2xl border p-6 shadow-sm space-y-4">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-2 border-b pb-3">
+                        <h3 class="text-lg font-bold text-slate-800">৩০/৩১ দিনের বিস্তারিত মাসিক হাজিরা হিস্ট্রি (প্রতিদিনের ইন, আউট, লাঞ্চ ও ডিউটি টাইম)</h3>
                         <div class="flex items-center gap-2">
                             <label class="text-xs font-semibold">মাস নির্বাচন করুন:</label>
-                            <input type="month" id="staffMonthPicker" onchange="renderStaffMonthlyCalendar()" class="border px-3 py-1 rounded-lg text-sm">
+                            <input type="month" id="staffMonthPicker" onchange="renderStaffMonthlyDetailedReport()" class="border px-3 py-1 rounded-lg text-sm">
                         </div>
                     </div>
-                    <div id="monthlySummaryBadge" class="mb-4 text-xs font-bold text-slate-700 bg-slate-100 p-3 rounded-xl border"></div>
-                    <div class="flex flex-wrap gap-2 mb-4 text-xs">
-                        <span class="bg-emerald-100 text-emerald-800 px-2 py-1 rounded-md font-semibold">🟢 প্রেজেন্ট (On Time)</span>
-                        <span class="bg-amber-100 text-amber-800 px-2 py-1 rounded-md font-semibold">🟡 লেট (Late)</span>
-                        <span class="bg-rose-100 text-rose-800 px-2 py-1 rounded-md font-semibold">🔴 অনুপস্থিত (Absent)</span>
+                    <div id="monthlySummaryBadge" class="text-xs font-bold text-slate-700 bg-slate-100 p-3 rounded-xl border"></div>
+                    <div class="flex flex-wrap gap-3 text-xs font-semibold">
+                        <span class="flex items-center gap-1"><span class="w-3 h-3 bg-emerald-100 border border-emerald-400 inline-block rounded"></span> সময়মতো (গ্রিন)</span>
+                        <span class="flex items-center gap-1"><span class="w-3 h-3 bg-amber-100 border border-amber-400 inline-block rounded"></span> লেট (হলুদ)</span>
+                        <span class="flex items-center gap-1"><span class="w-3 h-3 bg-rose-100 border border-rose-400 inline-block rounded"></span> অনুপস্থিত (লাল)</span>
                     </div>
-                    <div class="overflow-x-auto">
-                        <div id="staffMonthlyCalendarGrid" class="grid grid-cols-7 sm:grid-cols-10 md:grid-cols-15 lg:grid-cols-31 gap-2"></div>
+                    <div class="overflow-x-auto max-h-96">
+                        <table class="w-full text-xs text-left border border-slate-200">
+                            <thead class="bg-slate-100 text-slate-700 sticky top-0">
+                                <tr>
+                                    <th class="p-2 border">তারিখ ও বার</th>
+                                    <th class="p-2 border">ইন-টাইম</th>
+                                    <th class="p-2 border">লাঞ্চ আউট</th>
+                                    <th class="p-2 border">লাঞ্চ ইন</th>
+                                    <th class="p-2 border">আউট-টাইম</th>
+                                    <th class="p-2 border">মোট লাঞ্চ টাইম</th>
+                                    <th class="p-2 border">মোট ডিউটি টাইম</th>
+                                    <th class="p-2 border text-center">স্ট্যাটাস</th>
+                                </tr>
+                            </thead>
+                            <tbody id="staffMonthlyDetailedTableBody">
+                                <tr><td colspan="8" class="p-4 text-center text-slate-400">মাস নির্বাচন করুন...</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -371,7 +375,7 @@
                         </h3>
                         <div class="bg-slate-900 rounded-xl overflow-hidden h-40 flex items-center justify-center relative shadow-inner">
                             <video id="mgrWebcam" autoplay playsinline class="w-full h-full object-cover hidden"></video>
-                            <img id="mgrPhotoPreview" class="w-full h-full object-cover hidden">
+                            <img id="mgrPhotoPreview" class="w-full h-full object-cover hidden" alt="Manager Preview">
                             <span id="mgrCamPlaceholder" class="text-slate-400 text-xs">ক্যামেরা বন্ধ</span>
                         </div>
                         <div class="flex justify-center gap-2">
@@ -399,7 +403,6 @@
                 </div>
             </div>
 
-            <!-- Manager's Own Leave Section -->
             <div id="managerMyLeaveSection" class="hidden space-y-6">
                 <div class="bg-white rounded-2xl border p-6 max-w-xl mx-auto shadow-sm space-y-4">
                     <h3 class="text-lg font-bold text-slate-800 border-b pb-2">আমার ছুটির আবেদন (সরাসরি অ্যাডমিন বা এমডি অনুমোদন করবেন)</h3>
@@ -504,7 +507,6 @@
                 </div>
             </div>
 
-            <!-- Admin Leave Final Approval Section -->
             <div id="adminLeaveApprovalSection" class="hidden space-y-6">
                 <div class="bg-white rounded-2xl border p-6 shadow-sm">
                     <h3 class="text-lg font-bold text-slate-800 mb-4 border-b pb-2">ছুটির ফাইনাল অনুমোদন (স্টাফ ও ম্যানেজার)</h3>
@@ -512,7 +514,6 @@
                 </div>
             </div>
 
-            <!-- Admin Attendance Approval Section -->
             <div id="adminAttApprovalSection" class="hidden space-y-6">
                 <div class="bg-white rounded-2xl border p-6 shadow-sm">
                     <h3 class="text-lg font-bold text-slate-800 mb-4 border-b pb-2">স্টাফ ও ম্যানেজারদের হাজিরা মিসিং আবেদন অনুমোদন প্যানেল</h3>
@@ -555,7 +556,6 @@
                 </div>
             </div>
 
-            <!-- Management Section -->
             <div id="superAdminControlSection" class="space-y-6">
                 <div class="flex justify-end gap-2">
                     <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-4 py-2 rounded-lg font-bold shadow">
@@ -608,7 +608,6 @@
                 </div>
             </div>
 
-            <!-- Report Section -->
             <div id="superAdminReportSection" class="hidden space-y-6">
                 <div class="bg-white rounded-2xl border p-6 shadow-sm space-y-6">
                     <div class="flex flex-col md:flex-row justify-between items-center gap-4 border-b pb-4">
@@ -622,7 +621,6 @@
                 </div>
             </div>
 
-            <!-- Super Admin Leave Approval Section -->
             <div id="superAdminLeaveSection" class="hidden space-y-6">
                 <div class="bg-white rounded-2xl border p-6 shadow-sm">
                     <h3 class="text-lg font-bold text-slate-800 mb-4 border-b pb-2">ছুটির ফাইনাল অনুমোদন প্যানেল (স্টাফ ও ম্যানেজার)</h3>
@@ -630,7 +628,6 @@
                 </div>
             </div>
 
-            <!-- Super Admin Attendance Approval Section -->
             <div id="superAdminAttApprovalSection" class="hidden space-y-6">
                 <div class="bg-white rounded-2xl border p-6 shadow-sm">
                     <h3 class="text-lg font-bold text-slate-800 mb-4 border-b pb-2">হাজিরা আবেদন অনুমোদন প্যানেল (স্টাফ ও ম্যানেজার)</h3>
@@ -638,7 +635,6 @@
                 </div>
             </div>
 
-            <!-- Audit Trail Section -->
             <div id="superAdminAuditSection" class="hidden space-y-6">
                 <div class="bg-white rounded-2xl border p-6 shadow-sm space-y-4">
                     <div class="flex justify-between items-center border-b pb-3">
@@ -649,7 +645,6 @@
                 </div>
             </div>
 
-            <!-- Profile Tab -->
             <div id="superAdminProfileSection" class="hidden bg-white rounded-2xl border p-6 max-w-xl mx-auto shadow-sm">
                 <h3 class="text-xl font-bold border-b pb-3 mb-4 text-slate-800">সুপার অ্যাডমিন প্রফাইল আপডেট</h3>
                 <form onsubmit="updateProfile(event)" class="space-y-4">
@@ -712,6 +707,7 @@
         </div>
     </div>
 
+    <!-- Core App Engine JavaScript -->
     <script>
         let currentUser = null;
         let globalUsers = [];
@@ -741,7 +737,7 @@
 
         function updateLiveClock() {
             const now = new Date();
-            const timeStr = now.toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const timeStr = now.toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
             const dateStr = now.toLocaleDateString('bn-BD', { day: 'numeric', month: 'long', year: 'numeric' });
             const elem = document.getElementById("liveClockDisplay");
             if(elem) elem.innerHTML = `<i class="fa-regular fa-clock text-amber-300 mr-1"></i> ${dateStr} | ${timeStr}`;
@@ -787,7 +783,7 @@
                 userRole: currentUser.role || currentUser.type,
                 action: actionType,
                 details: details,
-                timestamp: new Date().toLocaleString('bn-BD')
+                timestamp: new Date().toLocaleString('bn-BD', { hour12: true })
             };
             try {
                 globalAuditLogs = JSON.parse(localStorage.getItem('bachchu_audit_logs') || '[]');
@@ -1003,7 +999,7 @@
 
             const newNotice = {
                 action: "addNotice", type: activeNoticeType, subject: subject, text: text,
-                date: new Date().toLocaleDateString('bn-BD', { day: 'numeric', month: 'long', year: 'numeric' }) + ' | ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                date: new Date().toLocaleDateString('bn-BD', { day: 'numeric', month: 'long', year: 'numeric' }) + ' | ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
                 sigName: sigName, sigRole: sigRole
             };
 
@@ -1359,7 +1355,7 @@
         function capturePhoto() {
             const video = document.getElementById("webcam");
             const preview = document.getElementById("photoPreview");
-            if (!video.srcObject) return showToast("সতর্কতা", "প্রথমে ক্যামেরা অন করুন!", "info");
+            if (!video.srcObject) return showToast("সতর্কতা", "প্রথমে ক্যামেরা অন করুন!", "error");
             const canvas = document.createElement("canvas");
             canvas.width = 300; canvas.height = 200;
             canvas.getContext("2d").drawImage(video, 0, 0, 300, 200);
@@ -1384,7 +1380,7 @@
         function captureMgrPhoto() {
             const video = document.getElementById("mgrWebcam");
             const preview = document.getElementById("mgrPhotoPreview");
-            if (!video.srcObject) return showToast("সতর্কতা", "প্রথমে ক্যামেরা অন করুন!", "info");
+            if (!video.srcObject) return showToast("সতর্কতা", "প্রথমে ক্যামেরা অন করুন!", "error");
             const canvas = document.createElement("canvas");
             canvas.width = 300; canvas.height = 200;
             canvas.getContext("2d").drawImage(video, 0, 0, 300, 200);
@@ -1604,9 +1600,24 @@
             loadManagerView();
         }
 
+        // Helper to format time in 12-hour AM/PM
+        function format12Hour(timeStr) {
+            if (!timeStr) return '-';
+            // If it already contains AM/PM
+            if (timeStr.includes('AM') || timeStr.includes('PM')) return timeStr;
+            let parts = timeStr.split(':');
+            if (parts.length < 2) return timeStr;
+            let h = parseInt(parts[0]);
+            let m = parts[1];
+            let ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12;
+            h = h ? h : 12; // the hour '0' should be '12'
+            return `${h}:${m} ${ampm}`;
+        }
+
         async function processAttendanceForUser(user, type, photoData) {
             const todayStr = new Date().toLocaleDateString();
-            const nowTime = new Date().toLocaleTimeString();
+            const nowTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
             const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
             globalAttendance = await res.json();
             let todayRecord = globalAttendance.find(r => String(r.staffId) === String(user.id) && String(r.dateStr) === String(todayStr));
@@ -1658,10 +1669,10 @@
             document.getElementById("staffHistoryContainer").innerHTML = myRecords.length === 0 ? `<p class="text-xs text-slate-400 text-center py-4">কোনো হাজিরা রেকর্ড নেই</p>` : `
                 <table class="w-full text-xs text-left border">
                     <tr class="bg-slate-100"><th class="p-2">তারিখ</th><th class="p-2">ইন</th><th class="p-2">লাঞ্চ আউট-ইন</th><th class="p-2">আউট</th><th class="p-2">ডিউটি ও লাঞ্চ</th></tr>
-                    ${myRecords.slice(-5).reverse().map(r => `<tr><td class="p-2">${r.dateStr}</td><td class="p-2">${r.inTime}</td><td class="p-2">${r.lunchOut||'-'} থেকে ${r.lunchIn||'-'}</td><td class="p-2">${r.outTime||'-'}</td><td class="p-2">${r.totalDuty||'-'}</td></tr>`).join('')}
+                    ${myRecords.slice(-5).reverse().map(r => `<tr><td class="p-2">${r.dateStr}</td><td class="p-2">${format12Hour(r.inTime)}</td><td class="p-2">${format12Hour(r.lunchOut)||'-'} হতে ${format12Hour(r.lunchIn)||'-'}</td><td class="p-2">${format12Hour(r.outTime)||'-'}</td><td class="p-2">${r.totalDuty||'-'}</td></tr>`).join('')}
                 </table>
             `;
-            renderStaffMonthlyCalendar();
+            renderStaffMonthlyDetailedReport();
         }
 
         async function loadManagerView() {
@@ -1673,38 +1684,83 @@
             document.getElementById("managerTodayStaffSummary").innerHTML = todaysRecords.length === 0 ? `<p class="text-slate-400">আজ এখনো কেউ হাজিরা দেয়নি</p>` : `
                 <table class="w-full text-xs text-left border">
                     <tr class="bg-slate-100"><th class="p-2">আইডি</th><th class="p-2">নাম</th><th class="p-2">ইন-টাইম</th><th class="p-2">লাঞ্চ</th><th class="p-2">আউট</th></tr>
-                    ${todaysRecords.map(r => `<tr><td class="p-2 font-bold">${r.staffId}</td><td class="p-2">${r.staffName}</td><td class="p-2">${r.inTime}</td><td class="p-2">${r.lunchOut ? r.lunchOut+' - '+r.lunchIn : 'না'}</td><td class="p-2">${r.outTime||'-'}</td></tr>`).join('')}
+                    ${todaysRecords.map(r => `<tr><td class="p-2 font-bold">${r.staffId}</td><td class="p-2">${r.staffName}</td><td class="p-2">${format12Hour(r.inTime)}</td><td class="p-2">${r.lunchOut ? format12Hour(r.lunchOut)+' - '+format12Hour(r.lunchIn) : 'না'}</td><td class="p-2">${format12Hour(r.outTime)||'-'}</td></tr>`).join('')}
                 </table>
             `;
         }
 
-        function renderStaffMonthlyCalendar() {
+        // 30/31 Days Detailed Monthly Report with 12-hour format & Color coding
+        function renderStaffMonthlyDetailedReport() {
             const monthVal = document.getElementById("staffMonthPicker").value;
             if (!monthVal) return;
             const [year, month] = monthVal.split('-').map(Number);
             const daysInMonth = new Date(year, month, 0).getDate();
-            let html = '', totalDaysPresent = 0, totalDutyHoursSum = 0;
+            let tableHtml = '', totalPresentDays = 0, totalLateDays = 0, totalAbsentDays = 0;
             const myRecords = globalAttendance.filter(r => String(r.staffId) === String(currentUser.id));
 
             for (let day = 1; day <= daysInMonth; day++) {
+                let dateObj = new Date(year, month - 1, day);
+                let dateStrLocal = dateObj.toLocaleDateString();
+                let dayName = dateObj.toLocaleDateString('bn-BD', { weekday: 'long' });
+                let formattedDateNum = `${day} ${dateObj.toLocaleDateString('bn-BD', { month: 'long', year: 'numeric' })} (${dayName})`;
+
                 let matched = myRecords.find(r => {
                     let d = new Date(r.dateStr);
                     return d.getDate() === day && (d.getMonth() + 1) === month && d.getFullYear() === year;
                 });
-                let bgClass = "bg-rose-100 text-rose-800 border-rose-300", statusText = "Absent";
+
+                let rowBg = "bg-rose-100 text-rose-900 border-rose-300"; // Absent (Red)
+                let statusBadge = `<span class="bg-rose-200 text-rose-800 px-2 py-0.5 rounded font-bold text-[10px]">অনুপস্থিত</span>`;
+                let inT = '-', lOut = '-', lIn = '-', outT = '-', totalLunch = '-', totalDuty = '-';
+
                 if (matched) {
-                    totalDaysPresent++;
-                    if(matched.totalDuty) {
-                        let h = parseFloat(matched.totalDuty) || 8;
-                        totalDutyHoursSum += h;
+                    inT = format12Hour(matched.inTime);
+                    lOut = format12Hour(matched.lunchOut);
+                    lIn = format12Hour(matched.lunchIn);
+                    outT = format12Hour(matched.outTime);
+                    totalDuty = matched.totalDuty || '-';
+
+                    // Calculate total lunch time if available
+                    if (matched.lunchOut && matched.lunchIn) {
+                        let lOutTime = new Date(`1970-01-01 ${matched.lunchOut}`);
+                        let lInTime = new Date(`1970-01-01 ${matched.lunchIn}`);
+                        let diffMin = Math.round((lInTime - lOutTime) / 60000);
+                        if (diffMin > 0) {
+                            let lh = Math.floor(diffMin / 60);
+                            let lm = diffMin % 60;
+                            totalLunch = lh > 0 ? `${lh} ঘণ্টা ${lm} মিনিট` : `${lm} মিনিট`;
+                        }
                     }
-                    if (matched.inStatus === 'Late') { bgClass = "bg-amber-100 text-amber-800 border-amber-300"; statusText = "Late"; }
-                    else { bgClass = "bg-emerald-100 text-emerald-800 border-emerald-300"; statusText = "Present"; }
+
+                    if (matched.inStatus === 'Late') {
+                        totalLateDays++;
+                        rowBg = "bg-amber-100 text-amber-900 border-amber-300"; // Late (Yellow)
+                        statusBadge = `<span class="bg-amber-200 text-amber-800 px-2 py-0.5 rounded font-bold text-[10px]">লেট</span>`;
+                    } else {
+                        totalPresentDays++;
+                        rowBg = "bg-emerald-100 text-emerald-900 border-emerald-300"; // Present (Green)
+                        statusBadge = `<span class="bg-emerald-200 text-emerald-800 px-2 py-0.5 rounded font-bold text-[10px]">প্রেজেন্ট</span>`;
+                    }
+                } else {
+                    totalAbsentDays++;
                 }
-                html += `<div class="border rounded-xl p-2 text-center ${bgClass} flex flex-col justify-between items-center shadow-sm"><span class="text-xs font-bold">${day}</span><span class="text-[10px] font-semibold mt-1">${statusText === 'Present' ? 'প্রেজেন্ট' : (statusText === 'Late' ? 'লেট' : 'অনুপস্থিত')}</span></div>`;
+
+                tableHtml += `
+                    <tr class="${rowBg} border-b">
+                        <td class="p-2 border font-bold">${formattedDateNum}</td>
+                        <td class="p-2 border">${inT}</td>
+                        <td class="p-2 border">${lOut}</td>
+                        <td class="p-2 border">${lIn}</td>
+                        <td class="p-2 border">${outT}</td>
+                        <td class="p-2 border">${totalLunch}</td>
+                        <td class="p-2 border font-semibold">${totalDuty}</td>
+                        <td class="p-2 border text-center">${statusBadge}</td>
+                    </tr>
+                `;
             }
-            document.getElementById("staffMonthlyCalendarGrid").innerHTML = html;
-            document.getElementById("monthlySummaryBadge").innerHTML = `<i class="fa-solid fa-calculator mr-2 text-red-600"></i>এই মাসে মোট উপস্থিতি: <strong class="text-emerald-700">${totalDaysPresent} দিন</strong> | মোট ডিউটি সময়: <strong class="text-blue-700">${totalDutyHoursSum.toFixed(1)} ঘণ্টা</strong>`;
+
+            document.getElementById("staffMonthlyDetailedTableBody").innerHTML = tableHtml;
+            document.getElementById("monthlySummaryBadge").innerHTML = `<i class="fa-solid fa-calendar-days mr-2 text-red-600"></i>এই মাসে মোট দিন: ${daysInMonth} দিন | প্রেজেন্ট: <strong class="text-emerald-700">${totalPresentDays}</strong> | লেট: <strong class="text-amber-700">${totalLateDays}</strong> | অনুপস্থিত: <strong class="text-rose-700">${totalAbsentDays}</strong>`;
         }
 
         async function loadAdminView() {
@@ -1731,7 +1787,7 @@
             document.getElementById("adminAttendanceTableContainer").innerHTML = todaysRecords.length === 0 ? `<p class="text-xs text-slate-400 text-center py-4">নির্বাচিত তারিখে কোনো হাজিরা রেকর্ড নেই</p>` : `
                 <table class="w-full text-xs text-left border">
                     <tr class="bg-slate-100"><th class="p-2">আইডি</th><th class="p-2">নাম</th><th class="p-2">ইন-টাইম</th><th class="p-2">লাঞ্চ আউট</th><th class="p-2">লাঞ্চ ইন</th><th class="p-2">আউট-টাইম</th><th class="p-2">মোট ডিউটি</th></tr>
-                    ${todaysRecords.map(r => `<tr><td class="p-2 font-bold">${r.staffId}</td><td class="p-2">${r.staffName}</td><td class="p-2">${r.inTime}</td><td class="p-2">${r.lunchOut||'-'}</td><td class="p-2">${r.lunchIn||'-'}</td><td class="p-2">${r.outTime||'-'}</td><td class="p-2 font-semibold text-emerald-700">${r.totalDuty||'-'}</td></tr>`).join('')}
+                    ${todaysRecords.map(r => `<tr><td class="p-2 font-bold">${r.staffId}</td><td class="p-2">${r.staffName}</td><td class="p-2">${format12Hour(r.inTime)}</td><td class="p-2">${format12Hour(r.lunchOut)||'-'}</td><td class="p-2">${format12Hour(r.lunchIn)||'-'}</td><td class="p-2">${format12Hour(r.outTime)||'-'}</td><td class="p-2 font-semibold text-emerald-700">${r.totalDuty||'-'}</td></tr>`).join('')}
                 </table>
             `;
             calculateWinnerOfHonor();
@@ -1813,20 +1869,35 @@
             const daysInMonth = new Date(year, month, 0).getDate();
             const myRecords = records.filter(r => String(r.staffId) === String(staffId));
 
-            let html = `<div class="grid grid-cols-7 sm:grid-cols-10 md:grid-cols-15 lg:grid-cols-31 gap-2">`;
+            let html = `<table class="w-full text-xs text-left border border-slate-200">
+                <tr class="bg-slate-100 font-bold"><th class="p-2 border">তারিখ</th><th class="p-2 border">ইন</th><th class="p-2 border">লাঞ্চ আউট</th><th class="p-2 border">লাঞ্চ ইন</th><th class="p-2 border">আউট</th><th class="p-2 border">মোট ডিউটি</th><th class="p-2 border text-center">স্ট্যাটাস</th></tr>`;
+            
             for (let day = 1; day <= daysInMonth; day++) {
+                let dateObj = new Date(year, month - 1, day);
                 let matched = myRecords.find(r => {
                     let d = new Date(r.dateStr);
                     return d.getDate() === day && (d.getMonth() + 1) === month && d.getFullYear() === year;
                 });
-                let bgClass = "bg-rose-100 text-rose-800 border-rose-300", statusText = "Absent";
+                let rowBg = "bg-rose-100 text-rose-900";
+                let statusText = "অনুপস্থিত";
+                let inT = '-', lOut = '-', lIn = '-', outT = '-', totalDuty = '-';
                 if (matched) {
-                    if (matched.inStatus === 'Late') { bgClass = "bg-amber-100 text-amber-800 border-amber-300"; statusText = "Late"; }
-                    else { bgClass = "bg-emerald-100 text-emerald-800 border-emerald-300"; statusText = "Present"; }
+                    inT = format12Hour(matched.inTime);
+                    lOut = format12Hour(matched.lunchOut);
+                    lIn = format12Hour(matched.lunchIn);
+                    outT = format12Hour(matched.outTime);
+                    totalDuty = matched.totalDuty || '-';
+                    if (matched.inStatus === 'Late') {
+                        rowBg = "bg-amber-100 text-amber-900";
+                        statusText = "লেট";
+                    } else {
+                        rowBg = "bg-emerald-100 text-emerald-900";
+                        statusText = "প্রেজেন্ট";
+                    }
                 }
-                html += `<div class="border rounded-xl p-2 text-center ${bgClass} flex flex-col justify-between items-center shadow-sm"><span class="text-xs font-bold">${day}</span><span class="text-[10px] font-semibold mt-1">${statusText === 'Present' ? 'প্রেজেন্ট' : (statusText === 'Late' ? 'লেট' : 'অনুপস্থিত')}</span></div>`;
+                html += `<tr class="${rowBg} border-b"><td class="p-2 border font-bold">${day} ${dateObj.toLocaleDateString('bn-BD', { month: 'long' })}</td><td class="p-2 border">${inT}</td><td class="p-2 border">${lOut}</td><td class="p-2 border">${lIn}</td><td class="p-2 border">${outT}</td><td class="p-2 border font-semibold">${totalDuty}</td><td class="p-2 border text-center font-bold">${statusText}</td></tr>`;
             }
-            html += `</div>`;
+            html += `</table>`;
             document.getElementById("superAdminIndividualReportContainer").innerHTML = html;
         }
 
@@ -1908,6 +1979,15 @@
         }
 
         function exportAttendancePDF() { window.print(); }
+
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then((reg) => console.log('App Service Worker Registered', reg.scope))
+                    .catch((err) => console.log('Service Worker Failed', err));
+            });
+        }
     </script>
 </body>
 </html>
