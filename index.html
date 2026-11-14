@@ -1186,11 +1186,10 @@
 
             // Manager sees pending applications from staff where managerApproval is 'Pending'
             let pendingForManager = globalLeaves.filter(l => l.staffType === 'staff' && l.managerApproval === 'Pending').length;
-            // Manager also needs to see pending attendance applications from staff
             let pendingAttForManager = globalAttApplications.filter(a => a.staffType === 'staff' && a.managerApproval === 'Pending').length;
             let totalMgrPending = pendingForManager + pendingAttForManager;
 
-            // Admin/SuperAdmin sees applications where manager already approved OR it bypassed manager (manager's own request)
+            // Admin/SuperAdmin sees applications where manager already approved OR it bypassed manager
             let pendingForMD = globalLeaves.filter(l => (l.staffType === 'manager' || l.managerApproval === 'Approved') && l.finalApproval === 'Pending').length;
             let pendingAttForMD = globalAttApplications.filter(a => (a.staffType === 'manager' || a.managerApproval === 'Approved') && a.status === 'Pending').length;
             let totalMDPending = pendingForMD + pendingAttForMD;
@@ -1285,7 +1284,7 @@
                 reason: reason,
                 prescription: prescriptionData,
                 status: "Pending (Admin/SuperAdmin Approval)",
-                managerApproval: "Approved", // Manager's own request bypasses 1st approval and goes directly to Admin
+                managerApproval: "Approved",
                 finalApproval: "Pending"
             };
 
@@ -1364,6 +1363,7 @@
             }
             localStorage.setItem('bachchu_leaves', JSON.stringify(globalLeaves));
             loadLeavesData();
+            updateLeaveBalancesAndBadges();
             triggerSuccessTick(`ছুটির আবেদন ${decision === 'Approved' ? 'অনুমোদন' : 'বাতিল'} করা হয়েছে!`);
         }
 
@@ -1404,7 +1404,7 @@
                 lunchOut: lOut,
                 lunchIn: lIn,
                 reason: reason,
-                managerApproval: isManager ? "Approved" : "Pending", // Staff goes to manager first, manager goes directly to admin
+                managerApproval: isManager ? "Approved" : "Pending",
                 status: isManager ? "Pending (Admin/SuperAdmin Approval)" : "Pending (Manager Approval)"
             };
 
@@ -1421,7 +1421,6 @@
         function renderAttAppLists() {
             if (!currentUser) return;
             
-            // Manager sees pending attendance applications from staff
             if (currentUser.type === 'manager') {
                 let pendingForMgr = globalAttApplications.filter(a => a.staffType === 'staff' && a.managerApproval === 'Pending');
                 const mgrAttElem = document.getElementById("managerAttAppListContainer");
@@ -1435,7 +1434,6 @@
                 }
             }
 
-            // Admin & SuperAdmin see applications where manager already approved OR manager's own request
             if (currentUser.type === 'admin' || currentUser.type === 'superadmin') {
                 let pendingApps = globalAttApplications.filter(a => (a.staffType === 'manager' || a.managerApproval === 'Approved') && a.status === 'Pending');
                 let targetId = currentUser.type === 'admin' ? "adminAttAppListContainer" : "superAdminAttAppListContainer";
@@ -1476,6 +1474,7 @@
             
             localStorage.setItem('bachchu_att_apps', JSON.stringify(globalAttApplications));
             loadAttApplicationsData();
+            updateLeaveBalancesAndBadges();
             triggerSuccessTick(`হাজিরা আবেদন ${decision === 'Approved' ? 'অনুমোদন' : 'বাতিল'} করা হয়েছে!`);
         }
 
