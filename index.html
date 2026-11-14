@@ -279,7 +279,7 @@
                     </div>
 
                     <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm">
-                        <h3 class="text-base sm:text-lg font-bold border-b pb-2 mb-3 text-slate-800">সাম্প্রতিক হাজিরা ও লাঞ্চ হিস্ট্রি</h3>
+                        <h3 class="text-base sm:text-lg font-bold border-b pb-2 mb-3 text-slate-800">সাম্প্রতিক হাজিরা ও লাঞ্চ বিবরন</h3>
                         <div class="table-responsive max-h-72" id="staffHistoryContainer">
                             <p class="text-xs text-slate-400 text-center py-4">ডাটা লোড হচ্ছে...</p>
                         </div>
@@ -289,7 +289,7 @@
                 <!-- 30/31 Days Monthly Detailed History Table Section for Staff -->
                 <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm space-y-4">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b pb-3">
-                        <h3 class="text-base sm:text-lg font-bold text-slate-800">৩০/৩১ দিনের বিস্তারিত মাসিক হাজিরা হিস্ট্রি</h3>
+                        <h3 class="text-base sm:text-lg font-bold text-slate-800">মাসিক বিস্তারিত মাসিক হাজিরা বিবরন</h3>
                         <div class="flex items-center gap-2 w-full sm:w-auto">
                             <label class="text-xs font-semibold shrink-0">মাস:</label>
                             <input type="month" id="staffMonthPicker" onchange="renderMonthlyDetailedReport('staff')" class="border px-2.5 py-1 rounded-lg text-xs sm:text-sm w-full sm:w-auto">
@@ -382,11 +382,11 @@
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center max-w-7xl mx-auto bg-white rounded-2xl border p-3.5 sm:p-4 shadow-sm gap-3">
                 <div>
                     <h3 class="text-lg sm:text-xl font-bold text-slate-800">ম্যানেজার পোর্টাল (শোরুম অপারেশন ও হাজিরা)</h3>
-                    <p class="text-xs text-slate-500">সকল স্টাফদের হাজিরা মনিটরিং, নিজের হাজিরা হিস্ট্রি ও ছুটির অনুমোদন</p>
+                    <p class="text-xs text-slate-500">সকল স্টাফদের হাজিরা মনিটরিং, নিজের হাজিরা বিবরন ও ছুটির অনুমোদন</p>
                 </div>
                 <div class="flex flex-wrap gap-1.5 sm:gap-2 w-full md:w-auto">
                     <button onclick="switchTab('manager', 'attTab')" class="bg-red-600 text-white px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold shadow mobile-compact-btn" id="mgrBtnAtt">হাজিরা ও স্টাফ</button>
-                    <button onclick="switchTab('manager', 'myHistoryTab')" class="bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn" id="mgrBtnMyHist">আমার হাজিরা হিস্ট্রি</button>
+                    <button onclick="switchTab('manager', 'myHistoryTab')" class="bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn" id="mgrBtnMyHist">আমার হাজিরা বিবরন</button>
                     <button onclick="switchTab('manager', 'leaveTab')" class="bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold relative mobile-compact-btn" id="mgrBtnLeave">ছুটির অনুমোদন <span id="mgrLeaveBadge" class="hidden absolute -top-1 -right-1 bg-rose-600 text-white rounded-full text-[9px] px-1.5 py-0.2">0</span></button>
                     <button onclick="switchTab('manager', 'myLeaveTab')" class="bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn" id="mgrBtnMyLeave">আমার ছুটি</button>
                     <button onclick="switchTab('manager', 'profileTab')" class="bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn" id="mgrBtnProf">আমার প্রফাইল</button>
@@ -433,7 +433,7 @@
             <div id="managerMyHistorySection" class="hidden space-y-5 sm:space-y-6">
                 <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm space-y-4">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b pb-3">
-                        <h3 class="text-base sm:text-lg font-bold text-slate-800">আমার ৩০/৩১ দিনের বিস্তারিত মাসিক হাজিরা হিস্ট্রি</h3>
+                        <h3 class="text-base sm:text-lg font-bold text-slate-800">আমার মাসিক বিস্তারিত মাসিক হাজিরা</h3>
                         <div class="flex items-center gap-2 w-full sm:w-auto">
                             <label class="text-xs font-semibold shrink-0">মাস:</label>
                             <input type="month" id="mgrMonthPicker" onchange="renderMonthlyDetailedReport('manager')" class="border px-2.5 py-1 rounded-lg text-xs sm:text-sm w-full sm:w-auto">
