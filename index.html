@@ -2,7 +2,7 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>বাচ্চু মটরস - ডিজিটাল হাজিরা ও স্টাফ পোর্টাল</title>
     
     <!-- PWA & Home Screen Meta Tags -->
@@ -22,10 +22,13 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        body { 
+        html, body { 
             font-family: 'Hind Siliguri', sans-serif; 
             background-color: #f8fafc;
             position: relative;
+            overflow-x: hidden;
+            width: 100%;
+            -webkit-tap-highlight-color: transparent;
         }
         body::after {
             content: "";
@@ -34,7 +37,7 @@
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="90" fill="none" stroke="%23fbbf24" stroke-width="15"/><text x="50%" y="55%" font-size="65" font-weight="bold" fill="%23dc2626" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif">BM</text></svg>');
             background-repeat: no-repeat;
             background-position: center;
-            background-size: 380px;
+            background-size: 320px;
             opacity: 0.035;
             z-index: -1;
             pointer-events: none;
@@ -64,6 +67,29 @@
 
         .bike-runner { animation: bikeRun 4s infinite linear; }
         .wheel-spinner { animation: spinWheel 0.35s infinite linear; }
+
+        /* Mobile View & Table Scroll Optimization */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        table {
+            min-width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            white-space: nowrap;
+        }
+        @media (max-width: 640px) {
+            .mobile-compact-btn {
+                padding: 0.4rem 0.65rem;
+                font-size: 0.72rem;
+            }
+            input, select, textarea {
+                font-size: 16px !important; /* Prevents auto-zoom on mobile iOS/Android */
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen text-slate-800">
@@ -73,25 +99,25 @@
     </script>
 
     <!-- MOTORCYCLE ANIMATED LOADING SCREEN -->
-    <div id="loadingScreen" class="fixed inset-0 bg-slate-900 z-50 flex flex-col items-center justify-center text-white transition-opacity duration-700 overflow-hidden">
-        <div class="relative w-full h-24 overflow-hidden mb-4 max-w-2xl">
+    <div id="loadingScreen" class="fixed inset-0 bg-slate-900 z-50 flex flex-col items-center justify-center text-white transition-opacity duration-500 overflow-hidden px-4">
+        <div class="relative w-full h-24 overflow-hidden mb-4 max-w-md">
             <div class="bike-runner absolute bottom-2 flex items-center">
-                <div class="relative text-red-500 text-6xl drop-shadow-[0_8px_8px_rgba(239,68,68,0.5)]">
+                <div class="relative text-red-500 text-5xl sm:text-6xl drop-shadow-[0_8px_8px_rgba(239,68,68,0.5)]">
                     <i class="fa-solid fa-motorcycle"></i>
-                    <div class="wheel-spinner text-amber-400 text-xl absolute bottom-0 right-1.5"><i class="fa-solid fa-gear"></i></div>
-                    <div class="wheel-spinner text-amber-400 text-xl absolute bottom-0 left-1.5"><i class="fa-solid fa-gear"></i></div>
+                    <div class="wheel-spinner text-amber-400 text-lg sm:text-xl absolute bottom-0 right-1.5"><i class="fa-solid fa-gear"></i></div>
+                    <div class="wheel-spinner text-amber-400 text-lg sm:text-xl absolute bottom-0 left-1.5"><i class="fa-solid fa-gear"></i></div>
                 </div>
             </div>
             <div class="absolute bottom-0 w-full h-1 bg-slate-700 border-b border-dashed border-red-500"></div>
         </div>
-        <h2 class="text-xl font-bold tracking-wider text-red-500 animate-pulse">বাচ্চু মটরস পোর্টাল লোড হচ্ছে...</h2>
-        <p class="text-xs text-slate-400 mt-1">TVS Authorized Dealer, Madaripur</p>
+        <h2 class="text-lg sm:text-xl font-bold tracking-wider text-red-500 animate-pulse text-center">বাচ্চু মটরস পোর্টাল লোড হচ্ছে...</h2>
+        <p class="text-xs text-slate-400 mt-1 text-center">TVS Authorized Dealer, Madaripur</p>
     </div>
 
     <!-- SUCCESS TICK OVERLAY MODAL -->
     <div id="successTickModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl p-8 max-w-xs w-full text-center space-y-4 shadow-2xl success-tick-anim">
-            <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-4xl shadow-inner">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-xs w-full text-center space-y-4 shadow-2xl success-tick-anim">
+            <div class="w-16 h-16 sm:w-20 sm:h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-3xl sm:text-4xl shadow-inner">
                 <i class="fa-solid fa-check"></i>
             </div>
             <h3 class="text-lg font-bold text-slate-800">সফলভাবে সম্পন্ন!</h3>
@@ -100,87 +126,87 @@
     </div>
 
     <!-- TOAST NOTIFICATION -->
-    <div id="toastBox" class="fixed top-5 right-5 z-50 transform translate-x-full opacity-0 max-w-sm w-full bg-slate-900 text-white rounded-xl shadow-2xl p-4 flex items-center gap-3 border border-slate-700">
-        <div id="toastIcon" class="text-xl"></div>
-        <div>
-            <h4 id="toastTitle" class="font-bold text-sm"></h4>
-            <p id="toastMessage" class="text-xs text-slate-300"></p>
+    <div id="toastBox" class="fixed top-4 right-4 left-4 sm:left-auto z-50 transform -translate-y-32 sm:translate-y-0 sm:translate-x-full opacity-0 sm:max-w-sm bg-slate-900 text-white rounded-xl shadow-2xl p-3.5 sm:p-4 flex items-center gap-3 border border-slate-700 pointer-events-none">
+        <div id="toastIcon" class="text-xl shrink-0"></div>
+        <div class="min-w-0 flex-1">
+            <h4 id="toastTitle" class="font-bold text-sm truncate"></h4>
+            <p id="toastMessage" class="text-xs text-slate-300 break-words"></p>
         </div>
     </div>
 
     <!-- Navigation Header -->
     <nav class="bg-red-700 text-white shadow-md sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-3 space-x-reverse">
-                <div class="w-10 h-10 rounded-full bg-amber-400 text-red-700 flex items-center justify-center font-bold text-base shadow border-2 border-white">BM</div>
-                <div>
-                    <h1 class="text-xl font-bold tracking-wide">বাচ্চু মটরস</h1>
-                    <p class="text-xs text-red-100">টু হুইলার বিজনেস, মাদারীপুর</p>
+        <div class="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3 flex justify-between items-center gap-2">
+            <div class="flex items-center space-x-2.5 sm:space-x-3 space-x-reverse min-w-0">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-amber-400 text-red-700 flex items-center justify-center font-bold text-sm sm:text-base shadow border-2 border-white shrink-0">BM</div>
+                <div class="truncate">
+                    <h1 class="text-base sm:text-xl font-bold tracking-wide truncate">বাচ্চু মটরস</h1>
+                    <p class="text-[10px] sm:text-xs text-red-100 truncate">টু হুইলার বিজনেস, মাদারীপুর</p>
                 </div>
             </div>
-            <div class="flex items-center gap-4">
-                <div id="liveClockDisplay" class="hidden md:block bg-red-800/80 px-3 py-1 rounded-lg text-xs font-semibold tracking-wider text-amber-300 border border-red-600"></div>
-                <div id="userBadge" class="hidden flex items-center space-x-3 space-x-reverse">
-                    <span id="roleTag" class="px-3 py-1 rounded-full text-xs font-semibold bg-white text-red-700 shadow"></span>
-                    <button onclick="logout()" class="bg-red-800 hover:bg-red-900 text-xs px-3 py-1.5 rounded transition flex items-center">
-                        <i class="fa-solid fa-right-from-bracket mr-1"></i> লগআউট
+            <div class="flex items-center gap-2 sm:gap-4 shrink-0">
+                <div id="liveClockDisplay" class="hidden lg:block bg-red-800/80 px-3 py-1 rounded-lg text-xs font-semibold tracking-wider text-amber-300 border border-red-600"></div>
+                <div id="userBadge" class="hidden flex items-center gap-1.5 sm:gap-3">
+                    <span id="roleTag" class="hidden sm:inline-block px-2.5 py-1 rounded-full text-xs font-semibold bg-white text-red-700 shadow"></span>
+                    <button onclick="logout()" class="bg-red-800 hover:bg-red-900 text-xs px-2.5 sm:px-3 py-1.5 rounded-lg transition flex items-center shadow-sm">
+                        <i class="fa-solid fa-right-from-bracket sm:mr-1"></i> <span class="hidden sm:inline">লগআউট</span>
                     </button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <div class="max-w-7xl mx-auto p-4 md:p-6 relative z-10">
+    <div class="max-w-7xl mx-auto px-3 py-4 sm:p-6 relative z-10">
         
         <!-- WINNER TROPHY BANNER -->
-        <div id="trophyBanner" class="hidden max-w-4xl mx-auto mb-6 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 text-slate-900 rounded-2xl shadow-lg p-4 flex items-center justify-between border-2 border-amber-300">
-            <div class="flex items-center gap-3">
-                <div class="text-4xl text-yellow-900 bg-white/80 p-3 rounded-xl shadow"><i class="fa-solid fa-trophy"></i></div>
-                <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-yellow-950">মাসের সেরা পারফর্মার (Staff of the Month - সর্বোচ্চ ডিউটিদাতা)</h4>
-                    <p id="winnerDisplayInfo" class="text-sm font-extrabold text-slate-900 mt-0.5">হিসাব করা হচ্ছে...</p>
+        <div id="trophyBanner" class="hidden max-w-4xl mx-auto mb-4 sm:mb-6 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 text-slate-900 rounded-2xl shadow-lg p-3 sm:p-4 flex flex-col sm:flex-row items-center justify-between gap-2 border-2 border-amber-300">
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+                <div class="text-2xl sm:text-4xl text-yellow-900 bg-white/80 p-2.5 sm:p-3 rounded-xl shadow shrink-0"><i class="fa-solid fa-trophy"></i></div>
+                <div class="min-w-0 flex-1">
+                    <h4 class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-yellow-950">মাসের সেরা পারফর্মার (সর্বোচ্চ ডিউটিদাতা)</h4>
+                    <p id="winnerDisplayInfo" class="text-xs sm:text-sm font-extrabold text-slate-900 mt-0.5 truncate">হিসাব করা হচ্ছে...</p>
                 </div>
             </div>
-            <span class="text-xs bg-slate-900 text-amber-300 px-3 py-1 rounded-full font-bold">👑 উইনার</span>
+            <span class="text-[10px] sm:text-xs bg-slate-900 text-amber-300 px-3 py-1 rounded-full font-bold self-end sm:self-center">👑 উইনার</span>
         </div>
 
         <!-- LOGIN SECTION -->
-        <div id="loginSection" class="max-w-md mx-auto my-12 bg-white rounded-2xl shadow-xl border p-6 md:p-8 backdrop-blur bg-opacity-95">
+        <div id="loginSection" class="max-w-md mx-auto my-6 sm:my-12 bg-white rounded-2xl shadow-xl border p-5 sm:p-8 backdrop-blur bg-opacity-95">
             <div class="text-center mb-6">
-                <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto text-2xl mb-3 shadow">
+                <div class="w-14 h-14 sm:w-16 sm:h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto text-2xl mb-3 shadow">
                     <i class="fa-solid fa-user-lock"></i>
                 </div>
-                <h2 class="text-2xl font-bold text-slate-800">সিস্টেম লগইন</h2>
-                <p class="text-sm text-slate-500">আপনার স্টাফ আইডি ও পাসওয়ার্ড দিন</p>
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-800">সিস্টেম লগইন</h2>
+                <p class="text-xs sm:text-sm text-slate-500">আপনার স্টাফ আইডি ও পাসওয়ার্ড দিন</p>
             </div>
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium mb-1">স্টাফ আইডি</label>
-                    <input type="text" id="username" required placeholder="স্টাফ আইডি" class="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-red-500 text-sm">
+                    <label class="block text-xs sm:text-sm font-medium mb-1">স্টাফ আইডি</label>
+                    <input type="text" id="username" required placeholder="স্টাফ আইডি" class="w-full px-3.5 py-2.5 border rounded-xl focus:ring-2 focus:ring-red-500 text-sm">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium mb-1">পাসওয়ার্ড</label>
-                    <input type="password" id="password" required placeholder="••••••••" class="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-red-500 text-sm">
+                    <label class="block text-xs sm:text-sm font-medium mb-1">পাসওয়ার্ড</label>
+                    <input type="password" id="password" required placeholder="••••••••" class="w-full px-3.5 py-2.5 border rounded-xl focus:ring-2 focus:ring-red-500 text-sm">
                 </div>
-                <button type="submit" id="loginBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 rounded-lg transition shadow-md">
+                <button type="submit" id="loginBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 sm:py-3 rounded-xl transition shadow-md text-sm sm:text-base">
                     লগইন করুন
                 </button>
             </form>
         </div>
 
         <!-- TOP CENTER PROFILE CARD -->
-        <div id="topProfileCard" class="hidden max-w-lg mx-auto mb-6 bg-white rounded-2xl shadow-sm border p-4 text-center backdrop-blur bg-opacity-95">
-            <div id="profileAvatarContainer" class="w-20 h-20 rounded-full mx-auto border-2 border-red-600 shadow mb-2 overflow-hidden flex items-center justify-center bg-amber-400 text-red-700 font-extrabold text-2xl">
+        <div id="topProfileCard" class="hidden max-w-lg mx-auto mb-4 sm:mb-6 bg-white rounded-2xl shadow-sm border p-3.5 sm:p-4 text-center backdrop-blur bg-opacity-95">
+            <div id="profileAvatarContainer" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full mx-auto border-2 border-red-600 shadow mb-2 overflow-hidden flex items-center justify-center bg-amber-400 text-red-700 font-extrabold text-xl sm:text-2xl">
                 <span id="profileAvatarText">BM</span>
                 <img id="profileAvatarImg" class="w-full h-full object-cover hidden" alt="Profile">
             </div>
-            <h2 id="headerUserName" class="text-xl font-bold text-slate-800"></h2>
-            <p class="text-sm text-slate-500">আইডি: <span id="headerUserId" class="font-semibold text-red-600"></span> | পদবী: <span id="headerUserRole" class="font-semibold text-slate-700"></span></p>
-            <p id="headerUserOrg" class="text-xs text-slate-400 mt-1"></p>
+            <h2 id="headerUserName" class="text-lg sm:text-xl font-bold text-slate-800"></h2>
+            <p class="text-xs sm:text-sm text-slate-500">আইডি: <span id="headerUserId" class="font-semibold text-red-600"></span> | পদবী: <span id="headerUserRole" class="font-semibold text-slate-700"></span></p>
+            <p id="headerUserOrg" class="text-[11px] sm:text-xs text-slate-400 mt-0.5"></p>
         </div>
 
         <!-- TWO NOTICE BOARDS SECTION -->
-        <div id="noticeBoardsContainer" class="hidden grid md:grid-cols-2 gap-4 mb-6">
+        <div id="noticeBoardsContainer" class="hidden grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 mb-5 sm:mb-6">
             <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 shadow-sm space-y-1.5">
                 <div class="flex justify-between items-center border-b border-amber-200 pb-1">
                     <div class="flex items-center gap-1.5 text-amber-900 font-bold text-xs">
@@ -213,69 +239,69 @@
         </div>
 
         <!-- STAFF PANEL -->
-        <div id="staffPanel" class="hidden space-y-6">
-            <div class="flex justify-end max-w-7xl mx-auto">
-                <div class="flex gap-2">
-                    <button onclick="switchTab('staff', 'attendanceTab')" class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow" id="btnAttTab">হাজিরা প্যানেল</button>
-                    <button onclick="switchTab('staff', 'leaveTab')" class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold" id="btnLeaveTab">ছুটির আবেদন</button>
-                    <button onclick="switchTab('staff', 'profileTab')" class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold" id="btnProfTab">আমার প্রফাইল</button>
+        <div id="staffPanel" class="hidden space-y-5 sm:space-y-6">
+            <div class="flex justify-center sm:justify-end max-w-7xl mx-auto">
+                <div class="flex flex-wrap justify-center gap-1.5 sm:gap-2 w-full sm:w-auto">
+                    <button onclick="switchTab('staff', 'attendanceTab')" class="bg-red-600 text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold shadow flex-1 sm:flex-initial" id="btnAttTab">হাজিরা প্যানেল</button>
+                    <button onclick="switchTab('staff', 'leaveTab')" class="bg-slate-200 text-slate-700 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold flex-1 sm:flex-initial" id="btnLeaveTab">ছুটির আবেদন</button>
+                    <button onclick="switchTab('staff', 'profileTab')" class="bg-slate-200 text-slate-700 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold flex-1 sm:flex-initial" id="btnProfTab">আমার প্রফাইল</button>
                 </div>
             </div>
 
-            <div id="staffAttendanceSection" class="space-y-6">
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-white rounded-2xl border p-6 space-y-4 shadow-sm">
-                        <h3 class="text-lg font-bold border-b pb-2 text-slate-800 flex justify-between items-center">
-                            <span><i class="fa-solid fa-camera text-red-600 mr-2"></i>হাজিরা ও মুভমেন্ট অপারেশন</span>
+            <div id="staffAttendanceSection" class="space-y-5 sm:space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                    <div class="bg-white rounded-2xl border p-4 sm:p-6 space-y-4 shadow-sm">
+                        <h3 class="text-base sm:text-lg font-bold border-b pb-2 text-slate-800 flex flex-wrap justify-between items-center gap-1">
+                            <span><i class="fa-solid fa-camera text-red-600 mr-1.5"></i>হাজিরা ও মুভমেন্ট</span>
                             <span id="gpsLocationStatus" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-normal"><i class="fa-solid fa-location-dot text-red-500 mr-1"></i>জিপিএস...</span>
                         </h3>
-                        <div class="bg-slate-900 rounded-xl overflow-hidden h-44 flex items-center justify-center relative shadow-inner">
+                        <div class="bg-slate-900 rounded-xl overflow-hidden h-44 sm:h-48 flex items-center justify-center relative shadow-inner">
                             <video id="webcam" autoplay playsinline class="w-full h-full object-cover hidden"></video>
                             <img id="photoPreview" class="w-full h-full object-cover hidden" alt="Captured Preview">
-                            <span id="camPlaceholder" class="text-slate-400 text-sm">ক্যামেরা বন্ধ আছে</span>
+                            <span id="camPlaceholder" class="text-slate-400 text-xs sm:text-sm">ক্যামেরা বন্ধ আছে</span>
                         </div>
                         <div class="flex justify-center gap-2">
-                            <button onclick="startCamera()" class="text-xs bg-slate-700 hover:bg-slate-800 text-white px-3 py-1.5 rounded-lg">ক্যামেরা অন</button>
-                            <button onclick="capturePhoto()" class="text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg">ছবি তুলুন</button>
+                            <button onclick="startCamera()" class="text-xs bg-slate-700 hover:bg-slate-800 text-white px-3.5 py-2 rounded-lg font-medium">ক্যামেরা অন</button>
+                            <button onclick="capturePhoto()" class="text-xs bg-red-600 hover:bg-red-700 text-white px-3.5 py-2 rounded-lg font-medium">ছবি তুলুন</button>
                         </div>
-                        <div class="grid grid-cols-2 gap-2 pt-2">
-                            <button onclick="recordAttendanceAction('in')" class="bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg text-sm font-bold shadow">ইন-টাইম (In)</button>
-                            <button onclick="recordAttendanceAction('out')" class="bg-rose-600 hover:bg-rose-700 text-white py-2 rounded-lg text-sm font-bold shadow">আউট-টাইম (Out)</button>
-                            <button onclick="recordAttendanceAction('lunchOut')" class="bg-amber-600 hover:bg-amber-700 text-white py-2 rounded-lg text-sm">লাঞ্চ আউট</button>
-                            <button onclick="recordAttendanceAction('lunchIn')" class="bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm">লাঞ্চ ইন</button>
+                        <div class="grid grid-cols-2 gap-2 pt-1">
+                            <button onclick="recordAttendanceAction('in')" class="bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow">ইন-টাইম (In)</button>
+                            <button onclick="recordAttendanceAction('out')" class="bg-rose-600 hover:bg-rose-700 text-white py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow">আউট-টাইম (Out)</button>
+                            <button onclick="recordAttendanceAction('lunchOut')" class="bg-amber-600 hover:bg-amber-700 text-white py-2 rounded-xl text-xs sm:text-sm font-medium">লাঞ্চ আউট</button>
+                            <button onclick="recordAttendanceAction('lunchIn')" class="bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-xl text-xs sm:text-sm font-medium">লাঞ্চ ইন</button>
                         </div>
                         <div class="pt-3 border-t">
-                            <button onclick="openManualAttModal()" class="w-full bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-700 hover:to-rose-800 text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-md flex items-center justify-center gap-2 transition transform hover:scale-[1.01]">
-                                <i class="fa-solid fa-pen-to-square text-amber-300 text-sm"></i>
-                                <span>হাজিরা মিসিং বা সার্ভার সমস্যা হলে এখানে আবেদন করুন</span>
+                            <button onclick="openManualAttModal()" class="w-full bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-700 hover:to-rose-800 text-white text-xs font-bold py-2.5 px-3 rounded-xl shadow-md flex items-center justify-center gap-2 transition">
+                                <i class="fa-solid fa-pen-to-square text-amber-300 text-sm shrink-0"></i>
+                                <span class="text-center">হাজিরা মিসিং বা সার্ভার সমস্যা হলে আবেদন করুন</span>
                             </button>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-2xl border p-6 shadow-sm">
-                        <h3 class="text-lg font-bold border-b pb-2 mb-3 text-slate-800">সাম্প্রতিক হাজিরা ও লাঞ্চ বিবরন</h3>
-                        <div class="overflow-y-auto max-h-72" id="staffHistoryContainer">
+                    <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm">
+                        <h3 class="text-base sm:text-lg font-bold border-b pb-2 mb-3 text-slate-800">সাম্প্রতিক হাজিরা ও লাঞ্চ হিস্ট্রি</h3>
+                        <div class="table-responsive max-h-72" id="staffHistoryContainer">
                             <p class="text-xs text-slate-400 text-center py-4">ডাটা লোড হচ্ছে...</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- 30/31 Days Monthly Detailed History Table Section for Staff -->
-                <div class="bg-white rounded-2xl border p-6 shadow-sm space-y-4">
-                    <div class="flex flex-col md:flex-row justify-between items-center gap-2 border-b pb-3">
-                        <h3 class="text-lg font-bold text-slate-800">মাসিক বিস্তারিত মাসিক হাজিরা  </h3>
-                        <div class="flex items-center gap-2">
-                            <label class="text-xs font-semibold">মাস নির্বাচন করুন:</label>
-                            <input type="month" id="staffMonthPicker" onchange="renderMonthlyDetailedReport('staff')" class="border px-3 py-1 rounded-lg text-sm">
+                <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm space-y-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b pb-3">
+                        <h3 class="text-base sm:text-lg font-bold text-slate-800">৩০/৩১ দিনের বিস্তারিত মাসিক হাজিরা হিস্ট্রি</h3>
+                        <div class="flex items-center gap-2 w-full sm:w-auto">
+                            <label class="text-xs font-semibold shrink-0">মাস:</label>
+                            <input type="month" id="staffMonthPicker" onchange="renderMonthlyDetailedReport('staff')" class="border px-2.5 py-1 rounded-lg text-xs sm:text-sm w-full sm:w-auto">
                         </div>
                     </div>
-                    <div id="monthlySummaryBadge" class="text-xs font-bold text-slate-700 bg-slate-100 p-3 rounded-xl border"></div>
-                    <div class="flex flex-wrap gap-3 text-xs font-semibold">
+                    <div id="monthlySummaryBadge" class="text-xs font-bold text-slate-700 bg-slate-100 p-2.5 sm:p-3 rounded-xl border leading-relaxed"></div>
+                    <div class="flex flex-wrap gap-2.5 sm:gap-3 text-[11px] sm:text-xs font-semibold">
                         <span class="flex items-center gap-1"><span class="w-3 h-3 bg-emerald-100 border border-emerald-400 inline-block rounded"></span> সময়মতো (গ্রিন)</span>
                         <span class="flex items-center gap-1"><span class="w-3 h-3 bg-amber-100 border border-amber-400 inline-block rounded"></span> লেট (হলুদ)</span>
                         <span class="flex items-center gap-1"><span class="w-3 h-3 bg-rose-100 border border-rose-400 inline-block rounded"></span> অনুপস্থিত (লাল)</span>
                     </div>
-                    <div class="overflow-x-auto max-h-96">
+                    <div class="table-responsive max-h-96">
                         <table class="w-full text-xs text-left border border-slate-200">
                             <thead class="bg-slate-100 text-slate-700 sticky top-0">
                                 <tr>
@@ -298,10 +324,10 @@
             </div>
 
             <!-- Staff Leave Section -->
-            <div id="staffLeaveSection" class="hidden space-y-6">
-                <div class="bg-white rounded-2xl border p-6 max-w-xl mx-auto shadow-sm space-y-4">
-                    <h3 class="text-lg font-bold text-slate-800 border-b pb-2">ছুটির নতুন আবেদন করুন</h3>
-                    <div id="leaveBalanceCard" class="grid grid-cols-3 gap-2 text-center text-xs bg-slate-50 p-3 rounded-xl border font-semibold"></div>
+            <div id="staffLeaveSection" class="hidden space-y-5 sm:space-y-6">
+                <div class="bg-white rounded-2xl border p-4 sm:p-6 max-w-xl mx-auto shadow-sm space-y-4">
+                    <h3 class="text-base sm:text-lg font-bold text-slate-800 border-b pb-2">ছুটির নতুন আবেদন করুন</h3>
+                    <div id="leaveBalanceCard" class="grid grid-cols-3 gap-1.5 sm:gap-2 text-center text-[11px] sm:text-xs bg-slate-50 p-2.5 sm:p-3 rounded-xl border font-semibold"></div>
                     <form onsubmit="submitLeaveApplication(event)" class="space-y-3">
                         <div>
                             <label class="block text-xs font-semibold mb-1">ছুটির ধরন</label>
@@ -311,7 +337,7 @@
                                 <option value="ইমারজেন্সি লিভ">ইমারজেন্সি লিভ (বাকি: <span id="remEmergency">৬</span> দিন)</option>
                             </select>
                         </div>
-                        <div class="grid grid-cols-2 gap-2">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             <div><label class="block text-xs font-semibold mb-1">শুরুর তারিখ</label><input type="date" id="leaveStart" required class="w-full border px-3 py-2 rounded-lg text-sm"></div>
                             <div><label class="block text-xs font-semibold mb-1">শেষ তারিখ</label><input type="date" id="leaveEnd" required class="w-full border px-3 py-2 rounded-lg text-sm"></div>
                         </div>
@@ -323,20 +349,20 @@
                             <label class="block text-xs font-semibold mb-1 text-red-600">প্রেসক্রিপশন / ডাক্তারের রিপোর্টের ছবি আপলোড করুন (সিক লিভের জন্য বাধ্যতামূলক)</label>
                             <input type="file" id="prescriptionFileInput" accept="image/*" class="w-full border px-3 py-2 rounded-lg text-sm bg-slate-50">
                         </div>
-                        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-lg text-sm shadow">আবেদন জমা দিন</button>
+                        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-sm shadow">আবেদন জমা দিন</button>
                     </form>
                 </div>
-                <div class="bg-white rounded-2xl border p-6 shadow-sm">
-                    <h3 class="text-lg font-bold text-slate-800 mb-3">আমার ছুটির আবেদনসমূহের স্ট্যাটাস</h3>
-                    <div id="myLeaveHistoryContainer" class="overflow-x-auto"><p class="text-xs text-slate-400">লোড হচ্ছে...</p></div>
+                <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm">
+                    <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-3">আমার ছুটির আবেদনসমূহের স্ট্যাটাস</h3>
+                    <div id="myLeaveHistoryContainer" class="table-responsive"><p class="text-xs text-slate-400">লোড হচ্ছে...</p></div>
                 </div>
             </div>
 
-            <div id="staffProfileSection" class="hidden bg-white rounded-2xl border p-6 max-w-xl mx-auto shadow-sm">
-                <h3 class="text-xl font-bold border-b pb-3 mb-4 text-slate-800">প্রফাইল ও তথ্য আপডেট</h3>
+            <div id="staffProfileSection" class="hidden bg-white rounded-2xl border p-4 sm:p-6 max-w-xl mx-auto shadow-sm">
+                <h3 class="text-lg sm:text-xl font-bold border-b pb-3 mb-4 text-slate-800">প্রফাইল ও তথ্য আপডেট</h3>
                 <form onsubmit="updateProfile(event)" class="space-y-4">
                     <div class="text-center mb-4">
-                        <label class="inline-block bg-slate-700 hover:bg-slate-800 text-white text-xs px-3 py-1.5 rounded-lg cursor-pointer shadow">
+                        <label class="inline-block bg-slate-700 hover:bg-slate-800 text-white text-xs px-3.5 py-2 rounded-lg cursor-pointer shadow">
                             <i class="fa-solid fa-upload mr-1"></i> ছবি আপলোড করুন
                             <input type="file" id="profileImageInput" accept="image/*" class="hidden" onchange="previewProfileImage(event)">
                         </label>
@@ -346,80 +372,80 @@
                     <div><label class="block text-xs font-semibold mb-1">ঠিকানা</label><input type="text" id="profAddress" class="w-full border px-3 py-2 rounded-lg text-sm"></div>
                     <div><label class="block text-xs font-semibold mb-1">ইমারজেন্সি ফোন নাম্বার</label><input type="text" id="profEmergency" class="w-full border px-3 py-2 rounded-lg text-sm"></div>
                     <div><label class="block text-xs font-semibold mb-1">পাসওয়ার্ড পরিবর্তন করুন</label><input type="password" id="profNewPass" placeholder="নতুন পাসওয়ার্ড দিন" class="w-full border px-3 py-2 rounded-lg text-sm"></div>
-                    <button type="submit" id="profUpdateBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-lg text-sm">প্রফাইল আপডেট করুন</button>
+                    <button type="submit" id="profUpdateBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-sm">প্রফাইল আপডেট করুন</button>
                 </form>
             </div>
         </div>
 
         <!-- MANAGER PANEL -->
-        <div id="managerPanel" class="hidden space-y-6">
-            <div class="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto bg-white rounded-2xl border p-4 shadow-sm gap-3">
+        <div id="managerPanel" class="hidden space-y-5 sm:space-y-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center max-w-7xl mx-auto bg-white rounded-2xl border p-3.5 sm:p-4 shadow-sm gap-3">
                 <div>
-                    <h3 class="text-xl font-bold text-slate-800">ম্যানেজার পোর্টাল (শোরুম অপারেশন ও হাজিরা)</h3>
-                    <p class="text-xs text-slate-500">সকল স্টাফদের হাজিরা মনিটরিং, নিজের হাজিরা ও ছুটির অনুমোদন</p>
+                    <h3 class="text-lg sm:text-xl font-bold text-slate-800">ম্যানেজার পোর্টাল (শোরুম অপারেশন ও হাজিরা)</h3>
+                    <p class="text-xs text-slate-500">সকল স্টাফদের হাজিরা মনিটরিং, নিজের হাজিরা হিস্ট্রি ও ছুটির অনুমোদন</p>
                 </div>
-                <div class="flex flex-wrap gap-2">
-                    <button onclick="switchTab('manager', 'attTab')" class="bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow" id="mgrBtnAtt">হাজিরা ও স্টাফ</button>
-                    <button onclick="switchTab('manager', 'myHistoryTab')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold" id="mgrBtnMyHist">আমার হাজিরা </button>
-                    <button onclick="switchTab('manager', 'leaveTab')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold relative" id="mgrBtnLeave">ছুটির অনুমোদন <span id="mgrLeaveBadge" class="hidden absolute -top-1 -right-1 bg-rose-600 text-white rounded-full text-[9px] px-1.5 py-0.2">0</span></button>
-                    <button onclick="switchTab('manager', 'myLeaveTab')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold" id="mgrBtnMyLeave">আমার ছুটি</button>
-                    <button onclick="switchTab('manager', 'profileTab')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold" id="mgrBtnProf">আমার প্রফাইল</button>
+                <div class="flex flex-wrap gap-1.5 sm:gap-2 w-full md:w-auto">
+                    <button onclick="switchTab('manager', 'attTab')" class="bg-red-600 text-white px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold shadow mobile-compact-btn" id="mgrBtnAtt">হাজিরা ও স্টাফ</button>
+                    <button onclick="switchTab('manager', 'myHistoryTab')" class="bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn" id="mgrBtnMyHist">আমার হাজিরা হিস্ট্রি</button>
+                    <button onclick="switchTab('manager', 'leaveTab')" class="bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold relative mobile-compact-btn" id="mgrBtnLeave">ছুটির অনুমোদন <span id="mgrLeaveBadge" class="hidden absolute -top-1 -right-1 bg-rose-600 text-white rounded-full text-[9px] px-1.5 py-0.2">0</span></button>
+                    <button onclick="switchTab('manager', 'myLeaveTab')" class="bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn" id="mgrBtnMyLeave">আমার ছুটি</button>
+                    <button onclick="switchTab('manager', 'profileTab')" class="bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn" id="mgrBtnProf">আমার প্রফাইল</button>
                 </div>
             </div>
 
-            <div id="managerAttendanceSection" class="space-y-6">
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-white rounded-2xl border p-6 space-y-4 shadow-sm">
-                        <h3 class="text-lg font-bold border-b pb-2 text-slate-800 flex justify-between items-center">
-                            <span><i class="fa-solid fa-camera text-red-600 mr-2"></i>আমার হাজিরা ও লাঞ্চ অপারেশন</span>
+            <div id="managerAttendanceSection" class="space-y-5 sm:space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                    <div class="bg-white rounded-2xl border p-4 sm:p-6 space-y-4 shadow-sm">
+                        <h3 class="text-base sm:text-lg font-bold border-b pb-2 text-slate-800 flex flex-wrap justify-between items-center gap-1">
+                            <span><i class="fa-solid fa-camera text-red-600 mr-1.5"></i>আমার হাজিরা ও লাঞ্চ অপারেশন</span>
                             <span id="mgrGpsStatus" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-normal">লোকেশন...</span>
                         </h3>
-                        <div class="bg-slate-900 rounded-xl overflow-hidden h-40 flex items-center justify-center relative shadow-inner">
+                        <div class="bg-slate-900 rounded-xl overflow-hidden h-40 sm:h-44 flex items-center justify-center relative shadow-inner">
                             <video id="mgrWebcam" autoplay playsinline class="w-full h-full object-cover hidden"></video>
                             <img id="mgrPhotoPreview" class="w-full h-full object-cover hidden" alt="Manager Preview">
                             <span id="mgrCamPlaceholder" class="text-slate-400 text-xs">ক্যামেরা বন্ধ</span>
                         </div>
                         <div class="flex justify-center gap-2">
-                            <button onclick="startMgrCamera()" class="text-xs bg-slate-700 text-white px-3 py-1.5 rounded-lg">ক্যামেরা অন</button>
-                            <button onclick="captureMgrPhoto()" class="text-xs bg-red-600 text-white px-3 py-1.5 rounded-lg">ছবি তুলুন</button>
+                            <button onclick="startMgrCamera()" class="text-xs bg-slate-700 text-white px-3.5 py-2 rounded-lg font-medium">ক্যামেরা অন</button>
+                            <button onclick="captureMgrPhoto()" class="text-xs bg-red-600 text-white px-3.5 py-2 rounded-lg font-medium">ছবি তুলুন</button>
                         </div>
                         <div class="grid grid-cols-2 gap-2">
-                            <button onclick="recordManagerAttendance('in')" class="bg-emerald-600 text-white py-2 rounded-lg text-xs font-bold">ইন-টাইম (In)</button>
-                            <button onclick="recordManagerAttendance('out')" class="bg-rose-600 text-white py-2 rounded-lg text-xs font-bold">আউট-টাইম (Out)</button>
-                            <button onclick="recordManagerAttendance('lunchOut')" class="bg-amber-600 text-white py-1.5 rounded-lg text-xs">লাঞ্চ আউট</button>
-                            <button onclick="recordManagerAttendance('lunchIn')" class="bg-blue-600 text-white py-1.5 rounded-lg text-xs">লাঞ্চ ইন</button>
+                            <button onclick="recordManagerAttendance('in')" class="bg-emerald-600 text-white py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow">ইন-টাইম (In)</button>
+                            <button onclick="recordManagerAttendance('out')" class="bg-rose-600 text-white py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow">আউট-টাইম (Out)</button>
+                            <button onclick="recordManagerAttendance('lunchOut')" class="bg-amber-600 text-white py-2 rounded-xl text-xs sm:text-sm font-medium">লাঞ্চ আউট</button>
+                            <button onclick="recordManagerAttendance('lunchIn')" class="bg-blue-600 text-white py-2 rounded-xl text-xs sm:text-sm font-medium">লাঞ্চ ইন</button>
                         </div>
                         <div class="pt-3 border-t">
-                            <button onclick="openManualAttModal()" class="w-full bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-700 hover:to-rose-800 text-white text-xs font-bold py-2 px-4 rounded-xl shadow-md flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-pen-to-square text-amber-300"></i>
+                            <button onclick="openManualAttModal()" class="w-full bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-700 hover:to-rose-800 text-white text-xs font-bold py-2.5 px-3 rounded-xl shadow-md flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-pen-to-square text-amber-300 shrink-0"></i>
                                 <span>হাজিরা মিসিং আবেদন করুন</span>
                             </button>
                         </div>
                     </div>
-                    <div class="bg-white rounded-2xl border p-6 shadow-sm">
-                        <h3 class="text-lg font-bold border-b pb-2 mb-3 text-slate-800">আজকের স্টাফ উপস্থিতি ও লাঞ্চ সারসংক্ষেপ</h3>
-                        <div id="managerTodayStaffSummary" class="overflow-y-auto max-h-60 text-xs"><p class="text-slate-400">লোড হচ্ছে...</p></div>
+                    <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm">
+                        <h3 class="text-base sm:text-lg font-bold border-b pb-2 mb-3 text-slate-800">আজকের স্টাফ উপস্থিতি ও লাঞ্চ সারসংক্ষেপ</h3>
+                        <div id="managerTodayStaffSummary" class="table-responsive max-h-64 text-xs"><p class="text-slate-400">লোড হচ্ছে...</p></div>
                     </div>
                 </div>
             </div>
 
             <!-- Manager Personal 30/31 Days Attendance History Section -->
-            <div id="managerMyHistorySection" class="hidden space-y-6">
-                <div class="bg-white rounded-2xl border p-6 shadow-sm space-y-4">
-                    <div class="flex flex-col md:flex-row justify-between items-center gap-2 border-b pb-3">
-                        <h3 class="text-lg font-bold text-slate-800">আমার মাসিক বিস্তারিত হাজিরা </h3>
-                        <div class="flex items-center gap-2">
-                            <label class="text-xs font-semibold">মাস নির্বাচন করুন:</label>
-                            <input type="month" id="mgrMonthPicker" onchange="renderMonthlyDetailedReport('manager')" class="border px-3 py-1 rounded-lg text-sm">
+            <div id="managerMyHistorySection" class="hidden space-y-5 sm:space-y-6">
+                <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm space-y-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b pb-3">
+                        <h3 class="text-base sm:text-lg font-bold text-slate-800">আমার ৩০/৩১ দিনের বিস্তারিত মাসিক হাজিরা হিস্ট্রি</h3>
+                        <div class="flex items-center gap-2 w-full sm:w-auto">
+                            <label class="text-xs font-semibold shrink-0">মাস:</label>
+                            <input type="month" id="mgrMonthPicker" onchange="renderMonthlyDetailedReport('manager')" class="border px-2.5 py-1 rounded-lg text-xs sm:text-sm w-full sm:w-auto">
                         </div>
                     </div>
-                    <div id="mgrMonthlySummaryBadge" class="text-xs font-bold text-slate-700 bg-slate-100 p-3 rounded-xl border"></div>
-                    <div class="flex flex-wrap gap-3 text-xs font-semibold">
+                    <div id="mgrMonthlySummaryBadge" class="text-xs font-bold text-slate-700 bg-slate-100 p-2.5 sm:p-3 rounded-xl border leading-relaxed"></div>
+                    <div class="flex flex-wrap gap-2.5 sm:gap-3 text-[11px] sm:text-xs font-semibold">
                         <span class="flex items-center gap-1"><span class="w-3 h-3 bg-emerald-100 border border-emerald-400 inline-block rounded"></span> সময়মতো (গ্রিন)</span>
                         <span class="flex items-center gap-1"><span class="w-3 h-3 bg-amber-100 border border-amber-400 inline-block rounded"></span> লেট (হলুদ)</span>
                         <span class="flex items-center gap-1"><span class="w-3 h-3 bg-rose-100 border border-rose-400 inline-block rounded"></span> অনুপস্থিত (লাল)</span>
                     </div>
-                    <div class="overflow-x-auto max-h-96">
+                    <div class="table-responsive max-h-96">
                         <table class="w-full text-xs text-left border border-slate-200">
                             <thead class="bg-slate-100 text-slate-700 sticky top-0">
                                 <tr>
@@ -441,17 +467,17 @@
                 </div>
             </div>
 
-            <div id="managerLeaveApprovalSection" class="hidden space-y-6">
-                <div class="bg-white rounded-2xl border p-6 shadow-sm">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4 border-b pb-2">স্টাফদের ছুটির আবেদন (১ম অনুমোদন প্যানেল)</h3>
-                    <div id="managerLeaveListContainer" class="overflow-x-auto"><p class="text-xs text-slate-400">কোনো আবেদন নেই</p></div>
+            <div id="managerLeaveApprovalSection" class="hidden space-y-5 sm:space-y-6">
+                <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm">
+                    <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-4 border-b pb-2">স্টাফদের ছুটির আবেদন (১ম অনুমোদন প্যানেল)</h3>
+                    <div id="managerLeaveListContainer" class="table-responsive"><p class="text-xs text-slate-400">কোনো আবেদন নেই</p></div>
                 </div>
             </div>
 
-            <div id="managerMyLeaveSection" class="hidden space-y-6">
-                <div class="bg-white rounded-2xl border p-6 max-w-xl mx-auto shadow-sm space-y-4">
-                    <h3 class="text-lg font-bold text-slate-800 border-b pb-2">আমার ছুটির আবেদন (সরাসরি অ্যাডমিন বা এমডি অনুমোদন করবেন)</h3>
-                    <div id="mgrLeaveBalanceCard" class="grid grid-cols-3 gap-2 text-center text-xs bg-slate-50 p-3 rounded-xl border font-semibold"></div>
+            <div id="managerMyLeaveSection" class="hidden space-y-5 sm:space-y-6">
+                <div class="bg-white rounded-2xl border p-4 sm:p-6 max-w-xl mx-auto shadow-sm space-y-4">
+                    <h3 class="text-base sm:text-lg font-bold text-slate-800 border-b pb-2">আমার ছুটির আবেদন (সরাসরি অ্যাডমিন অনুমোদন করবেন)</h3>
+                    <div id="mgrLeaveBalanceCard" class="grid grid-cols-3 gap-1.5 sm:gap-2 text-center text-[11px] sm:text-xs bg-slate-50 p-2.5 sm:p-3 rounded-xl border font-semibold"></div>
                     <form onsubmit="submitManagerLeave(event)" class="space-y-3">
                         <div>
                             <label class="block text-xs font-semibold mb-1">ছুটির ধরন</label>
@@ -461,7 +487,7 @@
                                 <option value="ইমারজেন্সি লিভ">ইমারজেন্সি লিভ</option>
                             </select>
                         </div>
-                        <div class="grid grid-cols-2 gap-2">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             <div><label class="block text-xs font-semibold mb-1">শুরুর তারিখ</label><input type="date" id="leaveStartMgr" required class="w-full border px-3 py-2 rounded-lg text-sm"></div>
                             <div><label class="block text-xs font-semibold mb-1">শেষ তারিখ</label><input type="date" id="leaveEndMgr" required class="w-full border px-3 py-2 rounded-lg text-sm"></div>
                         </div>
@@ -473,20 +499,20 @@
                             <label class="block text-xs font-semibold mb-1 text-red-600">প্রেসক্রিপশন আপলোড করুন (সিক লিভের জন্য বাধ্যতামূলক)</label>
                             <input type="file" id="prescriptionFileInputMgr" accept="image/*" class="w-full border px-3 py-2 rounded-lg text-sm bg-slate-50">
                         </div>
-                        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-lg text-sm shadow">আবেদন জমা দিন</button>
+                        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-sm shadow">আবেদন জমা দিন</button>
                     </form>
                 </div>
-                <div class="bg-white rounded-2xl border p-6 shadow-sm">
-                    <h3 class="text-lg font-bold text-slate-800 mb-3">আমার ছুটির আবেদনের স্ট্যাটাস</h3>
-                    <div id="myMgrLeaveHistoryContainer" class="overflow-x-auto"><p class="text-xs text-slate-400">লোড হচ্ছে...</p></div>
+                <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm">
+                    <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-3">আমার ছুটির আবেদনের স্ট্যাটাস</h3>
+                    <div id="myMgrLeaveHistoryContainer" class="table-responsive"><p class="text-xs text-slate-400">লোড হচ্ছে...</p></div>
                 </div>
             </div>
 
-            <div id="managerProfileSection" class="hidden bg-white rounded-2xl border p-6 max-w-xl mx-auto shadow-sm">
-                <h3 class="text-xl font-bold border-b pb-3 mb-4 text-slate-800">ম্যানেজার প্রফাইল আপডেট</h3>
+            <div id="managerProfileSection" class="hidden bg-white rounded-2xl border p-4 sm:p-6 max-w-xl mx-auto shadow-sm">
+                <h3 class="text-lg sm:text-xl font-bold border-b pb-3 mb-4 text-slate-800">ম্যানেজার প্রফাইল আপডেট</h3>
                 <form onsubmit="updateProfile(event)" class="space-y-4">
                     <div class="text-center mb-4">
-                        <label class="inline-block bg-slate-700 hover:bg-slate-800 text-white text-xs px-3 py-1.5 rounded-lg cursor-pointer shadow">
+                        <label class="inline-block bg-slate-700 hover:bg-slate-800 text-white text-xs px-3.5 py-2 rounded-lg cursor-pointer shadow">
                             <i class="fa-solid fa-upload mr-1"></i> ছবি আপলোড করুন
                             <input type="file" id="managerProfileImageInput" accept="image/*" class="hidden" onchange="previewProfileImage(event)">
                         </label>
@@ -495,82 +521,82 @@
                     <div><label class="block text-xs font-semibold mb-1">ঠিকানা</label><input type="text" id="mgrProfAddress" class="w-full border px-3 py-2 rounded-lg text-sm"></div>
                     <div><label class="block text-xs font-semibold mb-1">ইমারজেন্সি ফোন নাম্বার</label><input type="text" id="mgrProfEmergency" class="w-full border px-3 py-2 rounded-lg text-sm"></div>
                     <div><label class="block text-xs font-semibold mb-1">পাসওয়ার্ড পরিবর্তন করুন</label><input type="password" id="mgrProfNewPass" placeholder="নতুন পাসওয়ার্ড দিন" class="w-full border px-3 py-2 rounded-lg text-sm"></div>
-                    <button type="submit" id="mgrProfUpdateBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-lg text-sm">প্রফাইল আপডেট করুন</button>
+                    <button type="submit" id="mgrProfUpdateBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-sm">প্রফাইল আপডেট করুন</button>
                 </form>
             </div>
         </div>
 
         <!-- ADMIN PANEL (MANAGING DIRECTOR) -->
-        <div id="adminPanel" class="hidden space-y-6">
-            <div class="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto bg-white rounded-2xl border p-4 shadow-sm gap-3">
+        <div id="adminPanel" class="hidden space-y-5 sm:space-y-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center max-w-7xl mx-auto bg-white rounded-2xl border p-3.5 sm:p-4 shadow-sm gap-3">
                 <div>
-                    <h3 class="text-xl font-bold text-slate-800">দৈনিক হাজিরা ও লাইভ রিপোর্ট (ম্যানেজিং ডিরেক্টর)</h3>
+                    <h3 class="text-lg sm:text-xl font-bold text-slate-800">দৈনিক হাজিরা ও লাইভ রিপোর্ট (ম্যানেজিং ডিরেক্টর)</h3>
                     <p class="text-xs text-slate-500">আজকের দিনে উপস্থিত স্টাফ ও মুভমেন্ট মনিটরিং</p>
                 </div>
-                <div class="flex flex-wrap items-center gap-2">
-                    <input type="date" id="adminReportDate" onchange="loadAdminView()" class="border px-3 py-1.5 rounded-lg text-sm">
-                    <button onclick="switchTab('admin', 'attendanceTab')" class="bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow" id="adminBtnAttTab">হাজিরা রিপোর্ট</button>
-                    <button onclick="switchTab('admin', 'leaveTab')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold relative" id="adminBtnLeaveTab">ছুটির অনুমোদন <span id="adminLeaveBadge" class="hidden absolute -top-1 -right-1 bg-rose-600 text-white rounded-full text-[9px] px-1.5 py-0.2">0</span></button>
-                    <button onclick="switchTab('admin', 'attAppTab')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold relative" id="adminBtnAttAppTab">হাজিরা আবেদন <span id="adminAttAppBadge" class="hidden absolute -top-1 -right-1 bg-rose-600 text-white rounded-full text-[9px] px-1.5 py-0.2">0</span></button>
-                    <button onclick="switchTab('admin', 'profileTab')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold" id="adminBtnProfTab">আমার প্রফাইল</button>
+                <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 w-full md:w-auto">
+                    <input type="date" id="adminReportDate" onchange="loadAdminView()" class="border px-2.5 py-1.5 rounded-lg text-xs sm:text-sm w-full sm:w-auto">
+                    <button onclick="switchTab('admin', 'attendanceTab')" class="bg-red-600 text-white px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold shadow mobile-compact-btn" id="adminBtnAttTab">হাজিরা রিপোর্ট</button>
+                    <button onclick="switchTab('admin', 'leaveTab')" class="bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold relative mobile-compact-btn" id="adminBtnLeaveTab">ছুটির অনুমোদন <span id="adminLeaveBadge" class="hidden absolute -top-1 -right-1 bg-rose-600 text-white rounded-full text-[9px] px-1.5 py-0.2">0</span></button>
+                    <button onclick="switchTab('admin', 'attAppTab')" class="bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold relative mobile-compact-btn" id="adminBtnAttAppTab">হাজিরা আবেদন <span id="adminAttAppBadge" class="hidden absolute -top-1 -right-1 bg-rose-600 text-white rounded-full text-[9px] px-1.5 py-0.2">0</span></button>
+                    <button onclick="switchTab('admin', 'profileTab')" class="bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn" id="adminBtnProfTab">আমার প্রফাইল</button>
                 </div>
             </div>
 
-            <div id="adminAttendanceSection" class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-white p-5 rounded-2xl border shadow-sm border-l-4 border-l-emerald-500">
+            <div id="adminAttendanceSection" class="space-y-5 sm:space-y-6">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6">
+                    <div class="bg-white p-4 sm:p-5 rounded-2xl border shadow-sm border-l-4 border-l-emerald-500">
                         <p class="text-xs text-slate-500 font-bold">আজ মোট উপস্থিত</p>
-                        <h4 id="statTotalPresent" class="text-3xl font-bold text-emerald-600 mt-1">০ জন</h4>
+                        <h4 id="statTotalPresent" class="text-2xl sm:text-3xl font-bold text-emerald-600 mt-1">০ জন</h4>
                     </div>
-                    <div class="bg-white p-5 rounded-2xl border shadow-sm border-l-4 border-l-amber-500">
+                    <div class="bg-white p-4 sm:p-5 rounded-2xl border shadow-sm border-l-4 border-l-amber-500">
                         <p class="text-xs text-slate-500 font-bold">আজ লেট এন্ট্রি</p>
-                        <h4 id="statTotalLate" class="text-3xl font-bold text-amber-600 mt-1">০ জন</h4>
+                        <h4 id="statTotalLate" class="text-2xl sm:text-3xl font-bold text-amber-600 mt-1">০ জন</h4>
                     </div>
-                    <div class="bg-white p-5 rounded-2xl border shadow-sm border-l-4 border-l-rose-500">
+                    <div class="bg-white p-4 sm:p-5 rounded-2xl border shadow-sm border-l-4 border-l-rose-500">
                         <p class="text-xs text-slate-500 font-bold">আজ অনুপস্থিত</p>
-                        <h4 id="statTotalAbsent" class="text-3xl font-bold text-rose-600 mt-1">০ জন</h4>
+                        <h4 id="statTotalAbsent" class="text-2xl sm:text-3xl font-bold text-rose-600 mt-1">০ জন</h4>
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl border shadow-sm grid md:grid-cols-2 gap-6 items-center">
+                <div class="bg-white p-4 sm:p-6 rounded-2xl border shadow-sm grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 items-center">
                     <div>
-                        <h4 class="text-sm font-bold text-slate-700 mb-2">উপস্থিতির অনুপাত (আজকের দিন)</h4>
-                        <div class="w-48 h-48 mx-auto"><canvas id="adminChartCanvas"></canvas></div>
+                        <h4 class="text-sm font-bold text-slate-700 mb-2 text-center md:text-left">উপস্থিতির অনুপাত (আজকের দিন)</h4>
+                        <div class="w-44 h-44 sm:w-48 sm:h-48 mx-auto"><canvas id="adminChartCanvas"></canvas></div>
                     </div>
-                    <div class="space-y-3">
+                    <div class="space-y-2 sm:space-y-3 text-center md:text-left">
                         <h4 class="text-sm font-bold text-slate-700">ডিজিটাল এটেনডেন্স সামারি</h4>
                         <p class="text-xs text-slate-500 leading-relaxed">বাচ্চু মটরস টু হুইলার বিজনেস, মাদারীপুর। রিয়েল-টাইম সিস্টেমের মাধ্যমে প্রতিটি স্টাফের উপস্থিতি ও মুভমেন্ট ট্র্যাক করা হচ্ছে।</p>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl border p-6 shadow-sm">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold text-slate-800">আজকের স্টাফ উপস্থিতি, লাঞ্চ ও ডিউটি বিবরণী</h3>
-                        <button onclick="exportAttendancePDF()" class="bg-slate-700 hover:bg-slate-800 text-white text-xs px-3 py-1.5 rounded-lg shadow"><i class="fa-solid fa-file-pdf mr-1"></i> পিডিএফ প্রিন্ট রিপোর্ট</button>
+                <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm">
+                    <div class="flex flex-wrap justify-between items-center gap-2 mb-4">
+                        <h3 class="text-base sm:text-lg font-bold text-slate-800">আজকের স্টাফ উপস্থিতি, লাঞ্চ ও ডিউটি বিবরণী</h3>
+                        <button onclick="exportAttendancePDF()" class="bg-slate-700 hover:bg-slate-800 text-white text-xs px-3 py-1.5 rounded-lg shadow"><i class="fa-solid fa-file-pdf mr-1"></i> পিডিএফ প্রিন্ট</button>
                     </div>
-                    <div class="overflow-x-auto" id="adminAttendanceTableContainer"><p class="text-xs text-slate-400">ডাটা লোড হচ্ছে...</p></div>
+                    <div class="table-responsive" id="adminAttendanceTableContainer"><p class="text-xs text-slate-400">ডাটা লোড হচ্ছে...</p></div>
                 </div>
             </div>
 
-            <div id="adminLeaveApprovalSection" class="hidden space-y-6">
-                <div class="bg-white rounded-2xl border p-6 shadow-sm">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4 border-b pb-2">ছুটির ফাইনাল অনুমোদন (স্টাফ ও ম্যানেজার)</h3>
-                    <div id="adminLeaveListContainer" class="overflow-x-auto"><p class="text-xs text-slate-400">কোনো আবেদন নেই</p></div>
+            <div id="adminLeaveApprovalSection" class="hidden space-y-5 sm:space-y-6">
+                <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm">
+                    <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-4 border-b pb-2">ছুটির ফাইনাল অনুমোদন (স্টাফ ও ম্যানেজার)</h3>
+                    <div id="adminLeaveListContainer" class="table-responsive"><p class="text-xs text-slate-400">কোনো আবেদন নেই</p></div>
                 </div>
             </div>
 
-            <div id="adminAttApprovalSection" class="hidden space-y-6">
-                <div class="bg-white rounded-2xl border p-6 shadow-sm">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4 border-b pb-2">স্টাফ ও ম্যানেজারদের হাজিরা মিসিং আবেদন অনুমোদন প্যানেল</h3>
-                    <div id="adminAttAppListContainer" class="overflow-x-auto"><p class="text-xs text-slate-400">কোনো আবেদন নেই</p></div>
+            <div id="adminAttApprovalSection" class="hidden space-y-5 sm:space-y-6">
+                <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm">
+                    <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-4 border-b pb-2">হাজিরা মিসিং আবেদন অনুমোদন প্যানেল</h3>
+                    <div id="adminAttAppListContainer" class="table-responsive"><p class="text-xs text-slate-400">কোনো আবেদন নেই</p></div>
                 </div>
             </div>
 
-            <div id="adminProfileSection" class="hidden bg-white rounded-2xl border p-6 max-w-xl mx-auto shadow-sm">
-                <h3 class="text-xl font-bold border-b pb-3 mb-4 text-slate-800">ম্যানেজিং ডিরেক্টর প্রফাইল আপডেট</h3>
+            <div id="adminProfileSection" class="hidden bg-white rounded-2xl border p-4 sm:p-6 max-w-xl mx-auto shadow-sm">
+                <h3 class="text-lg sm:text-xl font-bold border-b pb-3 mb-4 text-slate-800">ম্যানেজিং ডিরেক্টর প্রফাইল আপডেট</h3>
                 <form onsubmit="updateProfile(event)" class="space-y-4">
                     <div class="text-center mb-4">
-                        <label class="inline-block bg-slate-700 hover:bg-slate-800 text-white text-xs px-3 py-1.5 rounded-lg cursor-pointer shadow">
+                        <label class="inline-block bg-slate-700 hover:bg-slate-800 text-white text-xs px-3.5 py-2 rounded-lg cursor-pointer shadow">
                             <i class="fa-solid fa-upload mr-1"></i> ছবি আপলোড করুন
                             <input type="file" id="adminProfileImageInput" accept="image/*" class="hidden" onchange="previewProfileImage(event)">
                         </label>
@@ -579,71 +605,71 @@
                     <div><label class="block text-xs font-semibold mb-1">ঠিকানা</label><input type="text" id="adminProfAddress" class="w-full border px-3 py-2 rounded-lg text-sm"></div>
                     <div><label class="block text-xs font-semibold mb-1">ইমারজেন্সি ফোন নাম্বার</label><input type="text" id="adminProfEmergency" class="w-full border px-3 py-2 rounded-lg text-sm"></div>
                     <div><label class="block text-xs font-semibold mb-1">পাসওয়ার্ড পরিবর্তন করুন</label><input type="password" id="adminProfNewPass" placeholder="নতুন পাসওয়ার্ড দিন" class="w-full border px-3 py-2 rounded-lg text-sm"></div>
-                    <button type="submit" id="adminProfUpdateBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-lg text-sm">প্রফাইল আপডেট করুন</button>
+                    <button type="submit" id="adminProfUpdateBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-sm">প্রফাইল আপডেট করুন</button>
                 </form>
             </div>
         </div>
 
         <!-- SUPER ADMIN PANEL -->
-        <div id="superAdminPanel" class="hidden space-y-6">
-            <div class="flex flex-col md:flex-row justify-between items-center bg-slate-900 text-white rounded-2xl shadow-lg p-4 gap-3">
+        <div id="superAdminPanel" class="hidden space-y-5 sm:space-y-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-slate-900 text-white rounded-2xl shadow-lg p-3.5 sm:p-4 gap-3">
                 <div>
-                    <h2 class="text-xl font-bold">সুপার অ্যাডমিন ড্যাশবোর্ড (ফিন্যান্স, অডিট ও সেন্ট্রাল রিপোর্ট)</h2>
+                    <h2 class="text-lg sm:text-xl font-bold">সুপার অ্যাডমিন ড্যাশবোর্ড</h2>
                     <p class="text-xs text-slate-400">সম্পূর্ণ সিস্টেম কন্ট্রোল, অ্যাকাউন্ট ম্যানেজমেন্ট ও অডিট লগ</p>
                 </div>
-                <div class="flex flex-wrap gap-2">
-                    <button onclick="switchTab('superadmin', 'controlTab')" class="bg-red-600 text-white px-3 py-2 rounded-lg text-xs font-semibold shadow" id="ownerBtnCtrlTab">ম্যানেজমেন্ট</button>
-                    <button onclick="switchTab('superadmin', 'reportTab')" class="bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold" id="ownerBtnRepTab">স্টাফ ও ম্যানেজার রিপোর্ট</button>
-                    <button onclick="switchTab('superadmin', 'leaveTab')" class="bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold relative" id="ownerBtnLeaveTab">ছুটির অনুমোদন <span id="superLeaveBadge" class="hidden absolute -top-1 -right-1 bg-rose-600 text-white rounded-full text-[9px] px-1.5 py-0.2">0</span></button>
-                    <button onclick="switchTab('superadmin', 'attAppTab')" class="bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold relative" id="ownerBtnAttAppTab">হাজিরা আবেদন <span id="superAttAppBadge" class="hidden absolute -top-1 -right-1 bg-rose-600 text-white rounded-full text-[9px] px-1.5 py-0.2">0</span></button>
-                    <button onclick="switchTab('superadmin', 'auditTab')" class="bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold" id="ownerBtnAuditTab">অডিট লগ</button>
-                    <button onclick="switchTab('superadmin', 'profileTab')" class="bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold" id="ownerBtnProfTab">আমার প্রফাইল</button>
+                <div class="flex flex-wrap gap-1.5 sm:gap-2 w-full md:w-auto">
+                    <button onclick="switchTab('superadmin', 'controlTab')" class="bg-red-600 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-semibold shadow mobile-compact-btn" id="ownerBtnCtrlTab">ম্যানেজমেন্ট</button>
+                    <button onclick="switchTab('superadmin', 'reportTab')" class="bg-slate-700 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-semibold mobile-compact-btn" id="ownerBtnRepTab">স্টাফ ও ম্যানেজার রিপোর্ট</button>
+                    <button onclick="switchTab('superadmin', 'leaveTab')" class="bg-slate-700 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-semibold relative mobile-compact-btn" id="ownerBtnLeaveTab">ছুটির অনুমোদন <span id="superLeaveBadge" class="hidden absolute -top-1 -right-1 bg-rose-600 text-white rounded-full text-[9px] px-1.5 py-0.2">0</span></button>
+                    <button onclick="switchTab('superadmin', 'attAppTab')" class="bg-slate-700 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-semibold relative mobile-compact-btn" id="ownerBtnAttAppTab">হাজিরা আবেদন <span id="superAttAppBadge" class="hidden absolute -top-1 -right-1 bg-rose-600 text-white rounded-full text-[9px] px-1.5 py-0.2">0</span></button>
+                    <button onclick="switchTab('superadmin', 'auditTab')" class="bg-slate-700 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-semibold mobile-compact-btn" id="ownerBtnAuditTab">অডিট লগ</button>
+                    <button onclick="switchTab('superadmin', 'profileTab')" class="bg-slate-700 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-semibold mobile-compact-btn" id="ownerBtnProfTab">আমার প্রফাইল</button>
                 </div>
             </div>
 
-            <div id="superAdminControlSection" class="space-y-6">
+            <div id="superAdminControlSection" class="space-y-5 sm:space-y-6">
                 <div class="flex justify-end gap-2">
-                    <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-4 py-2 rounded-lg font-bold shadow">
-                        <i class="fa-solid fa-file-excel mr-1"></i> সেন্ট্রাল এক্সেল ডাউনলোড (CSV)
+                    <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3.5 py-2 rounded-lg font-bold shadow">
+                        <i class="fa-solid fa-file-excel mr-1"></i> সেন্ট্রাল এক্সেল ডাউনলোড
                     </button>
                 </div>
 
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="bg-white rounded-2xl border p-6 shadow-sm">
-                        <h3 class="text-lg font-bold border-b pb-3 mb-4 text-slate-800">নতুন অ্যাকাউন্ট তৈরি</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+                    <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm">
+                        <h3 class="text-base sm:text-lg font-bold border-b pb-3 mb-4 text-slate-800">নতুন অ্যাকাউন্ট তৈরি</h3>
                         <form onsubmit="createNewStaff(event)" class="space-y-3">
                             <div>
                                 <label class="text-xs font-semibold">অ্যাকাউন্টের ধরন</label>
-                                <select id="newAccountType" class="w-full border px-3 py-1.5 rounded-lg text-sm bg-white">
+                                <select id="newAccountType" class="w-full border px-3 py-2 rounded-lg text-sm bg-white">
                                     <option value="staff">স্টাফ অ্যাকাউন্ট</option>
                                     <option value="manager">ম্যানেজার অ্যাকাউন্ট</option>
                                     <option value="admin">অ্যাডমিন অ্যাকাউন্ট (ম্যানেজিং ডিরেক্টর)</option>
                                     <option value="superadmin">সুপার অ্যাডমিন অ্যাকাউন্ট</option>
                                 </select>
                             </div>
-                            <div><label class="text-xs font-semibold">ইউজার আইডি</label><input type="text" id="newStaffId" required placeholder="BM-103" class="w-full border px-3 py-1.5 rounded-lg text-sm"></div>
-                            <div><label class="text-xs font-semibold">নাম</label><input type="text" id="newStaffName" required placeholder="নাম" class="w-full border px-3 py-1.5 rounded-lg text-sm"></div>
-                            <div><label class="text-xs font-semibold">পদবী</label><input type="text" id="newStaffRole" required placeholder="পদবী" class="w-full border px-3 py-1.5 rounded-lg text-sm"></div>
-                            <div><label class="text-xs font-semibold">পাসওয়ার্ড</label><input type="password" id="newStaffPass" required placeholder="••••••" class="w-full border px-3 py-1.5 rounded-lg text-sm"></div>
-                            <button type="submit" id="addStaffBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg text-sm shadow">অ্যাকাউন্ট তৈরি করুন</button>
+                            <div><label class="text-xs font-semibold">ইউজার আইডি</label><input type="text" id="newStaffId" required placeholder="BM-103" class="w-full border px-3 py-2 rounded-lg text-sm"></div>
+                            <div><label class="text-xs font-semibold">নাম</label><input type="text" id="newStaffName" required placeholder="নাম" class="w-full border px-3 py-2 rounded-lg text-sm"></div>
+                            <div><label class="text-xs font-semibold">পদবী</label><input type="text" id="newStaffRole" required placeholder="পদবী" class="w-full border px-3 py-2 rounded-lg text-sm"></div>
+                            <div><label class="text-xs font-semibold">পাসওয়ার্ড</label><input type="password" id="newStaffPass" required placeholder="••••••" class="w-full border px-3 py-2 rounded-lg text-sm"></div>
+                            <button type="submit" id="addStaffBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 rounded-xl text-sm shadow">অ্যাকাউন্ট তৈরি করুন</button>
                         </form>
                     </div>
 
-                    <div class="md:col-span-2 space-y-6">
-                        <div class="bg-white rounded-2xl border p-6 shadow-sm">
-                            <h3 class="text-lg font-bold border-b pb-3 mb-4 text-emerald-700">স্টাফ তালিকা ও পাসওয়ার্ড রিসেট</h3>
-                            <div class="overflow-x-auto max-h-60">
-                                <table class="w-full text-sm text-left">
+                    <div class="md:col-span-2 space-y-5 sm:space-y-6">
+                        <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm">
+                            <h3 class="text-base sm:text-lg font-bold border-b pb-3 mb-4 text-emerald-700">স্টাফ তালিকা ও পাসওয়ার্ড রিসেট</h3>
+                            <div class="table-responsive max-h-60">
+                                <table class="w-full text-xs sm:text-sm text-left">
                                     <thead class="bg-slate-50 text-slate-600 sticky top-0"><tr><th class="p-2">আইডি</th><th class="p-2">নাম</th><th class="p-2">পদবী</th><th class="p-2">পাসওয়ার্ড</th><th class="p-2 text-right">অ্যাকশন</th></tr></thead>
                                     <tbody id="superAdminStaffList" class="divide-y"><tr><td colspan="5" class="p-4 text-center text-slate-400">লোড হচ্ছে...</td></tr></tbody>
                                 </table>
                             </div>
                         </div>
 
-                        <div class="bg-white rounded-2xl border p-6 shadow-sm">
-                            <h3 class="text-lg font-bold border-b pb-3 mb-4 text-amber-700">ম্যানেজার, অ্যাডমিন ও সুপার অ্যাডমিন তালিকা</h3>
-                            <div class="overflow-x-auto max-h-48">
-                                <table class="w-full text-sm text-left">
+                        <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm">
+                            <h3 class="text-base sm:text-lg font-bold border-b pb-3 mb-4 text-amber-700">ম্যানেজার, অ্যাডমিন ও সুপার অ্যাডমিন তালিকা</h3>
+                            <div class="table-responsive max-h-48">
+                                <table class="w-full text-xs sm:text-sm text-left">
                                     <thead class="bg-slate-50 text-slate-600 sticky top-0"><tr><th class="p-2">আইডি</th><th class="p-2">নাম</th><th class="p-2">পদবী</th><th class="p-2">পাসওয়ার্ড</th><th class="p-2 text-right">অ্যাকশন</th></tr></thead>
                                     <tbody id="superAdminAdminList" class="divide-y"><tr><td colspan="5" class="p-4 text-center text-slate-400">লোড হচ্ছে...</td></tr></tbody>
                                 </table>
@@ -653,48 +679,48 @@
                 </div>
             </div>
 
-            <div id="superAdminReportSection" class="hidden space-y-6">
-                <div class="bg-white rounded-2xl border p-6 shadow-sm space-y-6">
-                    <div class="flex flex-col md:flex-row justify-between items-center gap-4 border-b pb-4">
-                        <h3 class="text-lg font-bold text-slate-800">স্টাফ ও ম্যানেজারদের ব্যক্তিগত মাসিক হাজিরা ও ডিউটি রিপোর্ট</h3>
-                        <div class="flex items-center gap-2">
-                            <select id="reportStaffSelect" onchange="loadSuperAdminIndividualReport()" class="border px-3 py-1.5 rounded-lg text-sm bg-white"></select>
-                            <input type="month" id="reportMonthPicker" onchange="loadSuperAdminIndividualReport()" class="border px-3 py-1.5 rounded-lg text-sm">
+            <div id="superAdminReportSection" class="hidden space-y-5 sm:space-y-6">
+                <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm space-y-4 sm:space-y-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b pb-4">
+                        <h3 class="text-base sm:text-lg font-bold text-slate-800">স্টাফ ও ম্যানেজারদের ব্যক্তিগত মাসিক হাজিরা ও ডিউটি রিপোর্ট</h3>
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+                            <select id="reportStaffSelect" onchange="loadSuperAdminIndividualReport()" class="border px-3 py-1.5 rounded-lg text-xs sm:text-sm bg-white"></select>
+                            <input type="month" id="reportMonthPicker" onchange="loadSuperAdminIndividualReport()" class="border px-3 py-1.5 rounded-lg text-xs sm:text-sm">
                         </div>
                     </div>
-                    <div id="superAdminIndividualReportContainer" class="overflow-x-auto"><p class="text-xs text-slate-400 text-center py-4">স্টাফ বা ম্যানেজার নির্বাচন করুন...</p></div>
+                    <div id="superAdminIndividualReportContainer" class="table-responsive"><p class="text-xs text-slate-400 text-center py-4">স্টাফ বা ম্যানেজার নির্বাচন করুন...</p></div>
                 </div>
             </div>
 
-            <div id="superAdminLeaveSection" class="hidden space-y-6">
-                <div class="bg-white rounded-2xl border p-6 shadow-sm">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4 border-b pb-2">ছুটির ফাইনাল অনুমোদন প্যানেল (স্টাফ ও ম্যানেজার)</h3>
-                    <div id="superAdminLeaveListContainer" class="overflow-x-auto"><p class="text-xs text-slate-400">কোনো আবেদন নেই</p></div>
+            <div id="superAdminLeaveSection" class="hidden space-y-5 sm:space-y-6">
+                <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm">
+                    <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-4 border-b pb-2">ছুটির ফাইনাল অনুমোদন প্যানেল (স্টাফ ও ম্যানেজার)</h3>
+                    <div id="superAdminLeaveListContainer" class="table-responsive"><p class="text-xs text-slate-400">কোনো আবেদন নেই</p></div>
                 </div>
             </div>
 
-            <div id="superAdminAttApprovalSection" class="hidden space-y-6">
-                <div class="bg-white rounded-2xl border p-6 shadow-sm">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4 border-b pb-2">হাজিরা আবেদন অনুমোদন প্যানেল (স্টাফ ও ম্যানেজার)</h3>
-                    <div id="superAdminAttAppListContainer" class="overflow-x-auto"><p class="text-xs text-slate-400">কোনো আবেদন নেই</p></div>
+            <div id="superAdminAttApprovalSection" class="hidden space-y-5 sm:space-y-6">
+                <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm">
+                    <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-4 border-b pb-2">হাজিরা আবেদন অনুমোদন প্যানেল</h3>
+                    <div id="superAdminAttAppListContainer" class="table-responsive"><p class="text-xs text-slate-400">কোনো আবেদন নেই</p></div>
                 </div>
             </div>
 
-            <div id="superAdminAuditSection" class="hidden space-y-6">
-                <div class="bg-white rounded-2xl border p-6 shadow-sm space-y-4">
-                    <div class="flex justify-between items-center border-b pb-3">
-                        <h3 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-shield-halved text-red-600 mr-2"></i>সিকিউরিটি অডিট ট্রেইল ও অ্যাক্টিভিটি লগ</h3>
-                        <button onclick="exportAuditLogCSV()" class="bg-slate-700 hover:bg-slate-800 text-white text-xs px-3 py-1.5 rounded-lg shadow"><i class="fa-solid fa-download mr-1"></i> অডিট লগ ডাউনলোড</button>
+            <div id="superAdminAuditSection" class="hidden space-y-5 sm:space-y-6">
+                <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm space-y-4">
+                    <div class="flex flex-wrap justify-between items-center gap-2 border-b pb-3">
+                        <h3 class="text-base sm:text-lg font-bold text-slate-800"><i class="fa-solid fa-shield-halved text-red-600 mr-1.5"></i>সিকিউরিটি অডিট ট্রেইল</h3>
+                        <button onclick="exportAuditLogCSV()" class="bg-slate-700 hover:bg-slate-800 text-white text-xs px-3 py-1.5 rounded-lg shadow"><i class="fa-solid fa-download mr-1"></i> ডাউনলোড</button>
                     </div>
-                    <div id="auditLogContainer" class="overflow-x-auto max-h-96"><p class="text-xs text-slate-400">অডিট লগ লোড হচ্ছে...</p></div>
+                    <div id="auditLogContainer" class="table-responsive max-h-96"><p class="text-xs text-slate-400">অডিট লগ লোড হচ্ছে...</p></div>
                 </div>
             </div>
 
-            <div id="superAdminProfileSection" class="hidden bg-white rounded-2xl border p-6 max-w-xl mx-auto shadow-sm">
-                <h3 class="text-xl font-bold border-b pb-3 mb-4 text-slate-800">সুপার অ্যাডমিন প্রফাইল আপডেট</h3>
+            <div id="superAdminProfileSection" class="hidden bg-white rounded-2xl border p-4 sm:p-6 max-w-xl mx-auto shadow-sm">
+                <h3 class="text-lg sm:text-xl font-bold border-b pb-3 mb-4 text-slate-800">সুপার অ্যাডমিন প্রফাইল আপডেট</h3>
                 <form onsubmit="updateProfile(event)" class="space-y-4">
                     <div class="text-center mb-4">
-                        <label class="inline-block bg-slate-700 hover:bg-slate-800 text-white text-xs px-3 py-1.5 rounded-lg cursor-pointer shadow">
+                        <label class="inline-block bg-slate-700 hover:bg-slate-800 text-white text-xs px-3.5 py-2 rounded-lg cursor-pointer shadow">
                             <i class="fa-solid fa-upload mr-1"></i> ছবি আপলোড করুন
                             <input type="file" id="ownerProfileImageInput" accept="image/*" class="hidden" onchange="previewProfileImage(event)">
                         </label>
@@ -703,7 +729,7 @@
                     <div><label class="block text-xs font-semibold mb-1">ঠিকানা</label><input type="text" id="ownerProfAddress" class="w-full border px-3 py-2 rounded-lg text-sm"></div>
                     <div><label class="block text-xs font-semibold mb-1">ইমারজেন্সি ফোন নাম্বার</label><input type="text" id="ownerProfEmergency" class="w-full border px-3 py-2 rounded-lg text-sm"></div>
                     <div><label class="block text-xs font-semibold mb-1">পাসওয়ার্ড পরিবর্তন করুন</label><input type="password" id="ownerProfNewPass" placeholder="নতুন পাসওয়ার্ড দিন" class="w-full border px-3 py-2 rounded-lg text-sm"></div>
-                    <button type="submit" id="ownerProfUpdateBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-lg text-sm">প্রফাইল আপডেট করুন</button>
+                    <button type="submit" id="ownerProfUpdateBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-sm">প্রফাইল আপডেট করুন</button>
                 </form>
             </div>
         </div>
@@ -712,8 +738,8 @@
 
     <!-- NOTICE UPDATE MODAL -->
     <div id="noticeModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
-            <h3 id="noticeModalTitle" class="text-lg font-bold text-slate-800 border-b pb-2">নোটিশ আপডেট করুন</h3>
+        <div class="bg-white rounded-2xl max-w-lg w-full p-5 sm:p-6 space-y-4 shadow-2xl">
+            <h3 id="noticeModalTitle" class="text-base sm:text-lg font-bold text-slate-800 border-b pb-2">নোটিশ আপডেট করুন</h3>
             <div>
                 <label class="block text-xs font-semibold mb-1 text-slate-600">নোটিশের বিষয় (বোল্ড আকারে দেখাবে)</label>
                 <input type="text" id="noticeInputSubject" required placeholder="যেমন: শোরুম উপস্থিতি সংক্রান্ত জরুরি নির্দেশনা" class="w-full border px-3 py-2 rounded-xl text-sm focus:ring-2 focus:ring-red-500">
@@ -731,8 +757,8 @@
 
     <!-- MANUAL ATTENDANCE APPLICATION MODAL -->
     <div id="manualAttModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
-            <h3 class="text-lg font-bold text-slate-800 border-b pb-2">হাজিরা বা মুভমেন্ট মিসিং আবেদন</h3>
+        <div class="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 space-y-4 shadow-2xl">
+            <h3 class="text-base sm:text-lg font-bold text-slate-800 border-b pb-2">হাজিরা বা মুভমেন্ট মিসিং আবেদন</h3>
             <form onsubmit="submitManualAttendance(event)" class="space-y-3">
                 <div><label class="block text-xs font-semibold mb-1">তারিখ</label><input type="date" id="manDate" required class="w-full border px-3 py-2 rounded-lg text-sm"></div>
                 <div class="grid grid-cols-2 gap-2">
@@ -768,27 +794,40 @@
         let adminChartInstance = null;
         let activeNoticeType = '';
 
-        document.getElementById("adminReportDate").valueAsDate = new Date();
-        initGPS();
-        setInterval(updateLiveClock, 1000);
-
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const loader = document.getElementById("loadingScreen");
+        function hideLoader() {
+            const loader = document.getElementById("loadingScreen");
+            if (loader && loader.style.display !== 'none') {
                 loader.classList.add("opacity-0");
-                setTimeout(() => loader.style.display = 'none', 1000);
-            }, 1200);
+                setTimeout(() => { loader.style.display = 'none'; }, 500);
+            }
+        }
+
+        // Guaranteed failsafe to hide loading screen
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(hideLoader, 1000);
+            
+            const dateInput = document.getElementById("adminReportDate");
+            if (dateInput) dateInput.valueAsDate = new Date();
+            
+            initGPS();
+            setInterval(updateLiveClock, 1000);
 
             // Auto-Login Check (Stay Logged In until Logout)
             const savedUser = localStorage.getItem('bachchu_logged_in_user');
             if (savedUser) {
                 try {
                     const userObj = JSON.parse(savedUser);
-                    initializeUserSession(userObj, true);
+                    if (userObj && userObj.id) {
+                        initializeUserSession(userObj, true);
+                    }
                 } catch (e) {
                     localStorage.removeItem('bachchu_logged_in_user');
                 }
             }
+        });
+
+        window.addEventListener('load', () => {
+            setTimeout(hideLoader, 800);
         });
 
         function updateLiveClock() {
@@ -796,23 +835,27 @@
             const timeStr = now.toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
             const dateStr = now.toLocaleDateString('bn-BD', { day: 'numeric', month: 'long', year: 'numeric' });
             const elem = document.getElementById("liveClockDisplay");
-            if(elem) elem.innerHTML = `<i class="fa-regular fa-clock text-amber-300 mr-1"></i> ${dateStr} | ${timeStr}`;
+            if (elem) elem.innerHTML = `<i class="fa-regular fa-clock text-amber-300 mr-1"></i> ${dateStr} | ${timeStr}`;
         }
 
         function showToast(title, message, type = 'success') {
             const toast = document.getElementById("toastBox");
+            if (!toast) return;
             document.getElementById("toastTitle").innerText = title;
             document.getElementById("toastMessage").innerText = message;
             document.getElementById("toastIcon").innerHTML = type === 'success' ? `<i class="fa-solid fa-circle-check text-emerald-400"></i>` : `<i class="fa-solid fa-triangle-exclamation text-rose-400"></i>`;
-            toast.classList.remove("translate-x-full", "opacity-0");
-            setTimeout(() => toast.classList.add("translate-x-full", "opacity-0"), 3500);
+            toast.classList.remove("-translate-y-32", "sm:translate-x-full", "opacity-0");
+            setTimeout(() => toast.classList.add("-translate-y-32", "sm:translate-x-full", "opacity-0"), 3500);
         }
 
         function triggerSuccessTick(msg = "আপনার অনুরোধ সফলভাবে সম্পন্ন হয়েছে।") {
-            document.getElementById("successTickText").innerText = msg;
+            const textEl = document.getElementById("successTickText");
             const tickModal = document.getElementById("successTickModal");
-            tickModal.classList.remove("hidden");
-            setTimeout(() => { tickModal.classList.add("hidden"); }, 1800);
+            if (textEl) textEl.innerText = msg;
+            if (tickModal) {
+                tickModal.classList.remove("hidden");
+                setTimeout(() => { tickModal.classList.add("hidden"); }, 1800);
+            }
         }
 
         function initGPS() {
@@ -821,9 +864,9 @@
                     (position) => {
                         currentGpsLocation = `GPS (${position.coords.latitude.toFixed(4)}, ${position.coords.longitude.toFixed(4)})`;
                         const elem = document.getElementById("gpsLocationStatus");
-                        if(elem) elem.innerHTML = `<i class="fa-solid fa-location-dot text-emerald-500 mr-1"></i>${currentGpsLocation}`;
+                        if (elem) elem.innerHTML = `<i class="fa-solid fa-location-dot text-emerald-500 mr-1"></i>${currentGpsLocation}`;
                         const mgrElem = document.getElementById("mgrGpsStatus");
-                        if(mgrElem) mgrElem.innerHTML = `<i class="fa-solid fa-location-dot text-emerald-500 mr-1"></i>${currentGpsLocation}`;
+                        if (mgrElem) mgrElem.innerHTML = `<i class="fa-solid fa-location-dot text-emerald-500 mr-1"></i>${currentGpsLocation}`;
                     },
                     () => { currentGpsLocation = "লোকেশন অফ"; }
                 );
@@ -831,7 +874,7 @@
         }
 
         async function logAuditAction(actionType, details) {
-            if(!currentUser) return;
+            if (!currentUser) return;
             const newLog = {
                 logId: 'AUD-' + Math.floor(1000 + Math.random() * 9000),
                 userId: currentUser.id,
@@ -846,18 +889,18 @@
                 globalAuditLogs.push(newLog);
                 localStorage.setItem('bachchu_audit_logs', JSON.stringify(globalAuditLogs));
                 await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "addAuditLog", ...newLog }) });
-            } catch(e) {}
+            } catch (e) {}
         }
 
         async function loadAuditLogs() {
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getAuditLogs`);
                 globalAuditLogs = await res.json();
-            } catch(e) {
+            } catch (e) {
                 globalAuditLogs = JSON.parse(localStorage.getItem('bachchu_audit_logs') || '[]');
             }
             const container = document.getElementById("auditLogContainer");
-            if(container) {
+            if (container) {
                 container.innerHTML = globalAuditLogs.length === 0 ? `<p class="text-xs text-slate-400 text-center py-4">কোনো অডিট লগ নেই</p>` : `
                     <table class="w-full text-xs text-left border">
                         <tr class="bg-slate-100"><th class="p-2">সময়</th><th class="p-2">ইউজার</th><th class="p-2">পদবী</th><th class="p-2">অ্যাকশন</th><th class="p-2">বিবরণ</th></tr>
@@ -882,7 +925,6 @@
                 const user = globalUsers.find(u => String(u.id).toLowerCase() === uInput.toLowerCase() && String(u.pass) === pInput);
 
                 if (user) {
-                    // Save user session persistently in localStorage
                     localStorage.setItem('bachchu_logged_in_user', JSON.stringify(user));
                     initializeUserSession(user, false);
                 } else {
@@ -1064,7 +1106,7 @@
         async function saveNewNotice() {
             const subject = document.getElementById("noticeInputSubject").value.trim();
             const text = document.getElementById("noticeInputText").value.trim();
-            if(!subject || !text) return alert("বিষয় এবং বার্তা উভয়ই লিখুন!");
+            if (!subject || !text) return alert("বিষয় এবং বার্তা উভয়ই লিখুন!");
             
             let sigName = currentUser.type === 'admin' ? "জিয়াউল হাসান" : (currentUser.type === 'superadmin' ? "সুপার অ্যাডমিন" : currentUser.name);
             let sigRole = currentUser.type === 'admin' ? "ম্যানেজিং ডিরেক্টর" : (currentUser.type === 'superadmin' ? "ফিন্যান্স অ্যান্ড অডিট" : currentUser.role);
@@ -1077,7 +1119,7 @@
 
             globalNotices.push(newNotice);
             localStorage.setItem('bachchu_notices', JSON.stringify(globalNotices));
-            try { await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(newNotice) }); } catch(e) {}
+            try { await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(newNotice) }); } catch (e) {}
 
             logAuditAction("Notice Published", `${activeNoticeType === 'authority' ? 'কর্তৃপক্ষ' : 'ম্যানেজমেন্ট'} নোটিশ প্রকাশ করা হয়েছে: ${subject}`);
             closeNoticeModal();
@@ -1101,7 +1143,7 @@
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getLeaves`);
                 globalLeaves = await res.json();
-            } catch(e) {
+            } catch (e) {
                 globalLeaves = JSON.parse(localStorage.getItem('bachchu_leaves') || '[]');
             }
             updateLeaveBalancesAndBadges();
@@ -1109,21 +1151,21 @@
         }
 
         function updateLeaveBalancesAndBadges() {
-            if(!currentUser) return;
+            if (!currentUser) return;
             const myLeaves = globalLeaves.filter(l => String(l.staffId) === String(currentUser.id) && l.finalApproval === 'Approved');
             let usedCasual = 0, usedSick = 0, usedEmergency = 0;
             myLeaves.forEach(l => {
                 let days = Math.ceil(Math.abs(new Date(l.endDate) - new Date(l.startDate)) / (1000 * 60 * 60 * 24)) + 1;
-                if(l.type.includes('ক্যাজুয়াল')) usedCasual += days;
-                if(l.type.includes('সিক')) usedSick += days;
-                if(l.type.includes('ইমারজেন্সি')) usedEmergency += days;
+                if (l.type.includes('ক্যাজুয়াল')) usedCasual += days;
+                if (l.type.includes('সিক')) usedSick += days;
+                if (l.type.includes('ইমারজেন্সি')) usedEmergency += days;
             });
 
             let remC = Math.max(0, 10 - usedCasual);
             let remS = Math.max(0, 10 - usedSick);
             let remE = Math.max(0, 6 - usedEmergency);
 
-            if(document.getElementById("remCasual")) {
+            if (document.getElementById("remCasual")) {
                 document.getElementById("remCasual").innerText = remC;
                 document.getElementById("remSick").innerText = remS;
                 document.getElementById("remEmergency").innerText = remE;
@@ -1133,7 +1175,7 @@
                     <div class="bg-amber-50 p-2 rounded border">ইমারজেন্সি বাকি: <strong class="text-amber-700">${remE}/6</strong></div>
                 `;
             }
-            if(document.getElementById("mgrLeaveBalanceCard")) {
+            if (document.getElementById("mgrLeaveBalanceCard")) {
                 document.getElementById("mgrLeaveBalanceCard").innerHTML = `
                     <div class="bg-blue-50 p-2 rounded border">ক্যাজুয়াল বাকি: <strong class="text-blue-700">${remC}/10</strong></div>
                     <div class="bg-emerald-50 p-2 rounded border">সিক বাকি: <strong class="text-emerald-700">${remS}/10</strong></div>
@@ -1144,17 +1186,17 @@
             let pendingForManager = globalLeaves.filter(l => l.staffType === 'staff' && l.managerApproval === 'Pending').length;
             let pendingForMD = globalLeaves.filter(l => (l.staffType === 'manager' || l.managerApproval === 'Approved') && l.finalApproval === 'Pending').length;
 
-            if(document.getElementById("mgrLeaveBadge")) {
+            if (document.getElementById("mgrLeaveBadge")) {
                 const b1 = document.getElementById("mgrLeaveBadge");
-                if(pendingForManager > 0) { b1.innerText = pendingForManager; b1.classList.remove("hidden"); } else { b1.classList.add("hidden"); }
+                if (pendingForManager > 0) { b1.innerText = pendingForManager; b1.classList.remove("hidden"); } else { b1.classList.add("hidden"); }
             }
-            if(document.getElementById("adminLeaveBadge")) {
+            if (document.getElementById("adminLeaveBadge")) {
                 const b2 = document.getElementById("adminLeaveBadge");
-                if(pendingForMD > 0) { b2.innerText = pendingForMD; b2.classList.remove("hidden"); } else { b2.classList.add("hidden"); }
+                if (pendingForMD > 0) { b2.innerText = pendingForMD; b2.classList.remove("hidden"); } else { b2.classList.add("hidden"); }
             }
-            if(document.getElementById("superLeaveBadge")) {
+            if (document.getElementById("superLeaveBadge")) {
                 const b3 = document.getElementById("superLeaveBadge");
-                if(pendingForMD > 0) { b3.innerText = pendingForMD; b3.classList.remove("hidden"); } else { b3.classList.add("hidden"); }
+                if (pendingForMD > 0) { b3.innerText = pendingForMD; b3.classList.remove("hidden"); } else { b3.classList.add("hidden"); }
             }
         }
 
@@ -1195,7 +1237,7 @@
 
             globalLeaves.push(newLeave);
             localStorage.setItem('bachchu_leaves', JSON.stringify(globalLeaves));
-            try { await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(newLeave) }); } catch(e) {}
+            try { await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(newLeave) }); } catch (e) {}
 
             logAuditAction("Leave Applied", `ছুটির আবেদন করেছেন: ${newLeave.type}`);
             e.target.reset();
@@ -1240,7 +1282,7 @@
 
             globalLeaves.push(newLeave);
             localStorage.setItem('bachchu_leaves', JSON.stringify(globalLeaves));
-            try { await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(newLeave) }); } catch(e) {}
+            try { await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(newLeave) }); } catch (e) {}
 
             logAuditAction("Manager Leave Applied", `ম্যানেজার নিজের ছুটির আবেদন করেছেন (সরাসরি অ্যাডমিনের জন্য): ${newLeave.type}`);
             e.target.reset();
@@ -1249,10 +1291,11 @@
         }
 
         function renderLeaveLists() {
-            if(currentUser.type === 'staff') {
+            if (!currentUser) return;
+            if (currentUser.type === 'staff') {
                 const myLeaves = globalLeaves.filter(l => String(l.staffId) === String(currentUser.id));
                 const elem = document.getElementById("myLeaveHistoryContainer");
-                if(elem) {
+                if (elem) {
                     elem.innerHTML = myLeaves.length === 0 ? `<p class="text-xs text-slate-400">কোনো ছুটির আবেদন নেই</p>` : `
                         <table class="w-full text-xs text-left border">
                             <tr class="bg-slate-100"><th class="p-2">আইডি</th><th class="p-2">ধরন</th><th class="p-2">তারিখ</th><th class="p-2">কারণ</th><th class="p-2">প্রেসক্রিপশন</th><th class="p-2">স্ট্যাটাস</th></tr>
@@ -1262,7 +1305,7 @@
                 }
             }
 
-            if(currentUser.type === 'manager') {
+            if (currentUser.type === 'manager') {
                 const pendingForMgr = globalLeaves.filter(l => l.staffType === 'staff' && l.managerApproval === 'Pending');
                 document.getElementById("managerLeaveListContainer").innerHTML = pendingForMgr.length === 0 ? `<p class="text-xs text-slate-400">কোনো আবেদন নেই</p>` : `
                     <table class="w-full text-xs text-left border">
@@ -1273,7 +1316,7 @@
 
                 const myMgrLeaves = globalLeaves.filter(l => String(l.staffId) === String(currentUser.id));
                 const mgrHistElem = document.getElementById("myMgrLeaveHistoryContainer");
-                if(mgrHistElem) {
+                if (mgrHistElem) {
                     mgrHistElem.innerHTML = myMgrLeaves.length === 0 ? `<p class="text-xs text-slate-400">কোনো আবেদন নেই</p>` : `
                         <table class="w-full text-xs text-left border">
                             <tr class="bg-slate-100"><th class="p-2">আইডি</th><th class="p-2">ধরন</th><th class="p-2">তারিখ</th><th class="p-2">কারণ</th><th class="p-2">স্ট্যাটাস</th></tr>
@@ -1283,11 +1326,11 @@
                 }
             }
 
-            if(currentUser.type === 'admin' || currentUser.type === 'superadmin') {
+            if (currentUser.type === 'admin' || currentUser.type === 'superadmin') {
                 const pendingForFinal = globalLeaves.filter(l => (l.staffType === 'manager' || l.managerApproval === 'Approved') && l.finalApproval === 'Pending');
                 let targetId = currentUser.type === 'admin' ? "adminLeaveListContainer" : "superAdminLeaveListContainer";
                 const elem = document.getElementById(targetId);
-                if(elem) {
+                if (elem) {
                     elem.innerHTML = pendingForFinal.length === 0 ? `<p class="text-xs text-slate-400">অনুমোদনের জন্য কোনো আবেদন নেই</p>` : `
                         <table class="w-full text-xs text-left border">
                             <tr class="bg-slate-100"><th class="p-2">আবেদনকারী</th><th class="p-2">ধরন</th><th class="p-2">তারিখ</th><th class="p-2">কারণ</th><th class="p-2">প্রেসক্রিপশন</th><th class="p-2">পূর্ববর্তী স্ট্যাটাস</th><th class="p-2 text-right">ফাইনাল অ্যাকশন</th></tr>
@@ -1300,8 +1343,8 @@
 
         async function processLeave(leaveId, byRole, decision) {
             let leave = globalLeaves.find(l => l.leaveId === leaveId);
-            if(!leave) return;
-            if(byRole === 'manager') {
+            if (!leave) return;
+            if (byRole === 'manager') {
                 leave.managerApproval = decision;
                 leave.status = decision === 'Approved' ? 'Pending (Final MD/SuperAdmin Approval)' : 'Rejected by Manager';
                 logAuditAction("Leave 1st Approved", `ম্যানেজার ${leave.staffName} এর ছুটির আবেদন ${decision}`);
@@ -1319,7 +1362,7 @@
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getAttApps`);
                 globalAttApplications = await res.json();
-            } catch(e) {
+            } catch (e) {
                 globalAttApplications = JSON.parse(localStorage.getItem('bachchu_att_apps') || '[]');
             }
             updateAttAppBadges();
@@ -1330,8 +1373,8 @@
             let pendingCount = globalAttApplications.filter(a => a.status === 'Pending').length;
             ['adminAttAppBadge', 'superAttAppBadge'].forEach(id => {
                 const elem = document.getElementById(id);
-                if(elem) {
-                    if(pendingCount > 0) { elem.innerText = pendingCount; elem.classList.remove("hidden"); } else { elem.classList.add("hidden"); }
+                if (elem) {
+                    if (pendingCount > 0) { elem.innerText = pendingCount; elem.classList.remove("hidden"); } else { elem.classList.add("hidden"); }
                 }
             });
         }
@@ -1365,7 +1408,7 @@
 
             globalAttApplications.push(newApp);
             localStorage.setItem('bachchu_att_apps', JSON.stringify(globalAttApplications));
-            try { await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(newApp) }); } catch(e) {}
+            try { await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(newApp) }); } catch (e) {}
 
             logAuditAction("Attendance Application", `হাজিরা মিসিং আবেদন করেছেন: ${dateStr}`);
             closeManualAttModal();
@@ -1374,11 +1417,12 @@
         }
 
         function renderAttAppLists() {
-            if(currentUser.type === 'admin' || currentUser.type === 'superadmin') {
+            if (!currentUser) return;
+            if (currentUser.type === 'admin' || currentUser.type === 'superadmin') {
                 let pendingApps = globalAttApplications.filter(a => a.status === 'Pending');
                 let targetId = currentUser.type === 'admin' ? "adminAttAppListContainer" : "superAdminAttAppListContainer";
                 const elem = document.getElementById(targetId);
-                if(elem) {
+                if (elem) {
                     elem.innerHTML = pendingApps.length === 0 ? `<p class="text-xs text-slate-400">অনুমোদনের জন্য কোনো হাজিরার আবেদন নেই</p>` : `
                         <table class="w-full text-xs text-left border">
                             <tr class="bg-slate-100"><th class="p-2">আবেদনকারী</th><th class="p-2">তারিখ</th><th class="p-2">ইন ও আউট</th><th class="p-2">লাঞ্চ</th><th class="p-2">কারণ</th><th class="p-2 text-right">অ্যাকশন</th></tr>
@@ -1391,18 +1435,18 @@
 
         async function processAttApp(appId, decision) {
             let app = globalAttApplications.find(a => a.appId === appId);
-            if(!app) return;
+            if (!app) return;
             app.status = decision;
             localStorage.setItem('bachchu_att_apps', JSON.stringify(globalAttApplications));
             
-            if(decision === 'Approved') {
+            if (decision === 'Approved') {
                 let totalHours = "8.00 ঘণ্টা (আবেদনকৃত)";
                 const attPayload = {
                     action: "addAttendance", staffId: app.staffId, staffName: app.staffName,
                     dateStr: new Date(app.dateStr).toLocaleDateString(), inTime: format12Hour(app.inTime) !== '-' ? format12Hour(app.inTime) : "09:30 AM", inPhoto: "", inStatus: "Present",
                     lunchOut: format12Hour(app.lunchOut) !== '-' ? format12Hour(app.lunchOut) : "", lunchIn: format12Hour(app.lunchIn) !== '-' ? format12Hour(app.lunchIn) : "", outTime: format12Hour(app.outTime) !== '-' ? format12Hour(app.outTime) : "06:00 PM", outPhoto: "", totalDuty: totalHours, diffDuty: "সফল", location: "Manual Approved"
                 };
-                try { await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(attPayload) }); } catch(e){}
+                try { await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(attPayload) }); } catch (e) {}
             }
 
             logAuditAction("Attendance App Processed", `${app.staffName} এর হাজিরা আবেদন ${decision} করা হয়েছে`);
@@ -1411,7 +1455,7 @@
         }
 
         function startCamera() {
-            navigator.mediaDevices.getUserMedia({ video: true })
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
                 .then(stream => {
                     const video = document.getElementById("webcam");
                     video.srcObject = stream;
@@ -1436,7 +1480,7 @@
         }
 
         function startMgrCamera() {
-            navigator.mediaDevices.getUserMedia({ video: true })
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
                 .then(stream => {
                     const video = document.getElementById("mgrWebcam");
                     video.srcObject = stream;
@@ -1477,7 +1521,8 @@
                         ctx.drawImage(img, 0, 0, width, height);
                         uploadedProfilePhoto = canvas.toDataURL('image/jpeg', 0.7);
                         updateProfileAvatarDisplay(uploadedProfilePhoto);
-                        document.getElementById("imgUploadStatus").classList.remove("hidden");
+                        const st = document.getElementById("imgUploadStatus");
+                        if (st) st.classList.remove("hidden");
                         showToast("ছবি প্রস্তুত", "প্রফাইল সেভ করার জন্য নিচে ক্লিক করুন");
                     }
                 };
@@ -1490,20 +1535,20 @@
                 document.getElementById("staffAttendanceSection").classList.add("hidden");
                 document.getElementById("staffLeaveSection").classList.add("hidden");
                 document.getElementById("staffProfileSection").classList.add("hidden");
-                document.getElementById("btnAttTab").className = "bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold";
-                document.getElementById("btnLeaveTab").className = "bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold";
-                document.getElementById("btnProfTab").className = "bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold";
+                document.getElementById("btnAttTab").className = "bg-slate-200 text-slate-700 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold flex-1 sm:flex-initial";
+                document.getElementById("btnLeaveTab").className = "bg-slate-200 text-slate-700 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold flex-1 sm:flex-initial";
+                document.getElementById("btnProfTab").className = "bg-slate-200 text-slate-700 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold flex-1 sm:flex-initial";
 
                 if (tab === 'attendanceTab') {
                     document.getElementById("staffAttendanceSection").classList.remove("hidden");
-                    document.getElementById("btnAttTab").className = "bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow";
+                    document.getElementById("btnAttTab").className = "bg-red-600 text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold shadow flex-1 sm:flex-initial";
                 } else if (tab === 'leaveTab') {
                     document.getElementById("staffLeaveSection").classList.remove("hidden");
-                    document.getElementById("btnLeaveTab").className = "bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow";
+                    document.getElementById("btnLeaveTab").className = "bg-red-600 text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold shadow flex-1 sm:flex-initial";
                     loadLeavesData();
                 } else {
                     document.getElementById("staffProfileSection").classList.remove("hidden");
-                    document.getElementById("btnProfTab").className = "bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow";
+                    document.getElementById("btnProfTab").className = "bg-red-600 text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold shadow flex-1 sm:flex-initial";
                     document.getElementById("profPhone").value = currentUser.phone || "";
                     document.getElementById("profAddress").value = currentUser.address || "";
                     document.getElementById("profEmergency").value = currentUser.emergency || "";
@@ -1514,30 +1559,30 @@
                 document.getElementById("managerLeaveApprovalSection").classList.add("hidden");
                 document.getElementById("managerMyLeaveSection").classList.add("hidden");
                 document.getElementById("managerProfileSection").classList.add("hidden");
-                document.getElementById("mgrBtnAtt").className = "bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold";
-                document.getElementById("mgrBtnMyHist").className = "bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold";
-                document.getElementById("mgrBtnLeave").className = "bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold";
-                document.getElementById("mgrBtnMyLeave").className = "bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold";
-                document.getElementById("mgrBtnProf").className = "bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold";
+                document.getElementById("mgrBtnAtt").className = "bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn";
+                document.getElementById("mgrBtnMyHist").className = "bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn";
+                document.getElementById("mgrBtnLeave").className = "bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn";
+                document.getElementById("mgrBtnMyLeave").className = "bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn";
+                document.getElementById("mgrBtnProf").className = "bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn";
 
-                if(tab === 'attTab') {
+                if (tab === 'attTab') {
                     document.getElementById("managerAttendanceSection").classList.remove("hidden");
-                    document.getElementById("mgrBtnAtt").className = "bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow";
-                } else if(tab === 'myHistoryTab') {
+                    document.getElementById("mgrBtnAtt").className = "bg-red-600 text-white px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold shadow mobile-compact-btn";
+                } else if (tab === 'myHistoryTab') {
                     document.getElementById("managerMyHistorySection").classList.remove("hidden");
-                    document.getElementById("mgrBtnMyHist").className = "bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow";
+                    document.getElementById("mgrBtnMyHist").className = "bg-red-600 text-white px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold shadow mobile-compact-btn";
                     renderMonthlyDetailedReport('manager');
-                } else if(tab === 'leaveTab') {
+                } else if (tab === 'leaveTab') {
                     document.getElementById("managerLeaveApprovalSection").classList.remove("hidden");
-                    document.getElementById("mgrBtnLeave").className = "bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow";
+                    document.getElementById("mgrBtnLeave").className = "bg-red-600 text-white px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold shadow mobile-compact-btn";
                     loadLeavesData();
-                } else if(tab === 'myLeaveTab') {
+                } else if (tab === 'myLeaveTab') {
                     document.getElementById("managerMyLeaveSection").classList.remove("hidden");
-                    document.getElementById("mgrBtnMyLeave").className = "bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow";
+                    document.getElementById("mgrBtnMyLeave").className = "bg-red-600 text-white px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold shadow mobile-compact-btn";
                     loadLeavesData();
                 } else {
                     document.getElementById("managerProfileSection").classList.remove("hidden");
-                    document.getElementById("mgrBtnProf").className = "bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow";
+                    document.getElementById("mgrBtnProf").className = "bg-red-600 text-white px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold shadow mobile-compact-btn";
                     document.getElementById("mgrProfPhone").value = currentUser.phone || "";
                     document.getElementById("mgrProfAddress").value = currentUser.address || "";
                     document.getElementById("mgrProfEmergency").value = currentUser.emergency || "";
@@ -1547,25 +1592,25 @@
                 document.getElementById("adminLeaveApprovalSection").classList.add("hidden");
                 document.getElementById("adminAttApprovalSection").classList.add("hidden");
                 document.getElementById("adminProfileSection").classList.add("hidden");
-                document.getElementById("adminBtnAttTab").className = "bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold";
-                document.getElementById("adminBtnLeaveTab").className = "bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold";
-                document.getElementById("adminBtnAttAppTab").className = "bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold";
-                document.getElementById("adminBtnProfTab").className = "bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold";
+                document.getElementById("adminBtnAttTab").className = "bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn";
+                document.getElementById("adminBtnLeaveTab").className = "bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn";
+                document.getElementById("adminBtnAttAppTab").className = "bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn";
+                document.getElementById("adminBtnProfTab").className = "bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn";
 
                 if (tab === 'attendanceTab') {
                     document.getElementById("adminAttendanceSection").classList.remove("hidden");
-                    document.getElementById("adminBtnAttTab").className = "bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow";
-                } else if(tab === 'leaveTab') {
+                    document.getElementById("adminBtnAttTab").className = "bg-red-600 text-white px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold shadow mobile-compact-btn";
+                } else if (tab === 'leaveTab') {
                     document.getElementById("adminLeaveApprovalSection").classList.remove("hidden");
-                    document.getElementById("adminBtnLeaveTab").className = "bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow";
+                    document.getElementById("adminBtnLeaveTab").className = "bg-red-600 text-white px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold shadow mobile-compact-btn";
                     loadLeavesData();
-                } else if(tab === 'attAppTab') {
+                } else if (tab === 'attAppTab') {
                     document.getElementById("adminAttApprovalSection").classList.remove("hidden");
-                    document.getElementById("adminBtnAttAppTab").className = "bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow";
+                    document.getElementById("adminBtnAttAppTab").className = "bg-red-600 text-white px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold shadow mobile-compact-btn";
                     loadAttApplicationsData();
                 } else {
                     document.getElementById("adminProfileSection").classList.remove("hidden");
-                    document.getElementById("adminBtnProfTab").className = "bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow";
+                    document.getElementById("adminBtnProfTab").className = "bg-red-600 text-white px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold shadow mobile-compact-btn";
                     document.getElementById("adminProfPhone").value = currentUser.phone || "";
                     document.getElementById("adminProfAddress").value = currentUser.address || "";
                     document.getElementById("adminProfEmergency").value = currentUser.emergency || "";
@@ -1577,35 +1622,35 @@
                 document.getElementById("superAdminAttApprovalSection").classList.add("hidden");
                 document.getElementById("superAdminAuditSection").classList.add("hidden");
                 document.getElementById("superAdminProfileSection").classList.add("hidden");
-                document.getElementById("ownerBtnCtrlTab").className = "bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold";
-                document.getElementById("ownerBtnRepTab").className = "bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold";
-                document.getElementById("ownerBtnLeaveTab").className = "bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold";
-                document.getElementById("ownerBtnAttAppTab").className = "bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold";
-                document.getElementById("ownerBtnAuditTab").className = "bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold";
-                document.getElementById("ownerBtnProfTab").className = "bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-semibold";
+                document.getElementById("ownerBtnCtrlTab").className = "bg-slate-700 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-semibold mobile-compact-btn";
+                document.getElementById("ownerBtnRepTab").className = "bg-slate-700 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-semibold mobile-compact-btn";
+                document.getElementById("ownerBtnLeaveTab").className = "bg-slate-700 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-semibold mobile-compact-btn";
+                document.getElementById("ownerBtnAttAppTab").className = "bg-slate-700 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-semibold mobile-compact-btn";
+                document.getElementById("ownerBtnAuditTab").className = "bg-slate-700 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-semibold mobile-compact-btn";
+                document.getElementById("ownerBtnProfTab").className = "bg-slate-700 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-semibold mobile-compact-btn";
 
                 if (tab === 'controlTab') {
                     document.getElementById("superAdminControlSection").classList.remove("hidden");
-                    document.getElementById("ownerBtnCtrlTab").className = "bg-red-600 text-white px-3 py-2 rounded-lg text-xs font-semibold shadow";
+                    document.getElementById("ownerBtnCtrlTab").className = "bg-red-600 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-semibold shadow mobile-compact-btn";
                 } else if (tab === 'reportTab') {
                     document.getElementById("superAdminReportSection").classList.remove("hidden");
-                    document.getElementById("ownerBtnRepTab").className = "bg-red-600 text-white px-3 py-2 rounded-lg text-xs font-semibold shadow";
+                    document.getElementById("ownerBtnRepTab").className = "bg-red-600 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-semibold shadow mobile-compact-btn";
                     loadSuperAdminReportDropdown();
                 } else if (tab === 'leaveTab') {
                     document.getElementById("superAdminLeaveSection").classList.remove("hidden");
-                    document.getElementById("ownerBtnLeaveTab").className = "bg-red-600 text-white px-3 py-2 rounded-lg text-xs font-semibold shadow";
+                    document.getElementById("ownerBtnLeaveTab").className = "bg-red-600 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-semibold shadow mobile-compact-btn";
                     loadLeavesData();
                 } else if (tab === 'attAppTab') {
                     document.getElementById("superAdminAttApprovalSection").classList.remove("hidden");
-                    document.getElementById("ownerBtnAttAppTab").className = "bg-red-600 text-white px-3 py-2 rounded-lg text-xs font-semibold shadow";
+                    document.getElementById("ownerBtnAttAppTab").className = "bg-red-600 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-semibold shadow mobile-compact-btn";
                     loadAttApplicationsData();
                 } else if (tab === 'auditTab') {
                     document.getElementById("superAdminAuditSection").classList.remove("hidden");
-                    document.getElementById("ownerBtnAuditTab").className = "bg-red-600 text-white px-3 py-2 rounded-lg text-xs font-semibold shadow";
+                    document.getElementById("ownerBtnAuditTab").className = "bg-red-600 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-semibold shadow mobile-compact-btn";
                     loadAuditLogs();
                 } else if (tab === 'profileTab') {
                     document.getElementById("superAdminProfileSection").classList.remove("hidden");
-                    document.getElementById("ownerBtnProfTab").className = "bg-red-600 text-white px-3 py-2 rounded-lg text-xs font-semibold shadow";
+                    document.getElementById("ownerBtnProfTab").className = "bg-red-600 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-semibold shadow mobile-compact-btn";
                     document.getElementById("ownerProfPhone").value = currentUser.phone || "";
                     document.getElementById("ownerProfAddress").value = currentUser.address || "";
                     document.getElementById("ownerProfEmergency").value = currentUser.emergency || "";
@@ -1653,7 +1698,7 @@
             try {
                 await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
                 currentUser.phone = phone; currentUser.address = address; currentUser.emergency = emergency; currentUser.pass = payload.pass;
-                if(payload.photo) currentUser.photo = payload.photo;
+                if (payload.photo) currentUser.photo = payload.photo;
                 localStorage.setItem('bachchu_logged_in_user', JSON.stringify(currentUser));
                 logAuditAction("Profile Update", `${currentUser.name} প্রফাইল আপডেট করেছেন`);
                 triggerSuccessTick("প্রফাইল সফলভাবে আপডেট হয়েছে!");
@@ -1697,8 +1742,12 @@
         async function processAttendanceForUser(user, type, photoData) {
             const todayStr = new Date().toLocaleDateString();
             const nowTime = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-            const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
-            globalAttendance = await res.json();
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
+                globalAttendance = await res.json();
+            } catch (e) {
+                return showToast("কানেকশন ত্রুটি", "ডাটা লোড করা যাচ্ছে না!", "error");
+            }
             let todayRecord = globalAttendance.find(r => String(r.staffId) === String(user.id) && String(r.dateStr) === String(todayStr));
 
             if (type === 'in') {
@@ -1723,7 +1772,7 @@
                     let inT = new Date(todayStr + " " + todayRecord.inTime);
                     let outT = new Date();
                     let diffMs = outT - inT;
-                    let totalHours = (diffMs / (1000 * 60 * 60)).toFixed(2);
+                    let totalHours = isNaN(diffMs) ? "8.00" : (diffMs / (1000 * 60 * 60)).toFixed(2);
                     const payload = {
                         action: "updateAttendance", staffId: user.id, dateStr: todayStr,
                         outTime: nowTime, outPhoto: photoData, totalDuty: totalHours + " ঘণ্টা", diffDuty: "সফল"
@@ -1742,8 +1791,10 @@
         }
 
         async function loadStaffData() {
-            const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
-            globalAttendance = await res.json();
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
+                globalAttendance = await res.json();
+            } catch (e) { globalAttendance = []; }
             const myRecords = globalAttendance.filter(r => String(r.staffId) === String(currentUser.id));
             document.getElementById("staffHistoryContainer").innerHTML = myRecords.length === 0 ? `<p class="text-xs text-slate-400 text-center py-4">কোনো হাজিরা রেকর্ড নেই</p>` : `
                 <table class="w-full text-xs text-left border">
@@ -1755,8 +1806,10 @@
         }
 
         async function loadManagerView() {
-            const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
-            globalAttendance = await res.json();
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
+                globalAttendance = await res.json();
+            } catch (e) { globalAttendance = []; }
             const todayStr = new Date().toLocaleDateString();
             const todaysRecords = globalAttendance.filter(r => String(r.dateStr) === String(todayStr));
 
@@ -1792,7 +1845,7 @@
                     return d.getDate() === day && (d.getMonth() + 1) === month && d.getFullYear() === year;
                 });
 
-                let rowBg = "bg-rose-100 text-rose-900 border-rose-300"; // Absent (Red)
+                let rowBg = "bg-rose-100 text-rose-900 border-rose-300";
                 let statusBadge = `<span class="bg-rose-200 text-rose-800 px-2 py-0.5 rounded font-bold text-[10px]">অনুপস্থিত</span>`;
                 let inT = '-', lOut = '-', lIn = '-', outT = '-', totalLunch = '-', totalDuty = '-';
 
@@ -1816,11 +1869,11 @@
 
                     if (matched.inStatus === 'Late') {
                         totalLateDays++;
-                        rowBg = "bg-amber-100 text-amber-900 border-amber-300"; // Late (Yellow)
+                        rowBg = "bg-amber-100 text-amber-900 border-amber-300";
                         statusBadge = `<span class="bg-amber-200 text-amber-800 px-2 py-0.5 rounded font-bold text-[10px]">লেট</span>`;
                     } else {
                         totalPresentDays++;
-                        rowBg = "bg-emerald-100 text-emerald-900 border-emerald-300"; // Present (Green)
+                        rowBg = "bg-emerald-100 text-emerald-900 border-emerald-300";
                         statusBadge = `<span class="bg-emerald-200 text-emerald-800 px-2 py-0.5 rounded font-bold text-[10px]">প্রেজেন্ট</span>`;
                     }
                 } else {
@@ -1842,37 +1895,39 @@
             }
 
             document.getElementById(tableBodyId).innerHTML = tableHtml;
-            document.getElementById(badgeId).innerHTML = `<i class="fa-solid fa-calendar-days mr-2 text-red-600"></i>এই মাসে মোট দিন: ${daysInMonth} দিন | প্রেজেন্ট: <strong class="text-emerald-700">${totalPresentDays}</strong> | লেট: <strong class="text-amber-700">${totalLateDays}</strong> | অনুপস্থিত: <strong class="text-rose-700">${totalAbsentDays}</strong>`;
+            document.getElementById(badgeId).innerHTML = `<i class="fa-solid fa-calendar-days mr-1.5 text-red-600"></i>এই মাসে মোট দিন: ${daysInMonth} দিন | প্রেজেন্ট: <strong class="text-emerald-700">${totalPresentDays}</strong> | লেট: <strong class="text-amber-700">${totalLateDays}</strong> | অনুপস্থিত: <strong class="text-rose-700">${totalAbsentDays}</strong>`;
         }
 
         async function loadAdminView() {
-            const selectedDateVal = document.getElementById("adminReportDate").value;
-            const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
-            const records = await res.json();
-            let targetDate = new Date(selectedDateVal), targetStr = targetDate.toLocaleDateString();
-            const todaysRecords = records.filter(r => new Date(r.dateStr).toDateString() === targetDate.toDateString() || String(r.dateStr) === String(targetStr));
-            
-            let presentCount = todaysRecords.filter(r => r.inStatus === 'Present' || r.inStatus === 'Manual/Present').length;
-            let lateCount = todaysRecords.filter(r => r.inStatus === 'Late').length;
-            let totalPresent = presentCount + lateCount;
-            
-            document.getElementById("statTotalPresent").innerText = `${totalPresent} জন`;
-            document.getElementById("statTotalLate").innerText = `${lateCount} জন`;
-            
-            const uRes = await fetch(`${SCRIPT_URL}?action=getUsers`);
-            const allUsers = await uRes.json();
-            const staffList = allUsers.filter(u => u.type === 'staff' || u.type === 'manager');
-            document.getElementById("statTotalAbsent").innerText = `${Math.max(0, staffList.length - totalPresent)} জন`;
+            try {
+                const selectedDateVal = document.getElementById("adminReportDate").value;
+                const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
+                const records = await res.json();
+                let targetDate = new Date(selectedDateVal), targetStr = targetDate.toLocaleDateString();
+                const todaysRecords = records.filter(r => new Date(r.dateStr).toDateString() === targetDate.toDateString() || String(r.dateStr) === String(targetStr));
+                
+                let presentCount = todaysRecords.filter(r => r.inStatus === 'Present' || r.inStatus === 'Manual/Present').length;
+                let lateCount = todaysRecords.filter(r => r.inStatus === 'Late').length;
+                let totalPresent = presentCount + lateCount;
+                
+                document.getElementById("statTotalPresent").innerText = `${totalPresent} জন`;
+                document.getElementById("statTotalLate").innerText = `${lateCount} জন`;
+                
+                const uRes = await fetch(`${SCRIPT_URL}?action=getUsers`);
+                const allUsers = await uRes.json();
+                const staffList = allUsers.filter(u => u.type === 'staff' || u.type === 'manager');
+                document.getElementById("statTotalAbsent").innerText = `${Math.max(0, staffList.length - totalPresent)} জন`;
 
-            renderAdminChart(presentCount, lateCount, Math.max(0, staffList.length - totalPresent));
+                renderAdminChart(presentCount, lateCount, Math.max(0, staffList.length - totalPresent));
 
-            document.getElementById("adminAttendanceTableContainer").innerHTML = todaysRecords.length === 0 ? `<p class="text-xs text-slate-400 text-center py-4">নির্বাচিত তারিখে কোনো হাজিরা রেকর্ড নেই</p>` : `
-                <table class="w-full text-xs text-left border">
-                    <tr class="bg-slate-100"><th class="p-2">আইডি</th><th class="p-2">নাম</th><th class="p-2">ইন-টাইম</th><th class="p-2">লাঞ্চ আউট</th><th class="p-2">লাঞ্চ ইন</th><th class="p-2">আউট-টাইম</th><th class="p-2">মোট ডিউটি</th></tr>
-                    ${todaysRecords.map(r => `<tr><td class="p-2 font-bold">${r.staffId}</td><td class="p-2">${r.staffName}</td><td class="p-2">${format12Hour(r.inTime)}</td><td class="p-2">${format12Hour(r.lunchOut)}</td><td class="p-2">${format12Hour(r.lunchIn)}</td><td class="p-2">${format12Hour(r.outTime)}</td><td class="p-2 font-semibold text-emerald-700">${r.totalDuty||'-'}</td></tr>`).join('')}
-                </table>
-            `;
-            calculateWinnerOfHonor();
+                document.getElementById("adminAttendanceTableContainer").innerHTML = todaysRecords.length === 0 ? `<p class="text-xs text-slate-400 text-center py-4">নির্বাচিত তারিখে কোনো হাজিরা রেকর্ড নেই</p>` : `
+                    <table class="w-full text-xs text-left border">
+                        <tr class="bg-slate-100"><th class="p-2">আইডি</th><th class="p-2">নাম</th><th class="p-2">ইন-টাইম</th><th class="p-2">লাঞ্চ আউট</th><th class="p-2">লাঞ্চ ইন</th><th class="p-2">আউট-টাইম</th><th class="p-2">মোট ডিউটি</th></tr>
+                        ${todaysRecords.map(r => `<tr><td class="p-2 font-bold">${r.staffId}</td><td class="p-2">${r.staffName}</td><td class="p-2">${format12Hour(r.inTime)}</td><td class="p-2">${format12Hour(r.lunchOut)}</td><td class="p-2">${format12Hour(r.lunchIn)}</td><td class="p-2">${format12Hour(r.outTime)}</td><td class="p-2 font-semibold text-emerald-700">${r.totalDuty||'-'}</td></tr>`).join('')}
+                    </table>
+                `;
+                calculateWinnerOfHonor();
+            } catch (e) {}
         }
 
         async function calculateWinnerOfHonor() {
@@ -1881,22 +1936,24 @@
                 const records = await res.json();
                 let dutyMap = {};
                 records.forEach(r => {
-                    if(r.totalDuty) {
+                    if (r.totalDuty) {
                         let h = parseFloat(r.totalDuty) || 0;
                         dutyMap[r.staffName] = (dutyMap[r.staffName] || 0) + h;
                     }
                 });
                 let winnerName = "এখনো নির্ধারিত হয়নি", maxH = 0;
-                for(let name in dutyMap) {
-                    if(dutyMap[name] > maxH) { maxH = dutyMap[name]; winnerName = name; }
+                for (let name in dutyMap) {
+                    if (dutyMap[name] > maxH) { maxH = dutyMap[name]; winnerName = name; }
                 }
                 const elem = document.getElementById("winnerDisplayInfo");
-                if(elem) elem.innerText = `${winnerName} (সর্বমোট ডিউটি: ${maxH.toFixed(1)} ঘণ্টা)`;
-            } catch(e) {}
+                if (elem) elem.innerText = `${winnerName} (সর্বমোট ডিউটি: ${maxH.toFixed(1)} ঘণ্টা)`;
+            } catch (e) {}
         }
 
         function renderAdminChart(present, late, absent) {
-            const ctx = document.getElementById('adminChartCanvas').getContext('2d');
+            const canvas = document.getElementById('adminChartCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
             if (adminChartInstance) adminChartInstance.destroy();
             adminChartInstance = new Chart(ctx, {
                 type: 'doughnut',
@@ -1909,27 +1966,29 @@
         }
 
         async function loadSuperAdminView() {
-            const res = await fetch(`${SCRIPT_URL}?action=getUsers`);
-            globalUsers = await res.json();
-            const staffList = globalUsers.filter(u => u.type === 'staff');
-            const adminMgrList = globalUsers.filter(u => u.type !== 'staff');
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getUsers`);
+                globalUsers = await res.json();
+                const staffList = globalUsers.filter(u => u.type === 'staff');
+                const adminMgrList = globalUsers.filter(u => u.type !== 'staff');
 
-            document.getElementById("superAdminStaffList").innerHTML = staffList.map(u => `
-                <tr class="hover:bg-slate-50">
-                    <td class="p-2 font-bold">${u.id}</td><td class="p-2">${u.name}</td><td class="p-2">${u.role}</td>
-                    <td class="p-2"><input type="text" id="pass_${u.id}" placeholder="নতুন পাসওয়ার্ড" class="border px-2 py-1 rounded text-xs w-28"> <button onclick="resetPass('${u.id}')" class="bg-blue-600 text-white px-2 py-1 rounded text-xs">সেভ</button></td>
-                    <td class="p-2 text-right"><button onclick="deleteUser('${u.id}')" class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded font-semibold">ডিলিট</button></td>
-                </tr>
-            `).join('') || `<tr><td colspan="5" class="p-4 text-center text-slate-400">কোনো স্টাফ নেই</td></tr>`;
+                document.getElementById("superAdminStaffList").innerHTML = staffList.map(u => `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-2 font-bold">${u.id}</td><td class="p-2">${u.name}</td><td class="p-2">${u.role}</td>
+                        <td class="p-2"><input type="text" id="pass_${u.id}" placeholder="নতুন পাসওয়ার্ড" class="border px-2 py-1 rounded text-xs w-24 sm:w-28"> <button onclick="resetPass('${u.id}')" class="bg-blue-600 text-white px-2 py-1 rounded text-xs">সেভ</button></td>
+                        <td class="p-2 text-right"><button onclick="deleteUser('${u.id}')" class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded font-semibold">ডিলিট</button></td>
+                    </tr>
+                `).join('') || `<tr><td colspan="5" class="p-4 text-center text-slate-400">কোনো স্টাফ নেই</td></tr>`;
 
-            document.getElementById("superAdminAdminList").innerHTML = adminMgrList.map(u => `
-                <tr class="hover:bg-slate-50">
-                    <td class="p-2 font-bold">${u.id}</td><td class="p-2">${u.name}</td><td class="p-2">${u.role} (${u.type})</td>
-                    <td class="p-2"><input type="text" id="pass_${u.id}" placeholder="নতুন পাসওয়ার্ড" class="border px-2 py-1 rounded text-xs w-28"> <button onclick="resetPass('${u.id}')" class="bg-blue-600 text-white px-2 py-1 rounded text-xs">সেভ</button></td>
-                    <td class="p-2 text-right"><button onclick="deleteUser('${u.id}')" class="text-xs bg-rose-100 text-rose-700 px-2 py-1 rounded font-semibold">ডিলিট</button></td>
-                </tr>
-            `).join('') || `<tr><td colspan="5" class="p-4 text-center text-slate-400">কোনো অ্যাকাউন্ট নেই</td></tr>`;
-            calculateWinnerOfHonor();
+                document.getElementById("superAdminAdminList").innerHTML = adminMgrList.map(u => `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-2 font-bold">${u.id}</td><td class="p-2">${u.name}</td><td class="p-2">${u.role} (${u.type})</td>
+                        <td class="p-2"><input type="text" id="pass_${u.id}" placeholder="নতুন পাসওয়ার্ড" class="border px-2 py-1 rounded text-xs w-24 sm:w-28"> <button onclick="resetPass('${u.id}')" class="bg-blue-600 text-white px-2 py-1 rounded text-xs">সেভ</button></td>
+                        <td class="p-2 text-right"><button onclick="deleteUser('${u.id}')" class="text-xs bg-rose-100 text-rose-700 px-2 py-1 rounded font-semibold">ডিলিট</button></td>
+                    </tr>
+                `).join('') || `<tr><td colspan="5" class="p-4 text-center text-slate-400">কোনো অ্যাকাউন্ট নেই</td></tr>`;
+                calculateWinnerOfHonor();
+            } catch (e) {}
         }
 
         async function loadSuperAdminReportDropdown() {
@@ -1943,7 +2002,7 @@
         async function loadSuperAdminIndividualReport() {
             const staffId = document.getElementById("reportStaffSelect").value;
             const monthVal = document.getElementById("reportMonthPicker").value;
-            if(!staffId || !monthVal) return;
+            if (!staffId || !monthVal) return;
 
             const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
             const records = await res.json();
@@ -2016,7 +2075,7 @@
 
         async function resetPass(id) {
             const newPass = document.getElementById(`pass_${id}`).value.trim();
-            if(!newPass) return showToast("সতর্কতা", "নতুন পাসওয়ার্ড লিখুন!", "info");
+            if (!newPass) return showToast("সতর্কতা", "নতুন পাসওয়ার্ড লিখুন!", "info");
             await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "updateUser", id: id, pass: newPass }) });
             document.getElementById(`pass_${id}`).value = "";
             logAuditAction("Password Reset", `ইউজার ${id} এর পাসওয়ার্ড রিসেট করা হয়েছে`);
@@ -2024,7 +2083,7 @@
         }
 
         async function deleteUser(id) {
-            if(confirm(`আপনি কি নিশ্চিত ${id} ডিলিট করতে চান?`)) {
+            if (confirm(`আপনি কি নিশ্চিত ${id} ডিলিট করতে চান?`)) {
                 await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", id: id }) });
                 loadSuperAdminView();
                 logAuditAction("User Deleted", `ইউজার ডিলিট করা হয়েছে: ${id}`);
@@ -2035,13 +2094,11 @@
         async function exportToExcel() {
             const res = await fetch(`${SCRIPT_URL}?action=getAttendance`);
             const records = await res.json();
-            if(records.length === 0) return showToast("সতর্কতা", "ডাউনলোড করার মতো ডাটা নেই!", "info");
-            let csv = "স্টাফ আইডি,নাম,তারিখ,ইন-টাইম,স্ট্যাটাস,লাঞ্চ আউট,লাঞ্চ ইন,আউট-টাইম,মোট ডিউটি,অবস্থান
-";
-            records.forEach(r => { csv += `${r.staffId},${r.staffName},${r.dateStr},${r.inTime},${r.inStatus},${r.lunchOut||''},${r.lunchIn||''},${r.outTime||''},${r.totalDuty||''},${r.location||''}
-`; });
+            if (records.length === 0) return showToast("সতর্কতা", "ডাউনলোড করার মতো ডাটা নেই!", "info");
+            let csv = "স্টাফ আইডি,নাম,তারিখ,ইন-টাইম,স্ট্যাটাস,লাঞ্চ আউট,লাঞ্চ ইন,আউট-টাইম,মোট ডিউটি,অবস্থান\n";
+            records.forEach(r => { csv += `${r.staffId},${r.staffName},${r.dateStr},${r.inTime},${r.inStatus},${r.lunchOut||''},${r.lunchIn||''},${r.outTime||''},${r.totalDuty||''},${r.location||''}\n`; });
             const link = document.createElement("a");
-            link.href = encodeURI("data:text/csv;charset=utf-8," + csv);
+            link.href = encodeURI("data:text/csv;charset=utf-8,\uFEFF" + csv);
             link.download = `Bachchu_Motors_Central_Attendance_${new Date().toLocaleDateString()}.csv`;
             document.body.appendChild(link);
             link.click();
@@ -2050,13 +2107,11 @@
         }
 
         async function exportAuditLogCSV() {
-            if(globalAuditLogs.length === 0) return showToast("সতর্কতা", "ডাউনলোড করার মতো অডিট লগ নেই!", "info");
-            let csv = "সময়,ইউজার আইডি,নাম,পদবী,অ্যাকশন,বিবরণ
-";
-            globalAuditLogs.forEach(l => { csv += `"${l.timestamp}",${l.userId},"${l.userName}","${l.userRole}","${l.action}","${l.details}"
-`; });
+            if (globalAuditLogs.length === 0) return showToast("সতর্কতা", "ডাউনলোড করার মতো অডিট লগ নেই!", "info");
+            let csv = "সময়,ইউজার আইডি,নাম,পদবী,অ্যাকশন,বিবরণ\n";
+            globalAuditLogs.forEach(l => { csv += `"${l.timestamp}",${l.userId},"${l.userName}","${l.userRole}","${l.action}","${l.details}"\n`; });
             const link = document.createElement("a");
-            link.href = encodeURI("data:text/csv;charset=utf-8,﻿" + csv);
+            link.href = encodeURI("data:text/csv;charset=utf-8,\uFEFF" + csv);
             link.download = `Bachchu_Motors_Audit_Trail_${new Date().toLocaleDateString()}.csv`;
             document.body.appendChild(link);
             link.click();
