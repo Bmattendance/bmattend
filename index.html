@@ -68,7 +68,6 @@
         .bike-runner { animation: bikeRun 4s infinite linear; }
         .wheel-spinner { animation: spinWheel 0.35s infinite linear; }
 
-        /* Mobile View & Table Scroll Optimization */
         .table-responsive {
             width: 100%;
             overflow-x: auto;
@@ -87,7 +86,7 @@
                 font-size: 0.72rem;
             }
             input, select, textarea {
-                font-size: 16px !important; /* Prevents auto-zoom on mobile iOS/Android */
+                font-size: 16px !important;
             }
         }
     </style>
@@ -279,7 +278,7 @@
                     </div>
 
                     <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm">
-                        <h3 class="text-base sm:text-lg font-bold border-b pb-2 mb-3 text-slate-800">সাম্প্রতিক হাজিরা ও লাঞ্চ বিবরন</h3>
+                        <h3 class="text-base sm:text-lg font-bold border-b pb-2 mb-3 text-slate-800">সাম্প্রতিক হাজিরা ও লাঞ্চ হিস্ট্রি</h3>
                         <div class="table-responsive max-h-72" id="staffHistoryContainer">
                             <p class="text-xs text-slate-400 text-center py-4">ডাটা লোড হচ্ছে...</p>
                         </div>
@@ -289,7 +288,7 @@
                 <!-- 30/31 Days Monthly Detailed History Table Section for Staff -->
                 <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm space-y-4">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b pb-3">
-                        <h3 class="text-base sm:text-lg font-bold text-slate-800">মাসিক বিস্তারিত মাসিক হাজিরা বিবরন</h3>
+                        <h3 class="text-base sm:text-lg font-bold text-slate-800">৩০/৩১ দিনের বিস্তারিত মাসিক হাজিরা হিস্ট্রি</h3>
                         <div class="flex items-center gap-2 w-full sm:w-auto">
                             <label class="text-xs font-semibold shrink-0">মাস:</label>
                             <input type="month" id="staffMonthPicker" onchange="renderMonthlyDetailedReport('staff')" class="border px-2.5 py-1 rounded-lg text-xs sm:text-sm w-full sm:w-auto">
@@ -382,11 +381,11 @@
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center max-w-7xl mx-auto bg-white rounded-2xl border p-3.5 sm:p-4 shadow-sm gap-3">
                 <div>
                     <h3 class="text-lg sm:text-xl font-bold text-slate-800">ম্যানেজার পোর্টাল (শোরুম অপারেশন ও হাজিরা)</h3>
-                    <p class="text-xs text-slate-500">সকল স্টাফদের হাজিরা মনিটরিং, নিজের হাজিরা বিবরন ও ছুটির অনুমোদন</p>
+                    <p class="text-xs text-slate-500">সকল স্টাফদের হাজিরা মনিটরিং, নিজের হাজিরা হিস্ট্রি ও ছুটির অনুমোদন</p>
                 </div>
                 <div class="flex flex-wrap gap-1.5 sm:gap-2 w-full md:w-auto">
                     <button onclick="switchTab('manager', 'attTab')" class="bg-red-600 text-white px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold shadow mobile-compact-btn" id="mgrBtnAtt">হাজিরা ও স্টাফ</button>
-                    <button onclick="switchTab('manager', 'myHistoryTab')" class="bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn" id="mgrBtnMyHist">আমার হাজিরা বিবরন</button>
+                    <button onclick="switchTab('manager', 'myHistoryTab')" class="bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn" id="mgrBtnMyHist">আমার হাজিরা হিস্ট্রি</button>
                     <button onclick="switchTab('manager', 'leaveTab')" class="bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold relative mobile-compact-btn" id="mgrBtnLeave">ছুটির অনুমোদন <span id="mgrLeaveBadge" class="hidden absolute -top-1 -right-1 bg-rose-600 text-white rounded-full text-[9px] px-1.5 py-0.2">0</span></button>
                     <button onclick="switchTab('manager', 'myLeaveTab')" class="bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn" id="mgrBtnMyLeave">আমার ছুটি</button>
                     <button onclick="switchTab('manager', 'profileTab')" class="bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold mobile-compact-btn" id="mgrBtnProf">আমার প্রফাইল</button>
@@ -433,7 +432,7 @@
             <div id="managerMyHistorySection" class="hidden space-y-5 sm:space-y-6">
                 <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm space-y-4">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b pb-3">
-                        <h3 class="text-base sm:text-lg font-bold text-slate-800">আমার মাসিক বিস্তারিত মাসিক হাজিরা</h3>
+                        <h3 class="text-base sm:text-lg font-bold text-slate-800">আমার ৩০/৩১ দিনের বিস্তারিত মাসিক হাজিরা হিস্ট্রি</h3>
                         <div class="flex items-center gap-2 w-full sm:w-auto">
                             <label class="text-xs font-semibold shrink-0">মাস:</label>
                             <input type="month" id="mgrMonthPicker" onchange="renderMonthlyDetailedReport('manager')" class="border px-2.5 py-1 rounded-lg text-xs sm:text-sm w-full sm:w-auto">
@@ -468,9 +467,13 @@
             </div>
 
             <div id="managerLeaveApprovalSection" class="hidden space-y-5 sm:space-y-6">
-                <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm">
+                <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm space-y-4">
                     <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-4 border-b pb-2">স্টাফদের ছুটির আবেদন (১ম অনুমোদন প্যানেল)</h3>
                     <div id="managerLeaveListContainer" class="table-responsive"><p class="text-xs text-slate-400">কোনো আবেদন নেই</p></div>
+                </div>
+                <div class="bg-white rounded-2xl border p-4 sm:p-6 shadow-sm space-y-4">
+                    <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-4 border-b pb-2">স্টাফদের হাজিরা মিসিং আবেদন (১ম অনুমোদন প্যানেল)</h3>
+                    <div id="managerAttAppListContainer" class="table-responsive"><p class="text-xs text-slate-400">কোনো আবেদন নেই</p></div>
                 </div>
             </div>
 
@@ -802,7 +805,6 @@
             }
         }
 
-        // Guaranteed failsafe to hide loading screen
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(hideLoader, 1000);
             
@@ -812,7 +814,6 @@
             initGPS();
             setInterval(updateLiveClock, 1000);
 
-            // Auto-Login Check (Stay Logged In until Logout)
             const savedUser = localStorage.getItem('bachchu_logged_in_user');
             if (savedUser) {
                 try {
@@ -1183,20 +1184,28 @@
                 `;
             }
 
+            // Manager sees pending applications from staff where managerApproval is 'Pending'
             let pendingForManager = globalLeaves.filter(l => l.staffType === 'staff' && l.managerApproval === 'Pending').length;
+            // Manager also needs to see pending attendance applications from staff
+            let pendingAttForManager = globalAttApplications.filter(a => a.staffType === 'staff' && a.managerApproval === 'Pending').length;
+            let totalMgrPending = pendingForManager + pendingAttForManager;
+
+            // Admin/SuperAdmin sees applications where manager already approved OR it bypassed manager (manager's own request)
             let pendingForMD = globalLeaves.filter(l => (l.staffType === 'manager' || l.managerApproval === 'Approved') && l.finalApproval === 'Pending').length;
+            let pendingAttForMD = globalAttApplications.filter(a => (a.staffType === 'manager' || a.managerApproval === 'Approved') && a.status === 'Pending').length;
+            let totalMDPending = pendingForMD + pendingAttForMD;
 
             if (document.getElementById("mgrLeaveBadge")) {
                 const b1 = document.getElementById("mgrLeaveBadge");
-                if (pendingForManager > 0) { b1.innerText = pendingForManager; b1.classList.remove("hidden"); } else { b1.classList.add("hidden"); }
+                if (totalMgrPending > 0) { b1.innerText = totalMgrPending; b1.classList.remove("hidden"); } else { b1.classList.add("hidden"); }
             }
             if (document.getElementById("adminLeaveBadge")) {
                 const b2 = document.getElementById("adminLeaveBadge");
-                if (pendingForMD > 0) { b2.innerText = pendingForMD; b2.classList.remove("hidden"); } else { b2.classList.add("hidden"); }
+                if (totalMDPending > 0) { b2.innerText = totalMDPending; b2.classList.remove("hidden"); } else { b2.classList.add("hidden"); }
             }
             if (document.getElementById("superLeaveBadge")) {
                 const b3 = document.getElementById("superLeaveBadge");
-                if (pendingForMD > 0) { b3.innerText = pendingForMD; b3.classList.remove("hidden"); } else { b3.classList.add("hidden"); }
+                if (totalMDPending > 0) { b3.innerText = totalMDPending; b3.classList.remove("hidden"); } else { b3.classList.add("hidden"); }
             }
         }
 
@@ -1242,7 +1251,7 @@
             logAuditAction("Leave Applied", `ছুটির আবেদন করেছেন: ${newLeave.type}`);
             e.target.reset();
             loadLeavesData();
-            triggerSuccessTick("ছুটির আবেদন সফলভাবে জমা হয়েছে!");
+            triggerSuccessTick("ছুটির আবেদন সফলভাবে ম্যানেজারের কাছে জমা হয়েছে!");
         }
 
         async function submitManagerLeave(e) {
@@ -1276,7 +1285,7 @@
                 reason: reason,
                 prescription: prescriptionData,
                 status: "Pending (Admin/SuperAdmin Approval)",
-                managerApproval: "Bypassed (Manager)",
+                managerApproval: "Approved", // Manager's own request bypasses 1st approval and goes directly to Admin
                 finalApproval: "Pending"
             };
 
@@ -1307,7 +1316,7 @@
 
             if (currentUser.type === 'manager') {
                 const pendingForMgr = globalLeaves.filter(l => l.staffType === 'staff' && l.managerApproval === 'Pending');
-                document.getElementById("managerLeaveListContainer").innerHTML = pendingForMgr.length === 0 ? `<p class="text-xs text-slate-400">কোনো আবেদন নেই</p>` : `
+                document.getElementById("managerLeaveListContainer").innerHTML = pendingForMgr.length === 0 ? `<p class="text-xs text-slate-400">কোনো ছুটির আবেদন নেই</p>` : `
                     <table class="w-full text-xs text-left border">
                         <tr class="bg-slate-100"><th class="p-2">স্টাফ</th><th class="p-2">ধরন</th><th class="p-2">তারিখ</th><th class="p-2">কারণ</th><th class="p-2">প্রেসক্রিপশন</th><th class="p-2 text-right">অ্যাকশন</th></tr>
                         ${pendingForMgr.map(l => `<tr><td class="p-2 font-bold">${l.staffName} (${l.staffId})</td><td class="p-2">${l.type}</td><td class="p-2">${l.startDate} হতে ${l.endDate}</td><td class="p-2">${l.reason}</td><td class="p-2">${l.prescription ? `<a href="${l.prescription}" target="_blank" class="text-blue-600 underline">দেখুন</a>` : 'নেই'}</td><td class="p-2 text-right"><button onclick="processLeave('${l.leaveId}', 'manager', 'Approved')" class="bg-emerald-600 text-white px-2 py-1 rounded text-xs mr-1">অনুমোদন</button><button onclick="processLeave('${l.leaveId}', 'manager', 'Rejected')" class="bg-rose-600 text-white px-2 py-1 rounded text-xs">বাতিল</button></td></tr>`).join('')}
@@ -1334,7 +1343,7 @@
                     elem.innerHTML = pendingForFinal.length === 0 ? `<p class="text-xs text-slate-400">অনুমোদনের জন্য কোনো আবেদন নেই</p>` : `
                         <table class="w-full text-xs text-left border">
                             <tr class="bg-slate-100"><th class="p-2">আবেদনকারী</th><th class="p-2">ধরন</th><th class="p-2">তারিখ</th><th class="p-2">কারণ</th><th class="p-2">প্রেসক্রিপশন</th><th class="p-2">পূর্ববর্তী স্ট্যাটাস</th><th class="p-2 text-right">ফাইনাল অ্যাকশন</th></tr>
-                            ${pendingForFinal.map(l => `<tr><td class="p-2 font-bold">${l.staffName} (${l.staffId})</td><td class="p-2">${l.type}</td><td class="p-2">${l.startDate} হতে ${l.endDate}</td><td class="p-2">${l.reason}</td><td class="p-2">${l.prescription ? `<a href="${l.prescription}" target="_blank" class="text-blue-600 underline">দেখুন</a>` : 'নেই'}</td><td class="p-2 text-emerald-600 font-semibold">${l.managerApproval}</td><td class="p-2 text-right"><button onclick="processLeave('${l.leaveId}', 'admin', 'Approved')" class="bg-emerald-600 text-white px-2 py-1 rounded text-xs mr-1">ফাইনাল অ্যাপ্রুভ</button><button onclick="processLeave('${l.leaveId}', 'admin', 'Rejected')" class="bg-rose-600 text-white px-2 py-1 rounded text-xs">রিজেক্ট</button></td></tr>`).join('')}
+                            ${pendingForFinal.map(l => `<tr><td class="p-2 font-bold">${l.staffName} (${l.staffId})</td><td class="p-2">${l.type}</td><td class="p-2">${l.startDate} হতে ${l.endDate}</td><td class="p-2">${l.reason}</td><td class="p-2">${l.prescription ? `<a href="${l.prescription}" target="_blank" class="text-blue-600 underline">দেখুন</a>` : 'নেই'}</td><td class="p-2 text-emerald-600 font-semibold">${l.managerApproval === 'Approved' ? 'ম্যানেজার অনুমোদিত / ম্যানেজারের নিজস্ব' : l.managerApproval}</td><td class="p-2 text-right"><button onclick="processLeave('${l.leaveId}', 'admin', 'Approved')" class="bg-emerald-600 text-white px-2 py-1 rounded text-xs mr-1">ফাইনাল অ্যাপ্রুভ</button><button onclick="processLeave('${l.leaveId}', 'admin', 'Rejected')" class="bg-rose-600 text-white px-2 py-1 rounded text-xs">রিজেক্ট</button></td></tr>`).join('')}
                         </table>
                     `;
                 }
@@ -1365,18 +1374,8 @@
             } catch (e) {
                 globalAttApplications = JSON.parse(localStorage.getItem('bachchu_att_apps') || '[]');
             }
-            updateAttAppBadges();
+            updateLeaveBalancesAndBadges();
             renderAttAppLists();
-        }
-
-        function updateAttAppBadges() {
-            let pendingCount = globalAttApplications.filter(a => a.status === 'Pending').length;
-            ['adminAttAppBadge', 'superAttAppBadge'].forEach(id => {
-                const elem = document.getElementById(id);
-                if (elem) {
-                    if (pendingCount > 0) { elem.innerText = pendingCount; elem.classList.remove("hidden"); } else { elem.classList.add("hidden"); }
-                }
-            });
         }
 
         function openManualAttModal() { document.getElementById("manualAttModal").classList.remove("hidden"); }
@@ -1391,6 +1390,8 @@
             const lIn = document.getElementById("manLunchIn").value || "";
             const reason = document.getElementById("manReason").value.trim();
 
+            let isManager = currentUser.type === 'manager';
+
             const newApp = {
                 action: "addAttApp",
                 appId: 'ATT-' + Math.floor(1000 + Math.random() * 9000),
@@ -1403,7 +1404,8 @@
                 lunchOut: lOut,
                 lunchIn: lIn,
                 reason: reason,
-                status: "Pending"
+                managerApproval: isManager ? "Approved" : "Pending", // Staff goes to manager first, manager goes directly to admin
+                status: isManager ? "Pending (Admin/SuperAdmin Approval)" : "Pending (Manager Approval)"
             };
 
             globalAttApplications.push(newApp);
@@ -1413,45 +1415,68 @@
             logAuditAction("Attendance Application", `হাজিরা মিসিং আবেদন করেছেন: ${dateStr}`);
             closeManualAttModal();
             loadAttApplicationsData();
-            triggerSuccessTick("হাজিরা মিসিং আবেদন সফলভাবে জমা হয়েছে!");
+            triggerSuccessTick(isManager ? "ম্যানেজারের হাজিরা আবেদন সরাসরি অ্যাডমিনের কাছে জমা হয়েছে!" : "হাজিরা মিসিং আবেদন ম্যানেজারের কাছে জমা হয়েছে!");
         }
 
         function renderAttAppLists() {
             if (!currentUser) return;
+            
+            // Manager sees pending attendance applications from staff
+            if (currentUser.type === 'manager') {
+                let pendingForMgr = globalAttApplications.filter(a => a.staffType === 'staff' && a.managerApproval === 'Pending');
+                const mgrAttElem = document.getElementById("managerAttAppListContainer");
+                if (mgrAttElem) {
+                    mgrAttElem.innerHTML = pendingForMgr.length === 0 ? `<p class="text-xs text-slate-400">কোনো হাজিরার আবেদন নেই</p>` : `
+                        <table class="w-full text-xs text-left border">
+                            <tr class="bg-slate-100"><th class="p-2">আবেদনকারী</th><th class="p-2">তারিখ</th><th class="p-2">ইন ও আউট</th><th class="p-2">লাঞ্চ</th><th class="p-2">কারণ</th><th class="p-2 text-right">অ্যাকশন</th></tr>
+                            ${pendingForMgr.map(a => `<tr><td class="p-2 font-bold">${a.staffName} (${a.staffId})</td><td class="p-2">${a.dateStr}</td><td class="p-2">ইন: ${format12Hour(a.inTime)} <br>আউট: ${format12Hour(a.outTime)}</td><td class="p-2">${format12Hour(a.lunchOut)} থেকে ${format12Hour(a.lunchIn)}</td><td class="p-2">${a.reason}</td><td class="p-2 text-right"><button onclick="processAttApp('${a.appId}', 'manager', 'Approved')" class="bg-emerald-600 text-white px-2 py-1 rounded text-xs mr-1">অনুমোদন</button><button onclick="processAttApp('${a.appId}', 'manager', 'Rejected')" class="bg-rose-600 text-white px-2 py-1 rounded text-xs">বাতিল</button></td></tr>`).join('')}
+                        </table>
+                    `;
+                }
+            }
+
+            // Admin & SuperAdmin see applications where manager already approved OR manager's own request
             if (currentUser.type === 'admin' || currentUser.type === 'superadmin') {
-                let pendingApps = globalAttApplications.filter(a => a.status === 'Pending');
+                let pendingApps = globalAttApplications.filter(a => (a.staffType === 'manager' || a.managerApproval === 'Approved') && a.status === 'Pending');
                 let targetId = currentUser.type === 'admin' ? "adminAttAppListContainer" : "superAdminAttAppListContainer";
                 const elem = document.getElementById(targetId);
                 if (elem) {
                     elem.innerHTML = pendingApps.length === 0 ? `<p class="text-xs text-slate-400">অনুমোদনের জন্য কোনো হাজিরার আবেদন নেই</p>` : `
                         <table class="w-full text-xs text-left border">
-                            <tr class="bg-slate-100"><th class="p-2">আবেদনকারী</th><th class="p-2">তারিখ</th><th class="p-2">ইন ও আউট</th><th class="p-2">লাঞ্চ</th><th class="p-2">কারণ</th><th class="p-2 text-right">অ্যাকশন</th></tr>
-                            ${pendingApps.map(a => `<tr><td class="p-2 font-bold">${a.staffName} (${a.staffId})</td><td class="p-2">${a.dateStr}</td><td class="p-2">ইন: ${format12Hour(a.inTime)} <br>আউট: ${format12Hour(a.outTime)}</td><td class="p-2">${format12Hour(a.lunchOut)} থেকে ${format12Hour(a.lunchIn)}</td><td class="p-2">${a.reason}</td><td class="p-2 text-right"><button onclick="processAttApp('${a.appId}', 'Approved')" class="bg-emerald-600 text-white px-2 py-1 rounded text-xs mr-1">অনুমোদন</button><button onclick="processAttApp('${a.appId}', 'Rejected')" class="bg-rose-600 text-white px-2 py-1 rounded text-xs">বাতিল</button></td></tr>`).join('')}
+                            <tr class="bg-slate-100"><th class="p-2">আবেদনকারী</th><th class="p-2">তারিখ</th><th class="p-2">ইন ও আউট</th><th class="p-2">লাঞ্চ</th><th class="p-2">কারণ</th><th class="p-2">পূর্ববর্তী স্ট্যাটাস</th><th class="p-2 text-right">ফাইনাল অ্যাকশন</th></tr>
+                            ${pendingApps.map(a => `<tr><td class="p-2 font-bold">${a.staffName} (${a.staffId})</td><td class="p-2">${a.dateStr}</td><td class="p-2">ইন: ${format12Hour(a.inTime)} <br>আউট: ${format12Hour(a.outTime)}</td><td class="p-2">${format12Hour(a.lunchOut)} থেকে ${format12Hour(a.lunchIn)}</td><td class="p-2">${a.reason}</td><td class="p-2 text-emerald-600 font-semibold">${a.managerApproval === 'Approved' ? 'ম্যানেজার অনুমোদিত / ম্যানেজারের নিজস্ব' : a.managerApproval}</td><td class="p-2 text-right"><button onclick="processAttApp('${a.appId}', 'admin', 'Approved')" class="bg-emerald-600 text-white px-2 py-1 rounded text-xs mr-1">ফাইনাল অ্যাপ্রুভ</button><button onclick="processAttApp('${a.appId}', 'admin', 'Rejected')" class="bg-rose-600 text-white px-2 py-1 rounded text-xs">রিজেক্ট</button></td></tr>`).join('')}
                         </table>
                     `;
                 }
             }
         }
 
-        async function processAttApp(appId, decision) {
+        async function processAttApp(appId, byRole, decision) {
             let app = globalAttApplications.find(a => a.appId === appId);
             if (!app) return;
-            app.status = decision;
-            localStorage.setItem('bachchu_att_apps', JSON.stringify(globalAttApplications));
             
-            if (decision === 'Approved') {
-                let totalHours = "8.00 ঘণ্টা (আবেদনকৃত)";
-                const attPayload = {
-                    action: "addAttendance", staffId: app.staffId, staffName: app.staffName,
-                    dateStr: new Date(app.dateStr).toLocaleDateString(), inTime: format12Hour(app.inTime) !== '-' ? format12Hour(app.inTime) : "09:30 AM", inPhoto: "", inStatus: "Present",
-                    lunchOut: format12Hour(app.lunchOut) !== '-' ? format12Hour(app.lunchOut) : "", lunchIn: format12Hour(app.lunchIn) !== '-' ? format12Hour(app.lunchIn) : "", outTime: format12Hour(app.outTime) !== '-' ? format12Hour(app.outTime) : "06:00 PM", outPhoto: "", totalDuty: totalHours, diffDuty: "সফল", location: "Manual Approved"
-                };
-                try { await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(attPayload) }); } catch (e) {}
+            if (byRole === 'manager') {
+                app.managerApproval = decision;
+                app.status = decision === 'Approved' ? 'Pending (Final MD/SuperAdmin Approval)' : 'Rejected by Manager';
+                logAuditAction("Att App 1st Approved", `ম্যানেজার ${app.staffName} এর হাজিরা আবেদন ${decision}`);
+            } else {
+                app.status = decision === 'Approved' ? 'Approved (Final)' : 'Rejected by MD/SuperAdmin';
+                logAuditAction("Att App Final Approved", `${currentUser.role} ${app.staffName} এর হাজিরা আবেদন ${decision}`);
+                
+                if (decision === 'Approved') {
+                    let totalHours = "8.00 ঘণ্টা (আবেদনকৃত)";
+                    const attPayload = {
+                        action: "addAttendance", staffId: app.staffId, staffName: app.staffName,
+                        dateStr: new Date(app.dateStr).toLocaleDateString(), inTime: format12Hour(app.inTime) !== '-' ? format12Hour(app.inTime) : "09:30 AM", inPhoto: "", inStatus: "Present",
+                        lunchOut: format12Hour(app.lunchOut) !== '-' ? format12Hour(app.lunchOut) : "", lunchIn: format12Hour(app.lunchIn) !== '-' ? format12Hour(app.lunchIn) : "", outTime: format12Hour(app.outTime) !== '-' ? format12Hour(app.outTime) : "06:00 PM", outPhoto: "", totalDuty: totalHours, diffDuty: "সফল", location: "Manual Approved"
+                    };
+                    try { await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(attPayload) }); } catch (e) {}
+                }
             }
-
-            logAuditAction("Attendance App Processed", `${app.staffName} এর হাজিরা আবেদন ${decision} করা হয়েছে`);
+            
+            localStorage.setItem('bachchu_att_apps', JSON.stringify(globalAttApplications));
             loadAttApplicationsData();
-            triggerSuccessTick(`হাজিরা আবেদন ${decision === 'Approved' ? 'অনুমোদন ও প্রেজেন্ট' : 'বাতিল'} করা হয়েছে!`);
+            triggerSuccessTick(`হাজিরা আবেদন ${decision === 'Approved' ? 'অনুমোদন' : 'বাতিল'} করা হয়েছে!`);
         }
 
         function startCamera() {
@@ -1576,6 +1601,7 @@
                     document.getElementById("managerLeaveApprovalSection").classList.remove("hidden");
                     document.getElementById("mgrBtnLeave").className = "bg-red-600 text-white px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold shadow mobile-compact-btn";
                     loadLeavesData();
+                    loadAttApplicationsData();
                 } else if (tab === 'myLeaveTab') {
                     document.getElementById("managerMyLeaveSection").classList.remove("hidden");
                     document.getElementById("mgrBtnMyLeave").className = "bg-red-600 text-white px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold shadow mobile-compact-btn";
@@ -1721,7 +1747,6 @@
             loadManagerView();
         }
 
-        // Format time strictly to 12-hour AM/PM without extra clutter
         function format12Hour(timeStr) {
             if (!timeStr) return '-';
             let cleanStr = String(timeStr).trim();
@@ -1822,7 +1847,6 @@
             renderMonthlyDetailedReport('manager');
         }
 
-        // Unified 30/31 Days Detailed Monthly Report for Staff & Manager
         function renderMonthlyDetailedReport(roleType) {
             const pickerId = roleType === 'manager' ? "mgrMonthPicker" : "staffMonthPicker";
             const tableBodyId = roleType === 'manager' ? "mgrMonthlyDetailedTableBody" : "staffMonthlyDetailedTableBody";
@@ -2121,7 +2145,6 @@
 
         function exportAttendancePDF() { window.print(); }
 
-        // Register Service Worker for PWA
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
@@ -2132,4 +2155,3 @@
     </script>
 </body>
 </html>
-TEST MODE ON 
